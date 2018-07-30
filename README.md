@@ -59,6 +59,7 @@ CORE_PEER_ADDRESS=peer:7051 CORE_CHAINCODE_ID_NAME=mycc:0 ./pacc
 ```sh
 
 docker exec -it cli bash
+cd /opt/gopath/src
 peer chaincode install -p chaincodedev/chaincode/pacc -n mycc -v 0
 peer chaincode instantiate -n mycc -v 0 -c '{"Args":["a","10"]}' -C myc
 peer chaincode invoke -n mycc -c '{"Args":["set", "a", "20"]}' -C myc
@@ -78,3 +79,11 @@ govendor add +external                  # Add all external packages, or
 govendor add github.com/external/pkg    # Add specific external package
 
 ```
+
+### Common Issues
+
+#### "Cannot find package 'plugin' in any of:"
+
+**Temporary solution:**
+
+> Rename 'vendor' directory to something else (this won't work with external deps, a permanent solution is still needed).
