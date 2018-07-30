@@ -2,19 +2,35 @@
 > Proof of Concept of Hyperledger Fabric Chaincode with Homomorphic Encryption using the Paillier Cryptosystem.
 
 - [Hyperledger Fabric](https://github.com/hyperledger/fabric)
-- [Paillier implementation used](https://github.com/didiercrunch/paillier)
+- [Paillier implementation used (Go)](https://github.com/didiercrunch/paillier)
 
 ### Operations allowed:
 
 - Ciphertexts addition
 - Ciphertext-scalar multiplication
 
+### Requirements
+
+1. [Install Go](https://golang.org/doc/install)
+
+2. Clone Hyperledger Fabric samples
+```sh
+git clone -b master https://github.com/hyperledger/fabric-samples.git
+cd fabric-samples
+```
+
+3. Clone this repo
+```sh
+cd ~/go/src     # or $GOPATH/src
+git clone https://github.com/lucaspar/pacc
+```
+
 ### Execution
 
-##### All terminals:
+##### All 3 terminals:
 
 ```sh
-
+# from Hyperledger Fabric samples directory (see requirements above):
 cd chaincode-docker-devmode
 
 ```
