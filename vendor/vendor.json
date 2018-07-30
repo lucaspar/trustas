@@ -1522,6 +1522,11 @@
 			"path": "gopkg.in/yaml.v2",
 			"revision": "1c94e9e9108409ba3278d2bc40a184b1ef7127e9",
 			"revisionTime": "2018-07-26T03:55:33Z"
+		},
+		{
+			"checksumSHA1": "TOHNtkv9rfKwJ/UtQbIMvArRwUA=",
+			"path": "plugin",
+			"revision": ""
 		}
 	],
 	"rootPath": "pacc"
