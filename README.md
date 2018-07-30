@@ -19,10 +19,12 @@ git clone -b master https://github.com/hyperledger/fabric-samples.git
 cd fabric-samples
 ```
 
-3. Clone this repo
+3. Clone this repo and fetch all dependencies
 ```sh
 cd ~/go/src     # or $GOPATH/src
 git clone https://github.com/lucaspar/pacc
+cd pacc
+govendor fetch +outside
 ```
 
 ### Execution
