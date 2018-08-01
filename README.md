@@ -71,14 +71,30 @@ peer chaincode query -n mycc -c '{"Args":["query","a"]}' -C myc
 
 ### Extended operations
 
-#### Handle external chaincode dependencies by using `govendor`:
+#### Handling external chaincode dependencies
+
+##### Using `govendor`:
 
 ```sh
-
+# if govendor is not installed:
 sudo apt install govendor
+
 govendor init
 govendor add +external                  # Add all external packages, or
 govendor add github.com/external/pkg    # Add specific external package
+
+```
+
+#####  Using `gom`:
+
+```sh
+# if gom is not installed:
+go get github.com/mattn/gom
+
+gom gen gomfile
+vim Gomfile         # remove hyperledger deps from `Gomfile`
+gom install         # install vendor dependencies
+gom build           # and test it
 
 ```
 
