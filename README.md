@@ -92,7 +92,7 @@ govendor add github.com/external/pkg    # Add specific external package
 go get github.com/mattn/gom
 
 gom gen gomfile
-vim Gomfile         # remove hyperledger deps from `Gomfile`
+vim Gomfile         # IMPORTANT: remove hyperledger deps from `Gomfile`
 gom install         # install vendor dependencies
 gom build           # and test it
 
