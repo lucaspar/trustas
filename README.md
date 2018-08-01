@@ -9,6 +9,18 @@
 - Ciphertexts addition
 - Ciphertext-scalar multiplication
 
+### Versions
+
+Tested with:
+
+Software        | Version
+--------------- | -----------
+OS              | Ubuntu 18.04.1 LTS
+Go              | 1.10.3
+Hyperledger     | 1.2.0
+Docker          | 18.06.0-ce
+Docker Compose  | 1.21.2
+
 ### Requirements
 
 1. [Install Go](https://golang.org/doc/install)
@@ -100,8 +112,8 @@ gom build           # and test it
 
 ### Common Issues
 
-#### "Cannot find package 'plugin' in any of:"
+#### Package / library missing
 
-**Temporary solution:**
+Try removing the problematic dependency from `vendor` directory. If using Gom, comment it out in the Gom
 
-> Rename 'vendor' directory to something else (this won't work with external deps, a permanent solution is still needed).
+Explanation: It forces Go to look for it in `$GOPATH` and `$GOROOT`.
