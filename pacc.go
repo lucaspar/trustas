@@ -98,7 +98,7 @@ func ChaincodeStart() {
 func main() {
 
 	PaillierTest(13, 19, 2)
-	PedersenTest()
+	pedersenTest()
 
 	// ChaincodeStart()
 

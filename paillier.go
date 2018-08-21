@@ -19,7 +19,7 @@ func n(i *big.Int) int {
 func PaillierTest(x, y, k int) {
 
 	print("\n\t------------------------------\n\n",
-		"\tTesting Paillier homomorphic encryption scheme.\n",
+		"\tTESTING PAILLIER HOMOMORPHIC ENCRYPTION SCHEME:\n",
 		"\tAddition and scalar multiplication\n\n")
 
 	tkh, _ := paillier.GetThresholdKeyGenerator(18, 2, 2, rand.Reader)
