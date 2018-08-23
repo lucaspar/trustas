@@ -1,49 +1,123 @@
 package main
 
 import (
+	// "bytes"
+	"encoding/json"
 	"fmt"
-	// "fmt"
 	"github.com/xlab-si/emmy/crypto/commitments"
 	"github.com/xlab-si/emmy/crypto/groups"
 	"math/big"
 )
 
-func makeCommit(message string) (*groups.ECGroupElement, *commitments.PedersenECReceiver, *commitments.PedersenECCommitter) {
+/*
+ *  	Considering: c = g^x * h^r
+ *
+ *  	c is the ciphertext saved publicly (c = g^x * h^r)
+ *  	x is the plaintext, or useful value (x)
+ *  	p, from receiver.Params, has constants g and h
+ *  	r is a random value and the key for revealing x
+ */
+func makeCommit(message string) (
+	c *groups.ECGroupElement,
+	p *commitments.PedersenECParams,
+	x *big.Int,
+	r *big.Int) {
 
 	receiver := commitments.NewPedersenECReceiver(groups.P256)
-	committer := commitments.NewPedersenECCommitter(receiver.Params)
+	p = receiver.Params
+	committer := commitments.NewPedersenECCommitter(p)
 
 	println("COMMITTING:\t", message)
 	c, err := committer.GetCommitMsg(StringToBigint(message))
 	if err != nil {
 		println("Error in GetCommitMsg: %v", err)
 	}
+	x, r = committer.GetDecommitMsg()
 
-	return c, receiver, committer
+	return c, p, x, r
 
 }
 
-func decommit(c *groups.ECGroupElement, receiver *commitments.PedersenECReceiver, committer *commitments.PedersenECCommitter) string {
+func verifyCommitment(
+	c *groups.ECGroupElement,
+	p *commitments.PedersenECParams,
+	x *big.Int,
+	r *big.Int) bool {
 
+	receiver := commitments.NewPedersenECReceiverFromParams(p)
 	receiver.SetCommitment(c)
-	committedVal, r := committer.GetDecommitMsg()
-	success := receiver.CheckDecommitment(r, committedVal)
+	success := receiver.CheckDecommitment(r, x)
 
 	if success != true {
-		fmt.Println("\n\n\t>>> Pedersen EC commitment failed. <<< " + BigintToString(committedVal) + "\n\n")
-		return ""
-	} else {
-		decodedMessage := BigintToString(committedVal)
-		fmt.Println("DECODED:\t", decodedMessage)
-		return decodedMessage
+		fmt.Println("\n\n\t>>> Pedersen EC commitment failed. <<< " + BigintToString(x) + "\n\n")
+		return false
 	}
+
+	decodedMessage := BigintToString(x)
+	fmt.Println("DECODED:\t", decodedMessage)
+	return true
+
+}
+
+// converts interface into array of bytes
+func desserialize(bytes []byte, x interface{}) {
+	err := json.Unmarshal(bytes, &x)
+	if err != nil {
+		fmt.Println(err)
+	}
+}
+
+// converts back an array of bytes
+func serialize(x interface{}) []byte {
+	xs, _ := json.Marshal(x)
+	return xs
+}
+
+func serializeData(
+	c *groups.ECGroupElement,
+	p *commitments.PedersenECParams,
+	x *big.Int,
+	r *big.Int) (
+
+	*groups.ECGroupElement,
+	*commitments.PedersenECParams,
+	*big.Int,
+	*big.Int) {
+
+	// serialize commit
+	sc := serialize(c)
+	sp := serialize(p)
+	sx := serialize(x)
+	sr := serialize(r)
+
+	var dc *groups.ECGroupElement
+	var dp *commitments.PedersenECParams
+	var dx *big.Int
+	var dr *big.Int
+
+	// desserialize commit
+	desserialize(sc, dc)
+	desserialize(sp, dp)
+	desserialize(sx, dx)
+	desserialize(sr, dr)
+
+	fmt.Println(c)
+	fmt.Println(dc)
+
+	return dc, dp, dx, dr
 
 }
 
 func pedersenCommit(message string) {
 
-	c, receiver, committer := makeCommit(message)
-	decommit(c, receiver, committer)
+	const SERIALIZING = false
+	c, p, x, r := makeCommit(message)
+	if SERIALIZING {
+		dc, dp, dx, dr := serializeData(c, p, x, r)
+		verifyCommitment(dc, dp, dx, dr)
+	} else {
+		verifyCommitment(c, p, x, r)
+	}
 
 }
 
