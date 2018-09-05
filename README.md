@@ -30,7 +30,6 @@ cd fabric-samples
 cd ~/go/src     # or $GOPATH/src
 git clone https://github.com/lucaspar/trustas
 cd trustas
-govendor fetch +outside
 ```
 
 ## Getting Started
