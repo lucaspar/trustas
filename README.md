@@ -5,7 +5,7 @@
 
 - [Hyperledger Fabric](https://github.com/hyperledger/fabric)
 
-### Software versions
+## Software versions
 
 Software        | Version
 --------------- | -----------
@@ -15,7 +15,7 @@ Hyperledger     | 1.2.0
 Docker          | 18.06.0-ce
 Docker Compose  | 1.21.2
 
-### Requirements
+## Requirements
 
 1. [Install Go](https://golang.org/doc/install)
 
@@ -33,9 +33,9 @@ cd trustas
 govendor fetch +outside
 ```
 
-### Getting Started
+## Getting Started
 
-##### All 3 terminals:
+#### All 3 terminals:
 
 ```sh
 # from Hyperledger Fabric samples directory (see requirements above):
@@ -43,7 +43,7 @@ cd chaincode-docker-devmode
 
 ```
 
-##### Terminal 1 - Start Fabric network
+#### Terminal 1 - Start Fabric network
 
 ```sh
 
@@ -51,7 +51,7 @@ docker-compose -f docker-compose-simple.yaml up
 
 ```
 
-##### Terminal 2 - Run chaincode
+#### Terminal 2 - Run chaincode
 
 ```sh
 
@@ -62,7 +62,7 @@ CORE_PEER_ADDRESS=peer:7051 CORE_CHAINCODE_ID_NAME=mycc:0 ./trustas
 
 ```
 
-##### Terminal 3 - Install, instantiate, invoke, and query chaincode
+#### Terminal 3 - Install, instantiate, invoke, and query chaincode
 
 ```sh
 
@@ -75,23 +75,9 @@ peer chaincode query -n mycc -c '{"Args":["query","a"]}' -C myc
 
 ```
 
-### Extended operations
+## Extended operations
 
-#### Handling external chaincode dependencies
-
-##### Using `govendor`:
-
-```sh
-# if govendor is not installed:
-sudo apt install govendor
-
-govendor init
-govendor add +external                  # Add all external packages, or
-govendor add github.com/external/pkg    # Add specific external package
-
-```
-
-#####  Using `gom`:
+### Handling chaincode dependencies with `gom`:
 
 ```sh
 # if gom is not installed:
@@ -104,9 +90,9 @@ gom build           # and test it
 
 ```
 
-### Common Issues
+## Common Issues
 
-#### Package / library missing
+### Package / library missing
 
 Try removing the problematic dependency from `vendor` directory. If using Gom, comment it out in the Gom
 
