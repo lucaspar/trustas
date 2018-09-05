@@ -1,5 +1,9 @@
-# ignore dependencies
+# dependencies
 vendor/
 
-# ignore binaries
-pacc
+# binary
+trustas
+
+# python
+*.pyc
+__pycache__
