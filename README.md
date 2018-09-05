@@ -1,17 +1,11 @@
-# Paillier Chaincode
-> Proof of Concept of Hyperledger Fabric Chaincode with Homomorphic Encryption using the Paillier Cryptosystem.
+# TrustAS
+> Establishing trust among autonomous systems
+
+## Built with:
 
 - [Hyperledger Fabric](https://github.com/hyperledger/fabric)
-- [Paillier implementation used (Go)](https://github.com/didiercrunch/paillier)
 
-### Operations allowed:
-
-- Ciphertexts addition
-- Ciphertext-scalar multiplication
-
-### Versions
-
-Tested with:
+### Software versions
 
 Software        | Version
 --------------- | -----------
