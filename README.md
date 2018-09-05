@@ -33,7 +33,7 @@ cd trustas
 govendor fetch +outside
 ```
 
-### Execution
+### Getting Started
 
 ##### All 3 terminals:
 

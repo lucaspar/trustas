@@ -1,4 +1,4 @@
-package main
+package experiments
 
 import (
 	// "bytes"
@@ -144,7 +144,7 @@ func BigintToString(bigInteger *big.Int) string {
 
 }
 
-func pedersenTest() {
+func PedersenTest() {
 
 	messages := []string{
 		"just three words",

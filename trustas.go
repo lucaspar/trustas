@@ -1,6 +1,7 @@
 package main
 
 import (
+	"./experiments"
 	"fmt"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 	"github.com/hyperledger/fabric/protos/peer"
@@ -88,18 +89,23 @@ func get(stub shim.ChaincodeStubInterface, args []string) (string, error) {
 	return string(value), nil
 }
 
+// Starts Fabric chaincode
 func ChaincodeStart() {
 	if err := shim.Start(new(SimpleAsset)); err != nil {
 		fmt.Printf("Error starting SimpleAsset chaincode: %s", err)
 	}
 }
 
-// Main function starts up the chaincode in the container during instantiate
+// experiments with dependencies
+func runExperiments() {
+	experiments.PaillierTest(13, 19, 2)
+	experiments.PedersenTest()
+}
+
+// run experiments and start chaincode
 func main() {
 
-	PaillierTest(13, 19, 2)
-	pedersenTest()
-
+	runExperiments()
 	// ChaincodeStart()
 
 }
