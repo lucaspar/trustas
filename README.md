@@ -34,8 +34,8 @@ cd fabric-samples
 3. Clone this repo and fetch all dependencies
 ```sh
 cd ~/go/src     # or $GOPATH/src
-git clone https://github.com/lucaspar/pacc
-cd pacc
+git clone https://github.com/lucaspar/trustas
+cd trustas
 govendor fetch +outside
 ```
 
@@ -62,9 +62,9 @@ docker-compose -f docker-compose-simple.yaml up
 ```sh
 
 docker exec -it chaincode bash
-cd pacc
+cd trustas
 go build
-CORE_PEER_ADDRESS=peer:7051 CORE_CHAINCODE_ID_NAME=mycc:0 ./pacc
+CORE_PEER_ADDRESS=peer:7051 CORE_CHAINCODE_ID_NAME=mycc:0 ./trustas
 
 ```
 
@@ -74,7 +74,7 @@ CORE_PEER_ADDRESS=peer:7051 CORE_CHAINCODE_ID_NAME=mycc:0 ./pacc
 
 docker exec -it cli bash
 cd /opt/gopath/src
-peer chaincode install -p chaincodedev/chaincode/pacc -n mycc -v 0
+peer chaincode install -p chaincodedev/chaincode/trustas -n mycc -v 0
 peer chaincode instantiate -n mycc -v 0 -c '{"Args":["a","10"]}' -C myc
 peer chaincode invoke -n mycc -c '{"Args":["set", "a", "20"]}' -C myc
 peer chaincode query -n mycc -c '{"Args":["query","a"]}' -C myc
