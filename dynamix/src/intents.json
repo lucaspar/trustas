@@ -1,0 +1,46 @@
+{
+    "8.8.0.0/16": {
+        "routing": {
+            "aspath": "ASN1234-ASN5678-ASN9999"
+        },
+        "sla": {
+            "bandwidth": "10000",
+            "latency": "15",
+            "jitter":" 10",
+            "loss": "0.3",
+            "repair": "180",
+            "availability": "90.9",
+            "guarantee": "99.99"
+        },
+        "pricing": {
+            "egress": "0",
+            "ingress": "1",
+            "billing": "flat"
+        },
+        "time": {
+            "unit": "1"
+        }
+    },
+    "4.4.0.0/16": {
+        "routing": {
+            "aspath": "ASN5678-ASN1234"
+        },
+        "sla": {
+            "bandwidth": "1000",
+            "latency": "11",
+            "jitter":" 10",
+            "loss": "0.02",
+            "repair": "180",
+            "availability": "90.9",
+            "guarantee": "99.99"
+        },
+        "pricing": {
+            "egress": "0",
+            "ingress": "0.8",
+            "billing": "95th-percentile"
+        },
+        "time": {
+            "unit": "1"
+        }
+    }
+}

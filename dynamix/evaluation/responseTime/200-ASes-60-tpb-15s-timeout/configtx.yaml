@@ -1,0 +1,2036 @@
+Profiles:
+  SingleOrgOrdererGenesis:
+    Orderer:
+      <<: *OrdererDefaults
+      Organizations:
+        - *OrdererOrg
+    Consortiums:
+      SampleConsortium:
+        Organizations:
+          - *Org1
+          - *Org2
+          - *Org3
+          - *Org4
+          - *Org5
+          - *Org6
+          - *Org7
+          - *Org8
+          - *Org9
+          - *Org10
+          - *Org11
+          - *Org12
+          - *Org13
+          - *Org14
+          - *Org15
+          - *Org16
+          - *Org17
+          - *Org18
+          - *Org19
+          - *Org20
+          - *Org21
+          - *Org22
+          - *Org23
+          - *Org24
+          - *Org25
+          - *Org26
+          - *Org27
+          - *Org28
+          - *Org29
+          - *Org30
+          - *Org31
+          - *Org32
+          - *Org33
+          - *Org34
+          - *Org35
+          - *Org36
+          - *Org37
+          - *Org38
+          - *Org39
+          - *Org40
+          - *Org41
+          - *Org42
+          - *Org43
+          - *Org44
+          - *Org45
+          - *Org46
+          - *Org47
+          - *Org48
+          - *Org49
+          - *Org50
+          - *Org51
+          - *Org52
+          - *Org53
+          - *Org54
+          - *Org55
+          - *Org56
+          - *Org57
+          - *Org58
+          - *Org59
+          - *Org60
+          - *Org61
+          - *Org62
+          - *Org63
+          - *Org64
+          - *Org65
+          - *Org66
+          - *Org67
+          - *Org68
+          - *Org69
+          - *Org70
+          - *Org71
+          - *Org72
+          - *Org73
+          - *Org74
+          - *Org75
+          - *Org76
+          - *Org77
+          - *Org78
+          - *Org79
+          - *Org80
+          - *Org81
+          - *Org82
+          - *Org83
+          - *Org84
+          - *Org85
+          - *Org86
+          - *Org87
+          - *Org88
+          - *Org89
+          - *Org90
+          - *Org91
+          - *Org92
+          - *Org93
+          - *Org94
+          - *Org95
+          - *Org96
+          - *Org97
+          - *Org98
+          - *Org99
+          - *Org100
+          - *Org101
+          - *Org102
+          - *Org103
+          - *Org104
+          - *Org105
+          - *Org106
+          - *Org107
+          - *Org108
+          - *Org109
+          - *Org110
+          - *Org111
+          - *Org112
+          - *Org113
+          - *Org114
+          - *Org115
+          - *Org116
+          - *Org117
+          - *Org118
+          - *Org119
+          - *Org120
+          - *Org121
+          - *Org122
+          - *Org123
+          - *Org124
+          - *Org125
+          - *Org126
+          - *Org127
+          - *Org128
+          - *Org129
+          - *Org130
+          - *Org131
+          - *Org132
+          - *Org133
+          - *Org134
+          - *Org135
+          - *Org136
+          - *Org137
+          - *Org138
+          - *Org139
+          - *Org140
+          - *Org141
+          - *Org142
+          - *Org143
+          - *Org144
+          - *Org145
+          - *Org146
+          - *Org147
+          - *Org148
+          - *Org149
+          - *Org150
+          - *Org151
+          - *Org152
+          - *Org153
+          - *Org154
+          - *Org155
+          - *Org156
+          - *Org157
+          - *Org158
+          - *Org159
+          - *Org160
+          - *Org161
+          - *Org162
+          - *Org163
+          - *Org164
+          - *Org165
+          - *Org166
+          - *Org167
+          - *Org168
+          - *Org169
+          - *Org170
+          - *Org171
+          - *Org172
+          - *Org173
+          - *Org174
+          - *Org175
+          - *Org176
+          - *Org177
+          - *Org178
+          - *Org179
+          - *Org180
+          - *Org181
+          - *Org182
+          - *Org183
+          - *Org184
+          - *Org185
+          - *Org186
+          - *Org187
+          - *Org188
+          - *Org189
+          - *Org190
+          - *Org191
+          - *Org192
+          - *Org193
+          - *Org194
+          - *Org195
+          - *Org196
+          - *Org197
+          - *Org198
+          - *Org199
+          - *Org200
+  MultipleOrgChannel:
+    Consortium: SampleConsortium
+    Application:
+      <<: *ApplicationDefaults
+      Organizations:
+          - *Org1
+          - *Org2
+          - *Org3
+          - *Org4
+          - *Org5
+          - *Org6
+          - *Org7
+          - *Org8
+          - *Org9
+          - *Org10
+          - *Org11
+          - *Org12
+          - *Org13
+          - *Org14
+          - *Org15
+          - *Org16
+          - *Org17
+          - *Org18
+          - *Org19
+          - *Org20
+          - *Org21
+          - *Org22
+          - *Org23
+          - *Org24
+          - *Org25
+          - *Org26
+          - *Org27
+          - *Org28
+          - *Org29
+          - *Org30
+          - *Org31
+          - *Org32
+          - *Org33
+          - *Org34
+          - *Org35
+          - *Org36
+          - *Org37
+          - *Org38
+          - *Org39
+          - *Org40
+          - *Org41
+          - *Org42
+          - *Org43
+          - *Org44
+          - *Org45
+          - *Org46
+          - *Org47
+          - *Org48
+          - *Org49
+          - *Org50
+          - *Org51
+          - *Org52
+          - *Org53
+          - *Org54
+          - *Org55
+          - *Org56
+          - *Org57
+          - *Org58
+          - *Org59
+          - *Org60
+          - *Org61
+          - *Org62
+          - *Org63
+          - *Org64
+          - *Org65
+          - *Org66
+          - *Org67
+          - *Org68
+          - *Org69
+          - *Org70
+          - *Org71
+          - *Org72
+          - *Org73
+          - *Org74
+          - *Org75
+          - *Org76
+          - *Org77
+          - *Org78
+          - *Org79
+          - *Org80
+          - *Org81
+          - *Org82
+          - *Org83
+          - *Org84
+          - *Org85
+          - *Org86
+          - *Org87
+          - *Org88
+          - *Org89
+          - *Org90
+          - *Org91
+          - *Org92
+          - *Org93
+          - *Org94
+          - *Org95
+          - *Org96
+          - *Org97
+          - *Org98
+          - *Org99
+          - *Org100
+          - *Org101
+          - *Org102
+          - *Org103
+          - *Org104
+          - *Org105
+          - *Org106
+          - *Org107
+          - *Org108
+          - *Org109
+          - *Org110
+          - *Org111
+          - *Org112
+          - *Org113
+          - *Org114
+          - *Org115
+          - *Org116
+          - *Org117
+          - *Org118
+          - *Org119
+          - *Org120
+          - *Org121
+          - *Org122
+          - *Org123
+          - *Org124
+          - *Org125
+          - *Org126
+          - *Org127
+          - *Org128
+          - *Org129
+          - *Org130
+          - *Org131
+          - *Org132
+          - *Org133
+          - *Org134
+          - *Org135
+          - *Org136
+          - *Org137
+          - *Org138
+          - *Org139
+          - *Org140
+          - *Org141
+          - *Org142
+          - *Org143
+          - *Org144
+          - *Org145
+          - *Org146
+          - *Org147
+          - *Org148
+          - *Org149
+          - *Org150
+          - *Org151
+          - *Org152
+          - *Org153
+          - *Org154
+          - *Org155
+          - *Org156
+          - *Org157
+          - *Org158
+          - *Org159
+          - *Org160
+          - *Org161
+          - *Org162
+          - *Org163
+          - *Org164
+          - *Org165
+          - *Org166
+          - *Org167
+          - *Org168
+          - *Org169
+          - *Org170
+          - *Org171
+          - *Org172
+          - *Org173
+          - *Org174
+          - *Org175
+          - *Org176
+          - *Org177
+          - *Org178
+          - *Org179
+          - *Org180
+          - *Org181
+          - *Org182
+          - *Org183
+          - *Org184
+          - *Org185
+          - *Org186
+          - *Org187
+          - *Org188
+          - *Org189
+          - *Org190
+          - *Org191
+          - *Org192
+          - *Org193
+          - *Org194
+          - *Org195
+          - *Org196
+          - *Org197
+          - *Org198
+          - *Org199
+          - *Org200
+Organizations:
+
+  - &OrdererOrg
+    Name: OrdererOrg
+    ID: OrdererMSP
+    MSPDir: crypto-config/ordererOrganizations/example.com/msp
+
+  - &Org1
+    Name: Org1MSP
+    ID: Org1MSP
+    MSPDir: crypto-config/peerOrganizations/org1.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org1.example.com
+        Port: 7051
+
+  - &Org2
+    Name: Org2MSP
+    ID: Org2MSP
+    MSPDir: crypto-config/peerOrganizations/org2.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org2.example.com
+        Port: 7051
+
+  - &Org3
+    Name: Org3MSP
+    ID: Org3MSP
+    MSPDir: crypto-config/peerOrganizations/org3.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org3.example.com
+        Port: 7051
+
+  - &Org4
+    Name: Org4MSP
+    ID: Org4MSP
+    MSPDir: crypto-config/peerOrganizations/org4.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org4.example.com
+        Port: 7051
+
+  - &Org5
+    Name: Org5MSP
+    ID: Org5MSP
+    MSPDir: crypto-config/peerOrganizations/org5.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org5.example.com
+        Port: 7051
+
+  - &Org6
+    Name: Org6MSP
+    ID: Org6MSP
+    MSPDir: crypto-config/peerOrganizations/org6.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org6.example.com
+        Port: 7051
+
+  - &Org7
+    Name: Org7MSP
+    ID: Org7MSP
+    MSPDir: crypto-config/peerOrganizations/org7.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org7.example.com
+        Port: 7051
+
+  - &Org8
+    Name: Org8MSP
+    ID: Org8MSP
+    MSPDir: crypto-config/peerOrganizations/org8.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org8.example.com
+        Port: 7051
+
+  - &Org9
+    Name: Org9MSP
+    ID: Org9MSP
+    MSPDir: crypto-config/peerOrganizations/org9.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org9.example.com
+        Port: 7051
+
+  - &Org10
+    Name: Org10MSP
+    ID: Org10MSP
+    MSPDir: crypto-config/peerOrganizations/org10.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org10.example.com
+        Port: 7051
+
+  - &Org11
+    Name: Org11MSP
+    ID: Org11MSP
+    MSPDir: crypto-config/peerOrganizations/org11.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org11.example.com
+        Port: 7051
+
+  - &Org12
+    Name: Org12MSP
+    ID: Org12MSP
+    MSPDir: crypto-config/peerOrganizations/org12.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org12.example.com
+        Port: 7051
+
+  - &Org13
+    Name: Org13MSP
+    ID: Org13MSP
+    MSPDir: crypto-config/peerOrganizations/org13.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org13.example.com
+        Port: 7051
+
+  - &Org14
+    Name: Org14MSP
+    ID: Org14MSP
+    MSPDir: crypto-config/peerOrganizations/org14.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org14.example.com
+        Port: 7051
+
+  - &Org15
+    Name: Org15MSP
+    ID: Org15MSP
+    MSPDir: crypto-config/peerOrganizations/org15.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org15.example.com
+        Port: 7051
+
+  - &Org16
+    Name: Org16MSP
+    ID: Org16MSP
+    MSPDir: crypto-config/peerOrganizations/org16.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org16.example.com
+        Port: 7051
+
+  - &Org17
+    Name: Org17MSP
+    ID: Org17MSP
+    MSPDir: crypto-config/peerOrganizations/org17.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org17.example.com
+        Port: 7051
+
+  - &Org18
+    Name: Org18MSP
+    ID: Org18MSP
+    MSPDir: crypto-config/peerOrganizations/org18.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org18.example.com
+        Port: 7051
+
+  - &Org19
+    Name: Org19MSP
+    ID: Org19MSP
+    MSPDir: crypto-config/peerOrganizations/org19.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org19.example.com
+        Port: 7051
+
+  - &Org20
+    Name: Org20MSP
+    ID: Org20MSP
+    MSPDir: crypto-config/peerOrganizations/org20.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org20.example.com
+        Port: 7051
+
+  - &Org21
+    Name: Org21MSP
+    ID: Org21MSP
+    MSPDir: crypto-config/peerOrganizations/org21.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org21.example.com
+        Port: 7051
+
+  - &Org22
+    Name: Org22MSP
+    ID: Org22MSP
+    MSPDir: crypto-config/peerOrganizations/org22.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org22.example.com
+        Port: 7051
+
+  - &Org23
+    Name: Org23MSP
+    ID: Org23MSP
+    MSPDir: crypto-config/peerOrganizations/org23.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org23.example.com
+        Port: 7051
+
+  - &Org24
+    Name: Org24MSP
+    ID: Org24MSP
+    MSPDir: crypto-config/peerOrganizations/org24.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org24.example.com
+        Port: 7051
+
+  - &Org25
+    Name: Org25MSP
+    ID: Org25MSP
+    MSPDir: crypto-config/peerOrganizations/org25.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org25.example.com
+        Port: 7051
+
+  - &Org26
+    Name: Org26MSP
+    ID: Org26MSP
+    MSPDir: crypto-config/peerOrganizations/org26.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org26.example.com
+        Port: 7051
+
+  - &Org27
+    Name: Org27MSP
+    ID: Org27MSP
+    MSPDir: crypto-config/peerOrganizations/org27.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org27.example.com
+        Port: 7051
+
+  - &Org28
+    Name: Org28MSP
+    ID: Org28MSP
+    MSPDir: crypto-config/peerOrganizations/org28.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org28.example.com
+        Port: 7051
+
+  - &Org29
+    Name: Org29MSP
+    ID: Org29MSP
+    MSPDir: crypto-config/peerOrganizations/org29.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org29.example.com
+        Port: 7051
+
+  - &Org30
+    Name: Org30MSP
+    ID: Org30MSP
+    MSPDir: crypto-config/peerOrganizations/org30.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org30.example.com
+        Port: 7051
+
+  - &Org31
+    Name: Org31MSP
+    ID: Org31MSP
+    MSPDir: crypto-config/peerOrganizations/org31.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org31.example.com
+        Port: 7051
+
+  - &Org32
+    Name: Org32MSP
+    ID: Org32MSP
+    MSPDir: crypto-config/peerOrganizations/org32.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org32.example.com
+        Port: 7051
+
+  - &Org33
+    Name: Org33MSP
+    ID: Org33MSP
+    MSPDir: crypto-config/peerOrganizations/org33.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org33.example.com
+        Port: 7051
+
+  - &Org34
+    Name: Org34MSP
+    ID: Org34MSP
+    MSPDir: crypto-config/peerOrganizations/org34.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org34.example.com
+        Port: 7051
+
+  - &Org35
+    Name: Org35MSP
+    ID: Org35MSP
+    MSPDir: crypto-config/peerOrganizations/org35.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org35.example.com
+        Port: 7051
+
+  - &Org36
+    Name: Org36MSP
+    ID: Org36MSP
+    MSPDir: crypto-config/peerOrganizations/org36.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org36.example.com
+        Port: 7051
+
+  - &Org37
+    Name: Org37MSP
+    ID: Org37MSP
+    MSPDir: crypto-config/peerOrganizations/org37.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org37.example.com
+        Port: 7051
+
+  - &Org38
+    Name: Org38MSP
+    ID: Org38MSP
+    MSPDir: crypto-config/peerOrganizations/org38.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org38.example.com
+        Port: 7051
+
+  - &Org39
+    Name: Org39MSP
+    ID: Org39MSP
+    MSPDir: crypto-config/peerOrganizations/org39.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org39.example.com
+        Port: 7051
+
+  - &Org40
+    Name: Org40MSP
+    ID: Org40MSP
+    MSPDir: crypto-config/peerOrganizations/org40.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org40.example.com
+        Port: 7051
+
+  - &Org41
+    Name: Org41MSP
+    ID: Org41MSP
+    MSPDir: crypto-config/peerOrganizations/org41.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org41.example.com
+        Port: 7051
+
+  - &Org42
+    Name: Org42MSP
+    ID: Org42MSP
+    MSPDir: crypto-config/peerOrganizations/org42.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org42.example.com
+        Port: 7051
+
+  - &Org43
+    Name: Org43MSP
+    ID: Org43MSP
+    MSPDir: crypto-config/peerOrganizations/org43.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org43.example.com
+        Port: 7051
+
+  - &Org44
+    Name: Org44MSP
+    ID: Org44MSP
+    MSPDir: crypto-config/peerOrganizations/org44.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org44.example.com
+        Port: 7051
+
+  - &Org45
+    Name: Org45MSP
+    ID: Org45MSP
+    MSPDir: crypto-config/peerOrganizations/org45.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org45.example.com
+        Port: 7051
+
+  - &Org46
+    Name: Org46MSP
+    ID: Org46MSP
+    MSPDir: crypto-config/peerOrganizations/org46.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org46.example.com
+        Port: 7051
+
+  - &Org47
+    Name: Org47MSP
+    ID: Org47MSP
+    MSPDir: crypto-config/peerOrganizations/org47.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org47.example.com
+        Port: 7051
+
+  - &Org48
+    Name: Org48MSP
+    ID: Org48MSP
+    MSPDir: crypto-config/peerOrganizations/org48.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org48.example.com
+        Port: 7051
+
+  - &Org49
+    Name: Org49MSP
+    ID: Org49MSP
+    MSPDir: crypto-config/peerOrganizations/org49.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org49.example.com
+        Port: 7051
+
+  - &Org50
+    Name: Org50MSP
+    ID: Org50MSP
+    MSPDir: crypto-config/peerOrganizations/org50.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org50.example.com
+        Port: 7051
+
+  - &Org51
+    Name: Org51MSP
+    ID: Org51MSP
+    MSPDir: crypto-config/peerOrganizations/org51.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org51.example.com
+        Port: 7051
+
+  - &Org52
+    Name: Org52MSP
+    ID: Org52MSP
+    MSPDir: crypto-config/peerOrganizations/org52.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org52.example.com
+        Port: 7051
+
+  - &Org53
+    Name: Org53MSP
+    ID: Org53MSP
+    MSPDir: crypto-config/peerOrganizations/org53.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org53.example.com
+        Port: 7051
+
+  - &Org54
+    Name: Org54MSP
+    ID: Org54MSP
+    MSPDir: crypto-config/peerOrganizations/org54.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org54.example.com
+        Port: 7051
+
+  - &Org55
+    Name: Org55MSP
+    ID: Org55MSP
+    MSPDir: crypto-config/peerOrganizations/org55.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org55.example.com
+        Port: 7051
+
+  - &Org56
+    Name: Org56MSP
+    ID: Org56MSP
+    MSPDir: crypto-config/peerOrganizations/org56.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org56.example.com
+        Port: 7051
+
+  - &Org57
+    Name: Org57MSP
+    ID: Org57MSP
+    MSPDir: crypto-config/peerOrganizations/org57.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org57.example.com
+        Port: 7051
+
+  - &Org58
+    Name: Org58MSP
+    ID: Org58MSP
+    MSPDir: crypto-config/peerOrganizations/org58.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org58.example.com
+        Port: 7051
+
+  - &Org59
+    Name: Org59MSP
+    ID: Org59MSP
+    MSPDir: crypto-config/peerOrganizations/org59.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org59.example.com
+        Port: 7051
+
+  - &Org60
+    Name: Org60MSP
+    ID: Org60MSP
+    MSPDir: crypto-config/peerOrganizations/org60.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org60.example.com
+        Port: 7051
+
+  - &Org61
+    Name: Org61MSP
+    ID: Org61MSP
+    MSPDir: crypto-config/peerOrganizations/org61.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org61.example.com
+        Port: 7051
+
+  - &Org62
+    Name: Org62MSP
+    ID: Org62MSP
+    MSPDir: crypto-config/peerOrganizations/org62.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org62.example.com
+        Port: 7051
+
+  - &Org63
+    Name: Org63MSP
+    ID: Org63MSP
+    MSPDir: crypto-config/peerOrganizations/org63.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org63.example.com
+        Port: 7051
+
+  - &Org64
+    Name: Org64MSP
+    ID: Org64MSP
+    MSPDir: crypto-config/peerOrganizations/org64.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org64.example.com
+        Port: 7051
+
+  - &Org65
+    Name: Org65MSP
+    ID: Org65MSP
+    MSPDir: crypto-config/peerOrganizations/org65.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org65.example.com
+        Port: 7051
+
+  - &Org66
+    Name: Org66MSP
+    ID: Org66MSP
+    MSPDir: crypto-config/peerOrganizations/org66.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org66.example.com
+        Port: 7051
+
+  - &Org67
+    Name: Org67MSP
+    ID: Org67MSP
+    MSPDir: crypto-config/peerOrganizations/org67.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org67.example.com
+        Port: 7051
+
+  - &Org68
+    Name: Org68MSP
+    ID: Org68MSP
+    MSPDir: crypto-config/peerOrganizations/org68.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org68.example.com
+        Port: 7051
+
+  - &Org69
+    Name: Org69MSP
+    ID: Org69MSP
+    MSPDir: crypto-config/peerOrganizations/org69.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org69.example.com
+        Port: 7051
+
+  - &Org70
+    Name: Org70MSP
+    ID: Org70MSP
+    MSPDir: crypto-config/peerOrganizations/org70.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org70.example.com
+        Port: 7051
+
+  - &Org71
+    Name: Org71MSP
+    ID: Org71MSP
+    MSPDir: crypto-config/peerOrganizations/org71.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org71.example.com
+        Port: 7051
+
+  - &Org72
+    Name: Org72MSP
+    ID: Org72MSP
+    MSPDir: crypto-config/peerOrganizations/org72.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org72.example.com
+        Port: 7051
+
+  - &Org73
+    Name: Org73MSP
+    ID: Org73MSP
+    MSPDir: crypto-config/peerOrganizations/org73.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org73.example.com
+        Port: 7051
+
+  - &Org74
+    Name: Org74MSP
+    ID: Org74MSP
+    MSPDir: crypto-config/peerOrganizations/org74.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org74.example.com
+        Port: 7051
+
+  - &Org75
+    Name: Org75MSP
+    ID: Org75MSP
+    MSPDir: crypto-config/peerOrganizations/org75.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org75.example.com
+        Port: 7051
+
+  - &Org76
+    Name: Org76MSP
+    ID: Org76MSP
+    MSPDir: crypto-config/peerOrganizations/org76.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org76.example.com
+        Port: 7051
+
+  - &Org77
+    Name: Org77MSP
+    ID: Org77MSP
+    MSPDir: crypto-config/peerOrganizations/org77.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org77.example.com
+        Port: 7051
+
+  - &Org78
+    Name: Org78MSP
+    ID: Org78MSP
+    MSPDir: crypto-config/peerOrganizations/org78.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org78.example.com
+        Port: 7051
+
+  - &Org79
+    Name: Org79MSP
+    ID: Org79MSP
+    MSPDir: crypto-config/peerOrganizations/org79.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org79.example.com
+        Port: 7051
+
+  - &Org80
+    Name: Org80MSP
+    ID: Org80MSP
+    MSPDir: crypto-config/peerOrganizations/org80.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org80.example.com
+        Port: 7051
+
+  - &Org81
+    Name: Org81MSP
+    ID: Org81MSP
+    MSPDir: crypto-config/peerOrganizations/org81.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org81.example.com
+        Port: 7051
+
+  - &Org82
+    Name: Org82MSP
+    ID: Org82MSP
+    MSPDir: crypto-config/peerOrganizations/org82.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org82.example.com
+        Port: 7051
+
+  - &Org83
+    Name: Org83MSP
+    ID: Org83MSP
+    MSPDir: crypto-config/peerOrganizations/org83.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org83.example.com
+        Port: 7051
+
+  - &Org84
+    Name: Org84MSP
+    ID: Org84MSP
+    MSPDir: crypto-config/peerOrganizations/org84.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org84.example.com
+        Port: 7051
+
+  - &Org85
+    Name: Org85MSP
+    ID: Org85MSP
+    MSPDir: crypto-config/peerOrganizations/org85.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org85.example.com
+        Port: 7051
+
+  - &Org86
+    Name: Org86MSP
+    ID: Org86MSP
+    MSPDir: crypto-config/peerOrganizations/org86.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org86.example.com
+        Port: 7051
+
+  - &Org87
+    Name: Org87MSP
+    ID: Org87MSP
+    MSPDir: crypto-config/peerOrganizations/org87.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org87.example.com
+        Port: 7051
+
+  - &Org88
+    Name: Org88MSP
+    ID: Org88MSP
+    MSPDir: crypto-config/peerOrganizations/org88.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org88.example.com
+        Port: 7051
+
+  - &Org89
+    Name: Org89MSP
+    ID: Org89MSP
+    MSPDir: crypto-config/peerOrganizations/org89.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org89.example.com
+        Port: 7051
+
+  - &Org90
+    Name: Org90MSP
+    ID: Org90MSP
+    MSPDir: crypto-config/peerOrganizations/org90.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org90.example.com
+        Port: 7051
+
+  - &Org91
+    Name: Org91MSP
+    ID: Org91MSP
+    MSPDir: crypto-config/peerOrganizations/org91.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org91.example.com
+        Port: 7051
+
+  - &Org92
+    Name: Org92MSP
+    ID: Org92MSP
+    MSPDir: crypto-config/peerOrganizations/org92.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org92.example.com
+        Port: 7051
+
+  - &Org93
+    Name: Org93MSP
+    ID: Org93MSP
+    MSPDir: crypto-config/peerOrganizations/org93.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org93.example.com
+        Port: 7051
+
+  - &Org94
+    Name: Org94MSP
+    ID: Org94MSP
+    MSPDir: crypto-config/peerOrganizations/org94.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org94.example.com
+        Port: 7051
+
+  - &Org95
+    Name: Org95MSP
+    ID: Org95MSP
+    MSPDir: crypto-config/peerOrganizations/org95.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org95.example.com
+        Port: 7051
+
+  - &Org96
+    Name: Org96MSP
+    ID: Org96MSP
+    MSPDir: crypto-config/peerOrganizations/org96.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org96.example.com
+        Port: 7051
+
+  - &Org97
+    Name: Org97MSP
+    ID: Org97MSP
+    MSPDir: crypto-config/peerOrganizations/org97.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org97.example.com
+        Port: 7051
+
+  - &Org98
+    Name: Org98MSP
+    ID: Org98MSP
+    MSPDir: crypto-config/peerOrganizations/org98.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org98.example.com
+        Port: 7051
+
+  - &Org99
+    Name: Org99MSP
+    ID: Org99MSP
+    MSPDir: crypto-config/peerOrganizations/org99.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org99.example.com
+        Port: 7051
+
+  - &Org100
+    Name: Org100MSP
+    ID: Org100MSP
+    MSPDir: crypto-config/peerOrganizations/org100.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org100.example.com
+        Port: 7051
+
+  - &Org101
+    Name: Org101MSP
+    ID: Org101MSP
+    MSPDir: crypto-config/peerOrganizations/org101.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org101.example.com
+        Port: 7051
+
+  - &Org102
+    Name: Org102MSP
+    ID: Org102MSP
+    MSPDir: crypto-config/peerOrganizations/org102.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org102.example.com
+        Port: 7051
+
+  - &Org103
+    Name: Org103MSP
+    ID: Org103MSP
+    MSPDir: crypto-config/peerOrganizations/org103.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org103.example.com
+        Port: 7051
+
+  - &Org104
+    Name: Org104MSP
+    ID: Org104MSP
+    MSPDir: crypto-config/peerOrganizations/org104.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org104.example.com
+        Port: 7051
+
+  - &Org105
+    Name: Org105MSP
+    ID: Org105MSP
+    MSPDir: crypto-config/peerOrganizations/org105.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org105.example.com
+        Port: 7051
+
+  - &Org106
+    Name: Org106MSP
+    ID: Org106MSP
+    MSPDir: crypto-config/peerOrganizations/org106.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org106.example.com
+        Port: 7051
+
+  - &Org107
+    Name: Org107MSP
+    ID: Org107MSP
+    MSPDir: crypto-config/peerOrganizations/org107.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org107.example.com
+        Port: 7051
+
+  - &Org108
+    Name: Org108MSP
+    ID: Org108MSP
+    MSPDir: crypto-config/peerOrganizations/org108.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org108.example.com
+        Port: 7051
+
+  - &Org109
+    Name: Org109MSP
+    ID: Org109MSP
+    MSPDir: crypto-config/peerOrganizations/org109.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org109.example.com
+        Port: 7051
+
+  - &Org110
+    Name: Org110MSP
+    ID: Org110MSP
+    MSPDir: crypto-config/peerOrganizations/org110.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org110.example.com
+        Port: 7051
+
+  - &Org111
+    Name: Org111MSP
+    ID: Org111MSP
+    MSPDir: crypto-config/peerOrganizations/org111.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org111.example.com
+        Port: 7051
+
+  - &Org112
+    Name: Org112MSP
+    ID: Org112MSP
+    MSPDir: crypto-config/peerOrganizations/org112.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org112.example.com
+        Port: 7051
+
+  - &Org113
+    Name: Org113MSP
+    ID: Org113MSP
+    MSPDir: crypto-config/peerOrganizations/org113.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org113.example.com
+        Port: 7051
+
+  - &Org114
+    Name: Org114MSP
+    ID: Org114MSP
+    MSPDir: crypto-config/peerOrganizations/org114.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org114.example.com
+        Port: 7051
+
+  - &Org115
+    Name: Org115MSP
+    ID: Org115MSP
+    MSPDir: crypto-config/peerOrganizations/org115.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org115.example.com
+        Port: 7051
+
+  - &Org116
+    Name: Org116MSP
+    ID: Org116MSP
+    MSPDir: crypto-config/peerOrganizations/org116.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org116.example.com
+        Port: 7051
+
+  - &Org117
+    Name: Org117MSP
+    ID: Org117MSP
+    MSPDir: crypto-config/peerOrganizations/org117.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org117.example.com
+        Port: 7051
+
+  - &Org118
+    Name: Org118MSP
+    ID: Org118MSP
+    MSPDir: crypto-config/peerOrganizations/org118.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org118.example.com
+        Port: 7051
+
+  - &Org119
+    Name: Org119MSP
+    ID: Org119MSP
+    MSPDir: crypto-config/peerOrganizations/org119.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org119.example.com
+        Port: 7051
+
+  - &Org120
+    Name: Org120MSP
+    ID: Org120MSP
+    MSPDir: crypto-config/peerOrganizations/org120.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org120.example.com
+        Port: 7051
+
+  - &Org121
+    Name: Org121MSP
+    ID: Org121MSP
+    MSPDir: crypto-config/peerOrganizations/org121.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org121.example.com
+        Port: 7051
+
+  - &Org122
+    Name: Org122MSP
+    ID: Org122MSP
+    MSPDir: crypto-config/peerOrganizations/org122.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org122.example.com
+        Port: 7051
+
+  - &Org123
+    Name: Org123MSP
+    ID: Org123MSP
+    MSPDir: crypto-config/peerOrganizations/org123.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org123.example.com
+        Port: 7051
+
+  - &Org124
+    Name: Org124MSP
+    ID: Org124MSP
+    MSPDir: crypto-config/peerOrganizations/org124.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org124.example.com
+        Port: 7051
+
+  - &Org125
+    Name: Org125MSP
+    ID: Org125MSP
+    MSPDir: crypto-config/peerOrganizations/org125.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org125.example.com
+        Port: 7051
+
+  - &Org126
+    Name: Org126MSP
+    ID: Org126MSP
+    MSPDir: crypto-config/peerOrganizations/org126.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org126.example.com
+        Port: 7051
+
+  - &Org127
+    Name: Org127MSP
+    ID: Org127MSP
+    MSPDir: crypto-config/peerOrganizations/org127.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org127.example.com
+        Port: 7051
+
+  - &Org128
+    Name: Org128MSP
+    ID: Org128MSP
+    MSPDir: crypto-config/peerOrganizations/org128.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org128.example.com
+        Port: 7051
+
+  - &Org129
+    Name: Org129MSP
+    ID: Org129MSP
+    MSPDir: crypto-config/peerOrganizations/org129.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org129.example.com
+        Port: 7051
+
+  - &Org130
+    Name: Org130MSP
+    ID: Org130MSP
+    MSPDir: crypto-config/peerOrganizations/org130.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org130.example.com
+        Port: 7051
+
+  - &Org131
+    Name: Org131MSP
+    ID: Org131MSP
+    MSPDir: crypto-config/peerOrganizations/org131.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org131.example.com
+        Port: 7051
+
+  - &Org132
+    Name: Org132MSP
+    ID: Org132MSP
+    MSPDir: crypto-config/peerOrganizations/org132.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org132.example.com
+        Port: 7051
+
+  - &Org133
+    Name: Org133MSP
+    ID: Org133MSP
+    MSPDir: crypto-config/peerOrganizations/org133.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org133.example.com
+        Port: 7051
+
+  - &Org134
+    Name: Org134MSP
+    ID: Org134MSP
+    MSPDir: crypto-config/peerOrganizations/org134.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org134.example.com
+        Port: 7051
+
+  - &Org135
+    Name: Org135MSP
+    ID: Org135MSP
+    MSPDir: crypto-config/peerOrganizations/org135.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org135.example.com
+        Port: 7051
+
+  - &Org136
+    Name: Org136MSP
+    ID: Org136MSP
+    MSPDir: crypto-config/peerOrganizations/org136.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org136.example.com
+        Port: 7051
+
+  - &Org137
+    Name: Org137MSP
+    ID: Org137MSP
+    MSPDir: crypto-config/peerOrganizations/org137.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org137.example.com
+        Port: 7051
+
+  - &Org138
+    Name: Org138MSP
+    ID: Org138MSP
+    MSPDir: crypto-config/peerOrganizations/org138.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org138.example.com
+        Port: 7051
+
+  - &Org139
+    Name: Org139MSP
+    ID: Org139MSP
+    MSPDir: crypto-config/peerOrganizations/org139.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org139.example.com
+        Port: 7051
+
+  - &Org140
+    Name: Org140MSP
+    ID: Org140MSP
+    MSPDir: crypto-config/peerOrganizations/org140.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org140.example.com
+        Port: 7051
+
+  - &Org141
+    Name: Org141MSP
+    ID: Org141MSP
+    MSPDir: crypto-config/peerOrganizations/org141.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org141.example.com
+        Port: 7051
+
+  - &Org142
+    Name: Org142MSP
+    ID: Org142MSP
+    MSPDir: crypto-config/peerOrganizations/org142.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org142.example.com
+        Port: 7051
+
+  - &Org143
+    Name: Org143MSP
+    ID: Org143MSP
+    MSPDir: crypto-config/peerOrganizations/org143.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org143.example.com
+        Port: 7051
+
+  - &Org144
+    Name: Org144MSP
+    ID: Org144MSP
+    MSPDir: crypto-config/peerOrganizations/org144.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org144.example.com
+        Port: 7051
+
+  - &Org145
+    Name: Org145MSP
+    ID: Org145MSP
+    MSPDir: crypto-config/peerOrganizations/org145.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org145.example.com
+        Port: 7051
+
+  - &Org146
+    Name: Org146MSP
+    ID: Org146MSP
+    MSPDir: crypto-config/peerOrganizations/org146.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org146.example.com
+        Port: 7051
+
+  - &Org147
+    Name: Org147MSP
+    ID: Org147MSP
+    MSPDir: crypto-config/peerOrganizations/org147.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org147.example.com
+        Port: 7051
+
+  - &Org148
+    Name: Org148MSP
+    ID: Org148MSP
+    MSPDir: crypto-config/peerOrganizations/org148.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org148.example.com
+        Port: 7051
+
+  - &Org149
+    Name: Org149MSP
+    ID: Org149MSP
+    MSPDir: crypto-config/peerOrganizations/org149.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org149.example.com
+        Port: 7051
+
+  - &Org150
+    Name: Org150MSP
+    ID: Org150MSP
+    MSPDir: crypto-config/peerOrganizations/org150.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org150.example.com
+        Port: 7051
+
+  - &Org151
+    Name: Org151MSP
+    ID: Org151MSP
+    MSPDir: crypto-config/peerOrganizations/org151.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org151.example.com
+        Port: 7051
+
+  - &Org152
+    Name: Org152MSP
+    ID: Org152MSP
+    MSPDir: crypto-config/peerOrganizations/org152.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org152.example.com
+        Port: 7051
+
+  - &Org153
+    Name: Org153MSP
+    ID: Org153MSP
+    MSPDir: crypto-config/peerOrganizations/org153.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org153.example.com
+        Port: 7051
+
+  - &Org154
+    Name: Org154MSP
+    ID: Org154MSP
+    MSPDir: crypto-config/peerOrganizations/org154.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org154.example.com
+        Port: 7051
+
+  - &Org155
+    Name: Org155MSP
+    ID: Org155MSP
+    MSPDir: crypto-config/peerOrganizations/org155.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org155.example.com
+        Port: 7051
+
+  - &Org156
+    Name: Org156MSP
+    ID: Org156MSP
+    MSPDir: crypto-config/peerOrganizations/org156.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org156.example.com
+        Port: 7051
+
+  - &Org157
+    Name: Org157MSP
+    ID: Org157MSP
+    MSPDir: crypto-config/peerOrganizations/org157.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org157.example.com
+        Port: 7051
+
+  - &Org158
+    Name: Org158MSP
+    ID: Org158MSP
+    MSPDir: crypto-config/peerOrganizations/org158.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org158.example.com
+        Port: 7051
+
+  - &Org159
+    Name: Org159MSP
+    ID: Org159MSP
+    MSPDir: crypto-config/peerOrganizations/org159.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org159.example.com
+        Port: 7051
+
+  - &Org160
+    Name: Org160MSP
+    ID: Org160MSP
+    MSPDir: crypto-config/peerOrganizations/org160.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org160.example.com
+        Port: 7051
+
+  - &Org161
+    Name: Org161MSP
+    ID: Org161MSP
+    MSPDir: crypto-config/peerOrganizations/org161.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org161.example.com
+        Port: 7051
+
+  - &Org162
+    Name: Org162MSP
+    ID: Org162MSP
+    MSPDir: crypto-config/peerOrganizations/org162.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org162.example.com
+        Port: 7051
+
+  - &Org163
+    Name: Org163MSP
+    ID: Org163MSP
+    MSPDir: crypto-config/peerOrganizations/org163.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org163.example.com
+        Port: 7051
+
+  - &Org164
+    Name: Org164MSP
+    ID: Org164MSP
+    MSPDir: crypto-config/peerOrganizations/org164.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org164.example.com
+        Port: 7051
+
+  - &Org165
+    Name: Org165MSP
+    ID: Org165MSP
+    MSPDir: crypto-config/peerOrganizations/org165.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org165.example.com
+        Port: 7051
+
+  - &Org166
+    Name: Org166MSP
+    ID: Org166MSP
+    MSPDir: crypto-config/peerOrganizations/org166.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org166.example.com
+        Port: 7051
+
+  - &Org167
+    Name: Org167MSP
+    ID: Org167MSP
+    MSPDir: crypto-config/peerOrganizations/org167.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org167.example.com
+        Port: 7051
+
+  - &Org168
+    Name: Org168MSP
+    ID: Org168MSP
+    MSPDir: crypto-config/peerOrganizations/org168.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org168.example.com
+        Port: 7051
+
+  - &Org169
+    Name: Org169MSP
+    ID: Org169MSP
+    MSPDir: crypto-config/peerOrganizations/org169.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org169.example.com
+        Port: 7051
+
+  - &Org170
+    Name: Org170MSP
+    ID: Org170MSP
+    MSPDir: crypto-config/peerOrganizations/org170.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org170.example.com
+        Port: 7051
+
+  - &Org171
+    Name: Org171MSP
+    ID: Org171MSP
+    MSPDir: crypto-config/peerOrganizations/org171.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org171.example.com
+        Port: 7051
+
+  - &Org172
+    Name: Org172MSP
+    ID: Org172MSP
+    MSPDir: crypto-config/peerOrganizations/org172.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org172.example.com
+        Port: 7051
+
+  - &Org173
+    Name: Org173MSP
+    ID: Org173MSP
+    MSPDir: crypto-config/peerOrganizations/org173.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org173.example.com
+        Port: 7051
+
+  - &Org174
+    Name: Org174MSP
+    ID: Org174MSP
+    MSPDir: crypto-config/peerOrganizations/org174.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org174.example.com
+        Port: 7051
+
+  - &Org175
+    Name: Org175MSP
+    ID: Org175MSP
+    MSPDir: crypto-config/peerOrganizations/org175.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org175.example.com
+        Port: 7051
+
+  - &Org176
+    Name: Org176MSP
+    ID: Org176MSP
+    MSPDir: crypto-config/peerOrganizations/org176.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org176.example.com
+        Port: 7051
+
+  - &Org177
+    Name: Org177MSP
+    ID: Org177MSP
+    MSPDir: crypto-config/peerOrganizations/org177.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org177.example.com
+        Port: 7051
+
+  - &Org178
+    Name: Org178MSP
+    ID: Org178MSP
+    MSPDir: crypto-config/peerOrganizations/org178.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org178.example.com
+        Port: 7051
+
+  - &Org179
+    Name: Org179MSP
+    ID: Org179MSP
+    MSPDir: crypto-config/peerOrganizations/org179.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org179.example.com
+        Port: 7051
+
+  - &Org180
+    Name: Org180MSP
+    ID: Org180MSP
+    MSPDir: crypto-config/peerOrganizations/org180.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org180.example.com
+        Port: 7051
+
+  - &Org181
+    Name: Org181MSP
+    ID: Org181MSP
+    MSPDir: crypto-config/peerOrganizations/org181.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org181.example.com
+        Port: 7051
+
+  - &Org182
+    Name: Org182MSP
+    ID: Org182MSP
+    MSPDir: crypto-config/peerOrganizations/org182.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org182.example.com
+        Port: 7051
+
+  - &Org183
+    Name: Org183MSP
+    ID: Org183MSP
+    MSPDir: crypto-config/peerOrganizations/org183.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org183.example.com
+        Port: 7051
+
+  - &Org184
+    Name: Org184MSP
+    ID: Org184MSP
+    MSPDir: crypto-config/peerOrganizations/org184.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org184.example.com
+        Port: 7051
+
+  - &Org185
+    Name: Org185MSP
+    ID: Org185MSP
+    MSPDir: crypto-config/peerOrganizations/org185.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org185.example.com
+        Port: 7051
+
+  - &Org186
+    Name: Org186MSP
+    ID: Org186MSP
+    MSPDir: crypto-config/peerOrganizations/org186.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org186.example.com
+        Port: 7051
+
+  - &Org187
+    Name: Org187MSP
+    ID: Org187MSP
+    MSPDir: crypto-config/peerOrganizations/org187.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org187.example.com
+        Port: 7051
+
+  - &Org188
+    Name: Org188MSP
+    ID: Org188MSP
+    MSPDir: crypto-config/peerOrganizations/org188.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org188.example.com
+        Port: 7051
+
+  - &Org189
+    Name: Org189MSP
+    ID: Org189MSP
+    MSPDir: crypto-config/peerOrganizations/org189.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org189.example.com
+        Port: 7051
+
+  - &Org190
+    Name: Org190MSP
+    ID: Org190MSP
+    MSPDir: crypto-config/peerOrganizations/org190.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org190.example.com
+        Port: 7051
+
+  - &Org191
+    Name: Org191MSP
+    ID: Org191MSP
+    MSPDir: crypto-config/peerOrganizations/org191.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org191.example.com
+        Port: 7051
+
+  - &Org192
+    Name: Org192MSP
+    ID: Org192MSP
+    MSPDir: crypto-config/peerOrganizations/org192.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org192.example.com
+        Port: 7051
+
+  - &Org193
+    Name: Org193MSP
+    ID: Org193MSP
+    MSPDir: crypto-config/peerOrganizations/org193.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org193.example.com
+        Port: 7051
+
+  - &Org194
+    Name: Org194MSP
+    ID: Org194MSP
+    MSPDir: crypto-config/peerOrganizations/org194.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org194.example.com
+        Port: 7051
+
+  - &Org195
+    Name: Org195MSP
+    ID: Org195MSP
+    MSPDir: crypto-config/peerOrganizations/org195.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org195.example.com
+        Port: 7051
+
+  - &Org196
+    Name: Org196MSP
+    ID: Org196MSP
+    MSPDir: crypto-config/peerOrganizations/org196.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org196.example.com
+        Port: 7051
+
+  - &Org197
+    Name: Org197MSP
+    ID: Org197MSP
+    MSPDir: crypto-config/peerOrganizations/org197.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org197.example.com
+        Port: 7051
+
+  - &Org198
+    Name: Org198MSP
+    ID: Org198MSP
+    MSPDir: crypto-config/peerOrganizations/org198.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org198.example.com
+        Port: 7051
+
+  - &Org199
+    Name: Org199MSP
+    ID: Org199MSP
+    MSPDir: crypto-config/peerOrganizations/org199.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org199.example.com
+        Port: 7051
+
+  - &Org200
+    Name: Org200MSP
+    ID: Org200MSP
+    MSPDir: crypto-config/peerOrganizations/org200.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org200.example.com
+        Port: 7051
+
+Orderer: &OrdererDefaults
+  OrdererType: solo
+  Addresses:
+    - orderer.example.com:7050
+  BatchTimeout: 15s
+  BatchSize:
+    MaxMessageCount: 60
+    AbsoluteMaxBytes: 99 MB
+    PreferredMaxBytes: 512 KB
+  Kafka:
+    Brokers:
+      - 127.0.0.1:9092
+  Organizations:
+Application: &ApplicationDefaults
+  Organizations:

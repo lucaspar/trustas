@@ -1,0 +1,1 @@
+$DYNAMIX_DIR

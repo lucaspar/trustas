@@ -1,0 +1,15 @@
+# node files
+node_modules/
+package-lock.json
+
+# log files
+*.log
+
+# cryptographic keys
+js/hfc-key-store/
+
+# python byte code
+*.pyc
+
+# others
+.vscode/

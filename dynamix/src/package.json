@@ -1,0 +1,21 @@
+{
+    "name": "dynamix",
+    "version": "1.0.0",
+    "description": "Hyperledger Fabric Dynam-IX Application",
+    "main": "dynamix.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "dependencies": {
+        "fabric-ca-client": "^1.0.5",
+        "fabric-client": "^1.0.5",
+        "grpc": "^1.6.0"
+    },
+    "author": "Pedro Marcos",
+    "license": "Apache-2.0",
+    "keywords": [
+        "Hyperledger",
+        "Fabric",
+        "Dynam-IX"
+    ]
+}
