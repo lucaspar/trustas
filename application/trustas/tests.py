@@ -70,8 +70,10 @@ class TestTrustAS(unittest.TestCase):
             "The latency measured should be greater than the SLA's even after encrypted."
         )
 
-        print("PLAINTEXT:\tMEASURED: {},\t\tSLA: {}".format(measurements.latency, sla.latency))
-        print("CIPHERTEXT:\tMEASURED: {},\tSLA: {}".format(measured_data['latency'], sla_data['latency']))
+        print("LATENCY")
+        print("Plaintext:\tMeasured: {},\t\tSLA: {}".format(measurements.latency, sla.latency))
+        print("Ciphertext:\tMeasured: {},\t\tSLA: {}".format(measured_data['latency'], sla_data['latency']))
+        print("\n")
 
     def testASHistoryRetrieval(self):
 
@@ -89,4 +91,4 @@ class TestTrustAS(unittest.TestCase):
 
         # retrieve AS history
         history = api.retrieveASHistory(asn)
-        print(history)
+        # print(history)

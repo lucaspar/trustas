@@ -1,8 +1,8 @@
 # Data structure for Service Level Agreements
+# Can describe an SLA agreed (ideal) or a set of measured properties (real)
 
 from pyope import ope
 
-# Describes an SLA agreed (ideal) or a set of measured properties (real)
 class SLA:
 
     # Known properties of the SLA.
@@ -28,22 +28,35 @@ class SLA:
         # set all properties received in constructor
         props = locals()
         for k,v in props.items():
-            self.isValidProp(k,v)
+            self.__isValidProp(k,v)
             setattr(self, k, v)
 
 
     # Checks if a property is valid according to the expected type and range
-    def isValidProp(self, k, v):
+    def __isValidProp(self, k, v):
         if k not in self.PROPS:
             return True
         if type(v) is not self.PROPS[k]['type']:
             raise TypeError("Property {} must be a {}, not a {}.".format(k, self.PROPS[k]['type'], type(v)))
 
-        norm_val = self.normalizeProp(k, v)
+        norm_val = self.__normalizeProp(k, v)
         norm_min = int(self.PROPS[k]['min'] / self.PROPS[k]['precision'])
         norm_max = int(self.PROPS[k]['max'] / self.PROPS[k]['precision'])
         if norm_val < norm_min or norm_val > norm_max:
             raise ValueError("Property {} must be between {} and {}.".format(k, self.PROPS[k]['min'], self.PROPS[k]['max']))
+
+
+    # Normalizes a property before encryption
+    #   Float props are multiplied by their inverted precision.
+    #   This maps the domain [min, max] to [min/precision, max/precision]
+    #   allowing the casting of floats to integers with this precision
+    def __normalizeProp(self, k, v):
+        if type(v) is not float:
+            try:
+                return int(v)
+            except:
+                print("ERROR: Could not cast {} of type {} to integer".format(v, type(v)))
+        return int(v / self.PROPS[k]['precision'])
 
 
     # Print instance for debugging purposes
@@ -52,18 +65,6 @@ class SLA:
             print("\t{}\t{}".format(self.__getattribute__(k), v['desc']))
         print("\n")
 
-
-    # Normalizes a property before encryption
-    #   Float props are multiplied by their inverted precision.
-    #   This maps the domain [min, max] to [min/precision, max/precision]
-    #   allowing the casting of floats to integers with this precision
-    def normalizeProp(self, k, v):
-        if type(v) is not float:
-            try:
-                return int(v)
-            except:
-                print("ERROR: Could not cast {} of type {} to integer".format(v, type(v)))
-        return int(v / self.PROPS[k]['precision'])
 
     # Encrypt data using OPE (pyope)
     def encrypt(self, encryption_key=None):
@@ -77,7 +78,7 @@ class SLA:
         # for every property, normalize and encrypt the data
         for k,v in self.PROPS.items():
 
-            norm_val = self.normalizeProp(k, self.__getattribute__(k))
+            norm_val = self.__normalizeProp(k, self.__getattribute__(k))
             norm_min = int(self.PROPS[k]['min'] / self.PROPS[k]['precision'])
             norm_max = int(self.PROPS[k]['max'] / self.PROPS[k]['precision'])
 
