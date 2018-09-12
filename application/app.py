@@ -1,6 +1,18 @@
 #!/usr/bin/python3
-import opetest
+import unittest
+from trustas import tests
+
+# run all tests with unittest
+def runTests():
+    suite = unittest.TestLoader().loadTestsFromModule(tests)
+    return unittest.TextTestRunner(verbosity=0).run(suite)
 
 if __name__ == "__main__":
+    print("\n\t\t>>> TrustAS <<<\n")
 
-    opetest.testPyope()
+    res = runTests()
+    if len(res.failures) > 0:
+        print("\t[ ABORTING: One or more tests did not pass ]\n")
+        exit(1)
+
+    print("Initializing TrustAS...")
