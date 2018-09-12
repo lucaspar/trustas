@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 import unittest
 from trustas import tests
+from trustas import api
 
 # run all tests with unittest
 def runTests():
@@ -16,3 +17,5 @@ if __name__ == "__main__":
         exit(1)
 
     print("Initializing TrustAS...")
+
+    api.hfcSetup()

@@ -1,4 +1,5 @@
 import uuid
+from hfc.fabric import Client
 
 # encrypt and publish the SLA in the beginning of an agreement with a partner
 def createAgreement(partner, SLA):
@@ -25,3 +26,15 @@ def retrieveASHistory(asn):
     # print("=====================")
     history = None
     return history
+
+# hyperledger fabric client setup (python SDK)
+def hfcSetup():
+
+    cli = Client(net_profile="test/fixtures/network.json")
+    org1_admin = cli.get_user(org_name='org1.example.com', name='Admin')
+
+    print(org1_admin)
+    print(cli.organizations)
+    print(cli.peers)
+    print(cli.orderers)
+    print(cli.CAs)
