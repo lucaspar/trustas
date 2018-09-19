@@ -19,6 +19,8 @@ fi
 make venv
 source venv/bin/activate
 pip install -r requirements-test.txt
+# echo "Need super user access to install the hfc module"
+# sudo -H python setup.py install
 
 # run tests
 make check
