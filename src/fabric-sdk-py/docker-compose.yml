@@ -1,0 +1,8 @@
+version: '3'
+services:
+    trustas:
+        build: .
+        ports:
+            - '7000:7000'
+        volumes:
+            - .:/trustas
