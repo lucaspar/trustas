@@ -1,0 +1,1320 @@
+rm -rf .cache *.egg-info .tox .coverage .coverage.* test/fixtures/ca/fabric-ca-server/fabric-ca-server.db test/fixtures/ca/fabric-ca-server/keystore/0e729224e8b3f31784c8a93c5b8ef6f4c1c91d9e6e577c45c33163609fe40011_sk
+find . -name "*.pyc" -o -name "__pycache__" | xargs rm -rf
+rm -rf ./venv
+bash ./scripts/check_env.sh
+===> Checking Docker and Docker-Compose version
+Client:
+ Version:           18.06.1-ce
+ API version:       1.38
+ Go version:        go1.10.3
+ Git commit:        e68fc7a
+ Built:             Tue Aug 21 17:24:51 2018
+ OS/Arch:           linux/amd64
+ Experimental:      false
+
+Server:
+ Engine:
+  Version:          18.06.1-ce
+  API version:      1.38 (minimum version 1.12)
+  Go version:       go1.10.3
+  Git commit:       e68fc7a
+  Built:            Tue Aug 21 17:23:15 2018
+  OS/Arch:          linux/amd64
+  Experimental:     false
+
+docker-compose version 1.21.2, build a133471
+/usr/local/bin/tox
+====> tox is already installed
+
+=====> Pulling fabric Images
+==> Check IMAGE: hyperledger/fabric-peer:x86_64-1.0.0
+hyperledger/fabric-peer:x86_64-1.0.0 already exist locally
+==> Check IMAGE: hyperledger/fabric-tools:x86_64-1.0.0
+hyperledger/fabric-tools:x86_64-1.0.0 already exist locally
+==> Check IMAGE: hyperledger/fabric-orderer:x86_64-1.0.0
+hyperledger/fabric-orderer:x86_64-1.0.0 already exist locally
+==> Check IMAGE: hyperledger/fabric-ccenv:x86_64-1.0.0
+hyperledger/fabric-ccenv:x86_64-1.0.0 already exist locally
+==> Check IMAGE: hyperledger/fabric-ca:x86_64-1.0.0
+hyperledger/fabric-ca:x86_64-1.0.0 already exist locally
+fabric-bin/bin/configtxgen
+echo "=== Testing started... ==="
+=== Testing started... ===
+make test
+make[1]: Entering directory '/home/lucas/work/pg/trustas/application/fabric-sdk-py'
+>>> Tox test: pylint ...
+# set -o pipefail
+# bin_path=.tox/pylint/bin
+# export PYTHON=in_path/python
+using tox.ini: /home/lucas/work/pg/trustas/application/fabric-sdk-py/tox.ini
+using tox-3.3.0 from /usr/local/lib/python2.7/dist-packages/tox/__init__.pyc
+pylint create: /home/lucas/work/pg/trustas/application/fabric-sdk-py/.tox/pylint
+  /home/lucas/work/pg/trustas/application/fabric-sdk-py/.tox$ /usr/bin/python -m virtualenv --python /usr/bin/python pylint >/home/lucas/work/pg/trustas/application/fabric-sdk-py/.tox/pylint/log/pylint-0.log
+pylint installdeps: -r/home/lucas/work/pg/trustas/application/fabric-sdk-py/requirements.txt, -r/home/lucas/work/pg/trustas/application/fabric-sdk-py/requirements-test.txt
+  /home/lucas/work/pg/trustas/application/fabric-sdk-py$ /home/lucas/work/pg/trustas/application/fabric-sdk-py/.tox/pylint/bin/python -m pip install -r/home/lucas/work/pg/trustas/application/fabric-sdk-py/requirements.txt -r/home/lucas/work/pg/trustas/application/fabric-sdk-py/requirements-test.txt >/home/lucas/work/pg/trustas/application/fabric-sdk-py/.tox/pylint/log/pylint-1.log
+pylint develop-inst: /home/lucas/work/pg/trustas/application/fabric-sdk-py
+  /home/lucas/work/pg/trustas/application/fabric-sdk-py$ /home/lucas/work/pg/trustas/application/fabric-sdk-py/.tox/pylint/bin/python -m pip install -e /home/lucas/work/pg/trustas/application/fabric-sdk-py >/home/lucas/work/pg/trustas/application/fabric-sdk-py/.tox/pylint/log/pylint-2.log
+  /home/lucas/work/pg/trustas/application/fabric-sdk-py$ /home/lucas/work/pg/trustas/application/fabric-sdk-py/.tox/pylint/bin/python -m pip freeze >/home/lucas/work/pg/trustas/application/fabric-sdk-py/.tox/pylint/log/pylint-3.log
+pylint installed: asn1crypto==0.24.0,atomicwrites==1.2.1,attrs==18.2.0,backports.ssl-match-hostname==3.5.0.1,cached-property==1.5.1,certifi==2018.8.24,cffi==1.11.5,chardet==3.0.4,configparser==3.5.0,coverage==4.5.1,cryptography==2.3.1,docker==3.5.0,docker-compose==1.22.0,docker-pycreds==0.3.0,dockerpty==0.4.1,docopt==0.6.2,enum34==1.1.6,flake8==3.5.0,funcsigs==1.0.2,functools32==3.2.3.post2,futures==3.2.0,grpcio==1.15.0,-e git+https://github.com/hyperledger/fabric-sdk-py@19c8a3aae4ce1a38596961fc2e16d3d1e6cdc858#egg=hfc,hkdf==0.0.3,idna==2.7,ipaddress==1.0.22,jsonschema==2.6.0,mccabe==0.6.1,mock==2.0.0,more-itertools==4.3.0,pathlib2==2.3.2,pbr==4.2.0,pluggy==0.7.1,protobuf==3.6.1,py==1.6.0,pycodestyle==2.3.1,pycparser==2.18,pycryptodomex==3.6.6,pyflakes==1.6.0,pysha3==1.0b1,pytest==3.8.0,pytest-cov==2.6.0,PyYAML==3.13,requests==2.19.1,Rx==1.6.1,scandir==1.9.0,six==1.11.0,texttable==0.9.1,urllib3==1.23,websocket-client==0.53.0
+pylint runtests: PYTHONHASHSEED='3119379057'
+pylint runtests: commands[0] | py.test --cov=hfc test -s
+  /home/lucas/work/pg/trustas/application/fabric-sdk-py$ /home/lucas/work/pg/trustas/application/fabric-sdk-py/.tox/pylint/bin/py.test --cov=hfc test -s 
+============================= test session starts ==============================
+platform linux2 -- Python 2.7.15rc1, pytest-3.8.0, py-1.6.0, pluggy-0.7.1
+rootdir: /home/lucas/work/pg/trustas/application/fabric-sdk-py, inifile:
+plugins: cov-2.6.0
+collected 64 items
+
+test/integration/ca_test.py ...
+test/integration/chaincode_instantiate_test.py F
+test/integration/chaincode_invoke_test.py F
+test/integration/e2e_test.py F
+test/integration/query_test.py F
+test/integration/query_transaction_test.py F
+test/integration/user_test.py .
+test/integration/utils_test.py .FF..F
+test/unit/block_decoder_test.py FFFFFFF
+test/unit/ca_test.py .....
+test/unit/client_test.py FFFFFFFFFF
+test/unit/crypto_test.py ........
+test/unit/eventhub_test.py .
+test/unit/keyvaluestore_test.py ....
+test/unit/orderer_test.py ..
+test/unit/peer_test.py ..
+test/unit/user_test.py ..
+test/unit/channel/channel_configuration_test.py ....
+test/unit/channel/channel_test.py .
+test/unit/channel/instantiation_test.py .
+test/unit/channel/invocation_test.py ..
+
+=================================== FAILURES ===================================
+_____________ ChaincodeInstantiateTest.test_instantiate_chaincode ______________
+test/integration/utils.py:33: in setUp
+    self.client = Client('test/fixtures/network.json')
+hfc/fabric/client.py:75: in __init__
+    self.init_with_net_profile(net_profile)
+hfc/fabric/client.py:103: in init_with_net_profile
+    org = create_org(name, orgs[name], self.state_store)
+hfc/fabric/organization.py:76: in create_org
+    org.init_with_bundle(info)
+hfc/fabric/organization.py:50: in init_with_bundle
+    users[name].get('cert'))
+hfc/fabric/user.py:322: in create_user
+    user = User(name, org, state_store)
+hfc/fabric/user.py:56: in __init__
+    self._restore_state()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <hfc.fabric.user.User object at 0x7f96c5eb9ad0>
+
+    def _restore_state(self):
+        """ Restore user state. """
+        try:
+            state = self._state_store.get_value(self._state_store_key)
+            state_dict = pickle.loads(
+                binascii.unhexlify(state.encode("utf-8")))
+            self._name = state_dict['name']
+            self.enrollment_secret = state_dict['enrollment_secret']
+            enrollment = state_dict['enrollment']
+            if enrollment:
+                private_key = serialization.load_pem_private_key(
+                    enrollment['private_key'],
+                    password=None,
+                    backend=default_backend()
+                )
+                cert = enrollment['cert']
+                self.enrollment = Enrollment(private_key, cert)
+            self.affiliation = state_dict['affiliation']
+            self.account = state_dict['account']
+            self.roles = state_dict['roles']
+            self._org = state_dict['org']
+            self.msp_id = state_dict['msp_id']
+        except Exception as e:
+>           raise IOError("Cannot deserialize the user", e)
+E           IOError: [Errno Cannot deserialize the user] unsupported pickle protocol: 3
+
+hfc/fabric/user.py:252: IOError
+_______________ ChaincodeInvokeTest.test_invoke_chaincode_sucess _______________
+test/integration/utils.py:33: in setUp
+    self.client = Client('test/fixtures/network.json')
+hfc/fabric/client.py:75: in __init__
+    self.init_with_net_profile(net_profile)
+hfc/fabric/client.py:103: in init_with_net_profile
+    org = create_org(name, orgs[name], self.state_store)
+hfc/fabric/organization.py:76: in create_org
+    org.init_with_bundle(info)
+hfc/fabric/organization.py:50: in init_with_bundle
+    users[name].get('cert'))
+hfc/fabric/user.py:322: in create_user
+    user = User(name, org, state_store)
+hfc/fabric/user.py:56: in __init__
+    self._restore_state()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <hfc.fabric.user.User object at 0x7f96c5d3c910>
+
+    def _restore_state(self):
+        """ Restore user state. """
+        try:
+            state = self._state_store.get_value(self._state_store_key)
+            state_dict = pickle.loads(
+                binascii.unhexlify(state.encode("utf-8")))
+            self._name = state_dict['name']
+            self.enrollment_secret = state_dict['enrollment_secret']
+            enrollment = state_dict['enrollment']
+            if enrollment:
+                private_key = serialization.load_pem_private_key(
+                    enrollment['private_key'],
+                    password=None,
+                    backend=default_backend()
+                )
+                cert = enrollment['cert']
+                self.enrollment = Enrollment(private_key, cert)
+            self.affiliation = state_dict['affiliation']
+            self.account = state_dict['account']
+            self.roles = state_dict['roles']
+            self._org = state_dict['org']
+            self.msp_id = state_dict['msp_id']
+        except Exception as e:
+>           raise IOError("Cannot deserialize the user", e)
+E           IOError: [Errno Cannot deserialize the user] unsupported pickle protocol: 3
+
+hfc/fabric/user.py:252: IOError
+___________________________ E2eTest.test_in_sequence ___________________________
+
+self = <test.integration.e2e_test.E2eTest testMethod=test_in_sequence>
+
+    def setUp(self):
+>       super(E2eTest, self).setUp()
+
+test/integration/e2e_test.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+test/integration/utils.py:33: in setUp
+    self.client = Client('test/fixtures/network.json')
+hfc/fabric/client.py:75: in __init__
+    self.init_with_net_profile(net_profile)
+hfc/fabric/client.py:103: in init_with_net_profile
+    org = create_org(name, orgs[name], self.state_store)
+hfc/fabric/organization.py:76: in create_org
+    org.init_with_bundle(info)
+hfc/fabric/organization.py:50: in init_with_bundle
+    users[name].get('cert'))
+hfc/fabric/user.py:322: in create_user
+    user = User(name, org, state_store)
+hfc/fabric/user.py:56: in __init__
+    self._restore_state()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <hfc.fabric.user.User object at 0x7f96c5ed1bd0>
+
+    def _restore_state(self):
+        """ Restore user state. """
+        try:
+            state = self._state_store.get_value(self._state_store_key)
+            state_dict = pickle.loads(
+                binascii.unhexlify(state.encode("utf-8")))
+            self._name = state_dict['name']
+            self.enrollment_secret = state_dict['enrollment_secret']
+            enrollment = state_dict['enrollment']
+            if enrollment:
+                private_key = serialization.load_pem_private_key(
+                    enrollment['private_key'],
+                    password=None,
+                    backend=default_backend()
+                )
+                cert = enrollment['cert']
+                self.enrollment = Enrollment(private_key, cert)
+            self.affiliation = state_dict['affiliation']
+            self.account = state_dict['account']
+            self.roles = state_dict['roles']
+            self._org = state_dict['org']
+            self.msp_id = state_dict['msp_id']
+        except Exception as e:
+>           raise IOError("Cannot deserialize the user", e)
+E           IOError: [Errno Cannot deserialize the user] unsupported pickle protocol: 3
+
+hfc/fabric/user.py:252: IOError
+________ ChaincodeInvokeTest.test_query_instantiated_chaincodes_sucess _________
+test/integration/utils.py:33: in setUp
+    self.client = Client('test/fixtures/network.json')
+hfc/fabric/client.py:75: in __init__
+    self.init_with_net_profile(net_profile)
+hfc/fabric/client.py:103: in init_with_net_profile
+    org = create_org(name, orgs[name], self.state_store)
+hfc/fabric/organization.py:76: in create_org
+    org.init_with_bundle(info)
+hfc/fabric/organization.py:50: in init_with_bundle
+    users[name].get('cert'))
+hfc/fabric/user.py:322: in create_user
+    user = User(name, org, state_store)
+hfc/fabric/user.py:56: in __init__
+    self._restore_state()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <hfc.fabric.user.User object at 0x7f96c5e4d090>
+
+    def _restore_state(self):
+        """ Restore user state. """
+        try:
+            state = self._state_store.get_value(self._state_store_key)
+            state_dict = pickle.loads(
+                binascii.unhexlify(state.encode("utf-8")))
+            self._name = state_dict['name']
+            self.enrollment_secret = state_dict['enrollment_secret']
+            enrollment = state_dict['enrollment']
+            if enrollment:
+                private_key = serialization.load_pem_private_key(
+                    enrollment['private_key'],
+                    password=None,
+                    backend=default_backend()
+                )
+                cert = enrollment['cert']
+                self.enrollment = Enrollment(private_key, cert)
+            self.affiliation = state_dict['affiliation']
+            self.account = state_dict['account']
+            self.roles = state_dict['roles']
+            self._org = state_dict['org']
+            self.msp_id = state_dict['msp_id']
+        except Exception as e:
+>           raise IOError("Cannot deserialize the user", e)
+E           IOError: [Errno Cannot deserialize the user] unsupported pickle protocol: 3
+
+hfc/fabric/user.py:252: IOError
+______________ QueryTransaction.test_query_transaction_id_success ______________
+test/integration/utils.py:33: in setUp
+    self.client = Client('test/fixtures/network.json')
+hfc/fabric/client.py:75: in __init__
+    self.init_with_net_profile(net_profile)
+hfc/fabric/client.py:103: in init_with_net_profile
+    org = create_org(name, orgs[name], self.state_store)
+hfc/fabric/organization.py:76: in create_org
+    org.init_with_bundle(info)
+hfc/fabric/organization.py:50: in init_with_bundle
+    users[name].get('cert'))
+hfc/fabric/user.py:322: in create_user
+    user = User(name, org, state_store)
+hfc/fabric/user.py:56: in __init__
+    self._restore_state()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <hfc.fabric.user.User object at 0x7f96c5d388d0>
+
+    def _restore_state(self):
+        """ Restore user state. """
+        try:
+            state = self._state_store.get_value(self._state_store_key)
+            state_dict = pickle.loads(
+                binascii.unhexlify(state.encode("utf-8")))
+            self._name = state_dict['name']
+            self.enrollment_secret = state_dict['enrollment_secret']
+            enrollment = state_dict['enrollment']
+            if enrollment:
+                private_key = serialization.load_pem_private_key(
+                    enrollment['private_key'],
+                    password=None,
+                    backend=default_backend()
+                )
+                cert = enrollment['cert']
+                self.enrollment = Enrollment(private_key, cert)
+            self.affiliation = state_dict['affiliation']
+            self.account = state_dict['account']
+            self.roles = state_dict['roles']
+            self._org = state_dict['org']
+            self.msp_id = state_dict['msp_id']
+        except Exception as e:
+>           raise IOError("Cannot deserialize the user", e)
+E           IOError: [Errno Cannot deserialize the user] unsupported pickle protocol: 3
+
+hfc/fabric/user.py:252: IOError
+_________________________ UtilsTest.test_build_header __________________________
+
+self = <test.integration.utils_test.UtilsTest testMethod=test_build_header>
+
+    def test_build_header(self):
+        timestamp = utils.current_timestamp()
+    
+>       client = Client('test/fixtures/network.json')
+
+test/integration/utils_test.py:114: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+hfc/fabric/client.py:75: in __init__
+    self.init_with_net_profile(net_profile)
+hfc/fabric/client.py:103: in init_with_net_profile
+    org = create_org(name, orgs[name], self.state_store)
+hfc/fabric/organization.py:76: in create_org
+    org.init_with_bundle(info)
+hfc/fabric/organization.py:50: in init_with_bundle
+    users[name].get('cert'))
+hfc/fabric/user.py:322: in create_user
+    user = User(name, org, state_store)
+hfc/fabric/user.py:56: in __init__
+    self._restore_state()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <hfc.fabric.user.User object at 0x7f96c5cd6910>
+
+    def _restore_state(self):
+        """ Restore user state. """
+        try:
+            state = self._state_store.get_value(self._state_store_key)
+            state_dict = pickle.loads(
+                binascii.unhexlify(state.encode("utf-8")))
+            self._name = state_dict['name']
+            self.enrollment_secret = state_dict['enrollment_secret']
+            enrollment = state_dict['enrollment']
+            if enrollment:
+                private_key = serialization.load_pem_private_key(
+                    enrollment['private_key'],
+                    password=None,
+                    backend=default_backend()
+                )
+                cert = enrollment['cert']
+                self.enrollment = Enrollment(private_key, cert)
+            self.affiliation = state_dict['affiliation']
+            self.account = state_dict['account']
+            self.roles = state_dict['roles']
+            self._org = state_dict['org']
+            self.msp_id = state_dict['msp_id']
+        except Exception as e:
+>           raise IOError("Cannot deserialize the user", e)
+E           IOError: [Errno Cannot deserialize the user] unsupported pickle protocol: 3
+
+hfc/fabric/user.py:252: IOError
+__________________ UtilsTest.test_create_serialized_identity ___________________
+
+self = <test.integration.utils_test.UtilsTest testMethod=test_create_serialized_identity>
+
+    def test_create_serialized_identity(self):
+>       client = Client('test/fixtures/network.json')
+
+test/integration/utils_test.py:42: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+hfc/fabric/client.py:75: in __init__
+    self.init_with_net_profile(net_profile)
+hfc/fabric/client.py:103: in init_with_net_profile
+    org = create_org(name, orgs[name], self.state_store)
+hfc/fabric/organization.py:76: in create_org
+    org.init_with_bundle(info)
+hfc/fabric/organization.py:50: in init_with_bundle
+    users[name].get('cert'))
+hfc/fabric/user.py:322: in create_user
+    user = User(name, org, state_store)
+hfc/fabric/user.py:56: in __init__
+    self._restore_state()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <hfc.fabric.user.User object at 0x7f96c5ed1890>
+
+    def _restore_state(self):
+        """ Restore user state. """
+        try:
+            state = self._state_store.get_value(self._state_store_key)
+            state_dict = pickle.loads(
+                binascii.unhexlify(state.encode("utf-8")))
+            self._name = state_dict['name']
+            self.enrollment_secret = state_dict['enrollment_secret']
+            enrollment = state_dict['enrollment']
+            if enrollment:
+                private_key = serialization.load_pem_private_key(
+                    enrollment['private_key'],
+                    password=None,
+                    backend=default_backend()
+                )
+                cert = enrollment['cert']
+                self.enrollment = Enrollment(private_key, cert)
+            self.affiliation = state_dict['affiliation']
+            self.account = state_dict['account']
+            self.roles = state_dict['roles']
+            self._org = state_dict['org']
+            self.msp_id = state_dict['msp_id']
+        except Exception as e:
+>           raise IOError("Cannot deserialize the user", e)
+E           IOError: [Errno Cannot deserialize the user] unsupported pickle protocol: 3
+
+hfc/fabric/user.py:252: IOError
+______________________ UtilsTest.test_string_to_signature ______________________
+
+self = <test.integration.utils_test.UtilsTest testMethod=test_string_to_signature>
+
+    def test_string_to_signature(self):
+        with open(self.channel_tx, 'rb') as f:
+            channel_tx = f.read()
+    
+        channel_config = utils.extract_channel_config(channel_tx)
+    
+>       client = Client('test/fixtures/network.json')
+
+test/integration/utils_test.py:72: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+hfc/fabric/client.py:75: in __init__
+    self.init_with_net_profile(net_profile)
+hfc/fabric/client.py:103: in init_with_net_profile
+    org = create_org(name, orgs[name], self.state_store)
+hfc/fabric/organization.py:76: in create_org
+    org.init_with_bundle(info)
+hfc/fabric/organization.py:50: in init_with_bundle
+    users[name].get('cert'))
+hfc/fabric/user.py:322: in create_user
+    user = User(name, org, state_store)
+hfc/fabric/user.py:56: in __init__
+    self._restore_state()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <hfc.fabric.user.User object at 0x7f96c5dffa10>
+
+    def _restore_state(self):
+        """ Restore user state. """
+        try:
+            state = self._state_store.get_value(self._state_store_key)
+            state_dict = pickle.loads(
+                binascii.unhexlify(state.encode("utf-8")))
+            self._name = state_dict['name']
+            self.enrollment_secret = state_dict['enrollment_secret']
+            enrollment = state_dict['enrollment']
+            if enrollment:
+                private_key = serialization.load_pem_private_key(
+                    enrollment['private_key'],
+                    password=None,
+                    backend=default_backend()
+                )
+                cert = enrollment['cert']
+                self.enrollment = Enrollment(private_key, cert)
+            self.affiliation = state_dict['affiliation']
+            self.account = state_dict['account']
+            self.roles = state_dict['roles']
+            self._org = state_dict['org']
+            self.msp_id = state_dict['msp_id']
+        except Exception as e:
+>           raise IOError("Cannot deserialize the user", e)
+E           IOError: [Errno Cannot deserialize the user] unsupported pickle protocol: 3
+
+hfc/fabric/user.py:252: IOError
+___________________ BlockDecoderTest.test_decode_block_data ____________________
+
+self = <test.unit.block_decoder_test.BlockDecoderTest testMethod=test_decode_block_data>
+
+    def setUp(self):
+        self._data = data
+        self._metadata_block = metadata_block
+>       self.decoder_instance = BlockDecoder.decode(self._data)
+
+test/unit/block_decoder_test.py:51: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+block_bytes = '\n"\x1a \xf2\xda\xba\xe6\xcb\xc5A\xc5\x19#K:\x8a|\xf1{\x88Z\xc8=Z\x18\x80z\xbd\xd2\xceC\x15s\xf5<\x12\xb9I\n\xb6I\n\x...dmins""\n\x07Readers\x12\x17\x12\r\x08\x03\x12\t\n\x07Readers\x1a\x06Admins*\x06Admins\x1a\x08\n\x00\n\x00\n\x00\n\x00'
+
+    @staticmethod
+    def decode(block_bytes):
+        """
+            Constructs a JSON Object containing all decoded values from
+            protobuf encoded `Block` bytes.
+    
+            Args:
+                block_bytes (bytes): Block instance
+    
+            Returns: Dictionary containing decoded Block instance.
+            """
+        block = {}
+        try:
+            proto_block = common_pb2.Block()
+            proto_block.ParseFromString(block_bytes)
+            block['header'] = decode_block_header(proto_block.header)
+            block['data'] = decode_block_data(proto_block.data, True)
+            block['metadata'] = decode_block_metadata(proto_block.metadata)
+        except Exception as e:
+>           raise ValueError("BlockDecoder :: decode failed", e)
+E           ValueError: ('BlockDecoder :: decode failed', AttributeError("type object 'datetime.datetime' has no attribute 'datetime'",))
+
+hfc/fabric/block_decoder.py:74: ValueError
+__________________ BlockDecoderTest.test_decode_block_header ___________________
+
+self = <test.unit.block_decoder_test.BlockDecoderTest testMethod=test_decode_block_header>
+
+    def setUp(self):
+        self._data = data
+        self._metadata_block = metadata_block
+>       self.decoder_instance = BlockDecoder.decode(self._data)
+
+test/unit/block_decoder_test.py:51: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+block_bytes = '\n"\x1a \xf2\xda\xba\xe6\xcb\xc5A\xc5\x19#K:\x8a|\xf1{\x88Z\xc8=Z\x18\x80z\xbd\xd2\xceC\x15s\xf5<\x12\xb9I\n\xb6I\n\x...dmins""\n\x07Readers\x12\x17\x12\r\x08\x03\x12\t\n\x07Readers\x1a\x06Admins*\x06Admins\x1a\x08\n\x00\n\x00\n\x00\n\x00'
+
+    @staticmethod
+    def decode(block_bytes):
+        """
+            Constructs a JSON Object containing all decoded values from
+            protobuf encoded `Block` bytes.
+    
+            Args:
+                block_bytes (bytes): Block instance
+    
+            Returns: Dictionary containing decoded Block instance.
+            """
+        block = {}
+        try:
+            proto_block = common_pb2.Block()
+            proto_block.ParseFromString(block_bytes)
+            block['header'] = decode_block_header(proto_block.header)
+            block['data'] = decode_block_data(proto_block.data, True)
+            block['metadata'] = decode_block_metadata(proto_block.metadata)
+        except Exception as e:
+>           raise ValueError("BlockDecoder :: decode failed", e)
+E           ValueError: ('BlockDecoder :: decode failed', AttributeError("type object 'datetime.datetime' has no attribute 'datetime'",))
+
+hfc/fabric/block_decoder.py:74: ValueError
+_________________ BlockDecoderTest.test_decode_block_metadata __________________
+
+self = <test.unit.block_decoder_test.BlockDecoderTest testMethod=test_decode_block_metadata>
+
+    def setUp(self):
+        self._data = data
+        self._metadata_block = metadata_block
+>       self.decoder_instance = BlockDecoder.decode(self._data)
+
+test/unit/block_decoder_test.py:51: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+block_bytes = '\n"\x1a \xf2\xda\xba\xe6\xcb\xc5A\xc5\x19#K:\x8a|\xf1{\x88Z\xc8=Z\x18\x80z\xbd\xd2\xceC\x15s\xf5<\x12\xb9I\n\xb6I\n\x...dmins""\n\x07Readers\x12\x17\x12\r\x08\x03\x12\t\n\x07Readers\x1a\x06Admins*\x06Admins\x1a\x08\n\x00\n\x00\n\x00\n\x00'
+
+    @staticmethod
+    def decode(block_bytes):
+        """
+            Constructs a JSON Object containing all decoded values from
+            protobuf encoded `Block` bytes.
+    
+            Args:
+                block_bytes (bytes): Block instance
+    
+            Returns: Dictionary containing decoded Block instance.
+            """
+        block = {}
+        try:
+            proto_block = common_pb2.Block()
+            proto_block.ParseFromString(block_bytes)
+            block['header'] = decode_block_header(proto_block.header)
+            block['data'] = decode_block_data(proto_block.data, True)
+            block['metadata'] = decode_block_metadata(proto_block.metadata)
+        except Exception as e:
+>           raise ValueError("BlockDecoder :: decode failed", e)
+E           ValueError: ('BlockDecoder :: decode failed', AttributeError("type object 'datetime.datetime' has no attribute 'datetime'",))
+
+hfc/fabric/block_decoder.py:74: ValueError
+_____________________ BlockDecoderTest.test_decode_failure _____________________
+
+self = <test.unit.block_decoder_test.BlockDecoderTest testMethod=test_decode_failure>
+
+    def setUp(self):
+        self._data = data
+        self._metadata_block = metadata_block
+>       self.decoder_instance = BlockDecoder.decode(self._data)
+
+test/unit/block_decoder_test.py:51: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+block_bytes = '\n"\x1a \xf2\xda\xba\xe6\xcb\xc5A\xc5\x19#K:\x8a|\xf1{\x88Z\xc8=Z\x18\x80z\xbd\xd2\xceC\x15s\xf5<\x12\xb9I\n\xb6I\n\x...dmins""\n\x07Readers\x12\x17\x12\r\x08\x03\x12\t\n\x07Readers\x1a\x06Admins*\x06Admins\x1a\x08\n\x00\n\x00\n\x00\n\x00'
+
+    @staticmethod
+    def decode(block_bytes):
+        """
+            Constructs a JSON Object containing all decoded values from
+            protobuf encoded `Block` bytes.
+    
+            Args:
+                block_bytes (bytes): Block instance
+    
+            Returns: Dictionary containing decoded Block instance.
+            """
+        block = {}
+        try:
+            proto_block = common_pb2.Block()
+            proto_block.ParseFromString(block_bytes)
+            block['header'] = decode_block_header(proto_block.header)
+            block['data'] = decode_block_data(proto_block.data, True)
+            block['metadata'] = decode_block_metadata(proto_block.metadata)
+        except Exception as e:
+>           raise ValueError("BlockDecoder :: decode failed", e)
+E           ValueError: ('BlockDecoder :: decode failed', AttributeError("type object 'datetime.datetime' has no attribute 'datetime'",))
+
+hfc/fabric/block_decoder.py:74: ValueError
+___________________ BlockDecoderTest.test_decode_header_type ___________________
+
+self = <test.unit.block_decoder_test.BlockDecoderTest testMethod=test_decode_header_type>
+
+    def setUp(self):
+        self._data = data
+        self._metadata_block = metadata_block
+>       self.decoder_instance = BlockDecoder.decode(self._data)
+
+test/unit/block_decoder_test.py:51: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+block_bytes = '\n"\x1a \xf2\xda\xba\xe6\xcb\xc5A\xc5\x19#K:\x8a|\xf1{\x88Z\xc8=Z\x18\x80z\xbd\xd2\xceC\x15s\xf5<\x12\xb9I\n\xb6I\n\x...dmins""\n\x07Readers\x12\x17\x12\r\x08\x03\x12\t\n\x07Readers\x1a\x06Admins*\x06Admins\x1a\x08\n\x00\n\x00\n\x00\n\x00'
+
+    @staticmethod
+    def decode(block_bytes):
+        """
+            Constructs a JSON Object containing all decoded values from
+            protobuf encoded `Block` bytes.
+    
+            Args:
+                block_bytes (bytes): Block instance
+    
+            Returns: Dictionary containing decoded Block instance.
+            """
+        block = {}
+        try:
+            proto_block = common_pb2.Block()
+            proto_block.ParseFromString(block_bytes)
+            block['header'] = decode_block_header(proto_block.header)
+            block['data'] = decode_block_data(proto_block.data, True)
+            block['metadata'] = decode_block_metadata(proto_block.metadata)
+        except Exception as e:
+>           raise ValueError("BlockDecoder :: decode failed", e)
+E           ValueError: ('BlockDecoder :: decode failed', AttributeError("type object 'datetime.datetime' has no attribute 'datetime'",))
+
+hfc/fabric/block_decoder.py:74: ValueError
+_________________ BlockDecoderTest.test_decode_read_write_sets _________________
+
+self = <test.unit.block_decoder_test.BlockDecoderTest testMethod=test_decode_read_write_sets>
+
+    def setUp(self):
+        self._data = data
+        self._metadata_block = metadata_block
+>       self.decoder_instance = BlockDecoder.decode(self._data)
+
+test/unit/block_decoder_test.py:51: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+block_bytes = '\n"\x1a \xf2\xda\xba\xe6\xcb\xc5A\xc5\x19#K:\x8a|\xf1{\x88Z\xc8=Z\x18\x80z\xbd\xd2\xceC\x15s\xf5<\x12\xb9I\n\xb6I\n\x...dmins""\n\x07Readers\x12\x17\x12\r\x08\x03\x12\t\n\x07Readers\x1a\x06Admins*\x06Admins\x1a\x08\n\x00\n\x00\n\x00\n\x00'
+
+    @staticmethod
+    def decode(block_bytes):
+        """
+            Constructs a JSON Object containing all decoded values from
+            protobuf encoded `Block` bytes.
+    
+            Args:
+                block_bytes (bytes): Block instance
+    
+            Returns: Dictionary containing decoded Block instance.
+            """
+        block = {}
+        try:
+            proto_block = common_pb2.Block()
+            proto_block.ParseFromString(block_bytes)
+            block['header'] = decode_block_header(proto_block.header)
+            block['data'] = decode_block_data(proto_block.data, True)
+            block['metadata'] = decode_block_metadata(proto_block.metadata)
+        except Exception as e:
+>           raise ValueError("BlockDecoder :: decode failed", e)
+E           ValueError: ('BlockDecoder :: decode failed', AttributeError("type object 'datetime.datetime' has no attribute 'datetime'",))
+
+hfc/fabric/block_decoder.py:74: ValueError
+___________________ BlockDecoderTest.test_decode_transaction ___________________
+
+self = <test.unit.block_decoder_test.BlockDecoderTest testMethod=test_decode_transaction>
+
+    def setUp(self):
+        self._data = data
+        self._metadata_block = metadata_block
+>       self.decoder_instance = BlockDecoder.decode(self._data)
+
+test/unit/block_decoder_test.py:51: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+block_bytes = '\n"\x1a \xf2\xda\xba\xe6\xcb\xc5A\xc5\x19#K:\x8a|\xf1{\x88Z\xc8=Z\x18\x80z\xbd\xd2\xceC\x15s\xf5<\x12\xb9I\n\xb6I\n\x...dmins""\n\x07Readers\x12\x17\x12\r\x08\x03\x12\t\n\x07Readers\x1a\x06Admins*\x06Admins\x1a\x08\n\x00\n\x00\n\x00\n\x00'
+
+    @staticmethod
+    def decode(block_bytes):
+        """
+            Constructs a JSON Object containing all decoded values from
+            protobuf encoded `Block` bytes.
+    
+            Args:
+                block_bytes (bytes): Block instance
+    
+            Returns: Dictionary containing decoded Block instance.
+            """
+        block = {}
+        try:
+            proto_block = common_pb2.Block()
+            proto_block.ParseFromString(block_bytes)
+            block['header'] = decode_block_header(proto_block.header)
+            block['data'] = decode_block_data(proto_block.data, True)
+            block['metadata'] = decode_block_metadata(proto_block.metadata)
+        except Exception as e:
+>           raise ValueError("BlockDecoder :: decode failed", e)
+E           ValueError: ('BlockDecoder :: decode failed', AttributeError("type object 'datetime.datetime' has no attribute 'datetime'",))
+
+hfc/fabric/block_decoder.py:74: ValueError
+_____________ ClientTest.test_create_channel_missing_channel_name ______________
+
+self = <test.unit.client_test.ClientTest testMethod=test_create_channel_missing_channel_name>
+
+    def setUp(self):
+>       self.client = Client('test/fixtures/network.json')
+
+test/unit/client_test.py:22: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+hfc/fabric/client.py:75: in __init__
+    self.init_with_net_profile(net_profile)
+hfc/fabric/client.py:103: in init_with_net_profile
+    org = create_org(name, orgs[name], self.state_store)
+hfc/fabric/organization.py:76: in create_org
+    org.init_with_bundle(info)
+hfc/fabric/organization.py:50: in init_with_bundle
+    users[name].get('cert'))
+hfc/fabric/user.py:322: in create_user
+    user = User(name, org, state_store)
+hfc/fabric/user.py:56: in __init__
+    self._restore_state()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <hfc.fabric.user.User object at 0x7f96c5ca1bd0>
+
+    def _restore_state(self):
+        """ Restore user state. """
+        try:
+            state = self._state_store.get_value(self._state_store_key)
+            state_dict = pickle.loads(
+                binascii.unhexlify(state.encode("utf-8")))
+            self._name = state_dict['name']
+            self.enrollment_secret = state_dict['enrollment_secret']
+            enrollment = state_dict['enrollment']
+            if enrollment:
+                private_key = serialization.load_pem_private_key(
+                    enrollment['private_key'],
+                    password=None,
+                    backend=default_backend()
+                )
+                cert = enrollment['cert']
+                self.enrollment = Enrollment(private_key, cert)
+            self.affiliation = state_dict['affiliation']
+            self.account = state_dict['account']
+            self.roles = state_dict['roles']
+            self._org = state_dict['org']
+            self.msp_id = state_dict['msp_id']
+        except Exception as e:
+>           raise IOError("Cannot deserialize the user", e)
+E           IOError: [Errno Cannot deserialize the user] unsupported pickle protocol: 3
+
+hfc/fabric/user.py:252: IOError
+________________ ClientTest.test_create_channel_missing_orderer ________________
+
+self = <test.unit.client_test.ClientTest testMethod=test_create_channel_missing_orderer>
+
+    def setUp(self):
+>       self.client = Client('test/fixtures/network.json')
+
+test/unit/client_test.py:22: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+hfc/fabric/client.py:75: in __init__
+    self.init_with_net_profile(net_profile)
+hfc/fabric/client.py:103: in init_with_net_profile
+    org = create_org(name, orgs[name], self.state_store)
+hfc/fabric/organization.py:76: in create_org
+    org.init_with_bundle(info)
+hfc/fabric/organization.py:50: in init_with_bundle
+    users[name].get('cert'))
+hfc/fabric/user.py:322: in create_user
+    user = User(name, org, state_store)
+hfc/fabric/user.py:56: in __init__
+    self._restore_state()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <hfc.fabric.user.User object at 0x7f96c5c959d0>
+
+    def _restore_state(self):
+        """ Restore user state. """
+        try:
+            state = self._state_store.get_value(self._state_store_key)
+            state_dict = pickle.loads(
+                binascii.unhexlify(state.encode("utf-8")))
+            self._name = state_dict['name']
+            self.enrollment_secret = state_dict['enrollment_secret']
+            enrollment = state_dict['enrollment']
+            if enrollment:
+                private_key = serialization.load_pem_private_key(
+                    enrollment['private_key'],
+                    password=None,
+                    backend=default_backend()
+                )
+                cert = enrollment['cert']
+                self.enrollment = Enrollment(private_key, cert)
+            self.affiliation = state_dict['affiliation']
+            self.account = state_dict['account']
+            self.roles = state_dict['roles']
+            self._org = state_dict['org']
+            self.msp_id = state_dict['msp_id']
+        except Exception as e:
+>           raise IOError("Cannot deserialize the user", e)
+E           IOError: [Errno Cannot deserialize the user] unsupported pickle protocol: 3
+
+hfc/fabric/user.py:252: IOError
+______________ ClientTest.test_create_channel_missing_signatures _______________
+
+self = <test.unit.client_test.ClientTest testMethod=test_create_channel_missing_signatures>
+
+    def setUp(self):
+>       self.client = Client('test/fixtures/network.json')
+
+test/unit/client_test.py:22: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+hfc/fabric/client.py:75: in __init__
+    self.init_with_net_profile(net_profile)
+hfc/fabric/client.py:103: in init_with_net_profile
+    org = create_org(name, orgs[name], self.state_store)
+hfc/fabric/organization.py:76: in create_org
+    org.init_with_bundle(info)
+hfc/fabric/organization.py:50: in init_with_bundle
+    users[name].get('cert'))
+hfc/fabric/user.py:322: in create_user
+    user = User(name, org, state_store)
+hfc/fabric/user.py:56: in __init__
+    self._restore_state()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <hfc.fabric.user.User object at 0x7f96c5d68e50>
+
+    def _restore_state(self):
+        """ Restore user state. """
+        try:
+            state = self._state_store.get_value(self._state_store_key)
+            state_dict = pickle.loads(
+                binascii.unhexlify(state.encode("utf-8")))
+            self._name = state_dict['name']
+            self.enrollment_secret = state_dict['enrollment_secret']
+            enrollment = state_dict['enrollment']
+            if enrollment:
+                private_key = serialization.load_pem_private_key(
+                    enrollment['private_key'],
+                    password=None,
+                    backend=default_backend()
+                )
+                cert = enrollment['cert']
+                self.enrollment = Enrollment(private_key, cert)
+            self.affiliation = state_dict['affiliation']
+            self.account = state_dict['account']
+            self.roles = state_dict['roles']
+            self._org = state_dict['org']
+            self.msp_id = state_dict['msp_id']
+        except Exception as e:
+>           raise IOError("Cannot deserialize the user", e)
+E           IOError: [Errno Cannot deserialize the user] unsupported pickle protocol: 3
+
+hfc/fabric/user.py:252: IOError
+_________________ ClientTest.test_create_channel_missing_tx_id _________________
+
+self = <test.unit.client_test.ClientTest testMethod=test_create_channel_missing_tx_id>
+
+    def setUp(self):
+>       self.client = Client('test/fixtures/network.json')
+
+test/unit/client_test.py:22: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+hfc/fabric/client.py:75: in __init__
+    self.init_with_net_profile(net_profile)
+hfc/fabric/client.py:103: in init_with_net_profile
+    org = create_org(name, orgs[name], self.state_store)
+hfc/fabric/organization.py:76: in create_org
+    org.init_with_bundle(info)
+hfc/fabric/organization.py:50: in init_with_bundle
+    users[name].get('cert'))
+hfc/fabric/user.py:322: in create_user
+    user = User(name, org, state_store)
+hfc/fabric/user.py:56: in __init__
+    self._restore_state()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <hfc.fabric.user.User object at 0x7f96c5e4d050>
+
+    def _restore_state(self):
+        """ Restore user state. """
+        try:
+            state = self._state_store.get_value(self._state_store_key)
+            state_dict = pickle.loads(
+                binascii.unhexlify(state.encode("utf-8")))
+            self._name = state_dict['name']
+            self.enrollment_secret = state_dict['enrollment_secret']
+            enrollment = state_dict['enrollment']
+            if enrollment:
+                private_key = serialization.load_pem_private_key(
+                    enrollment['private_key'],
+                    password=None,
+                    backend=default_backend()
+                )
+                cert = enrollment['cert']
+                self.enrollment = Enrollment(private_key, cert)
+            self.affiliation = state_dict['affiliation']
+            self.account = state_dict['account']
+            self.roles = state_dict['roles']
+            self._org = state_dict['org']
+            self.msp_id = state_dict['msp_id']
+        except Exception as e:
+>           raise IOError("Cannot deserialize the user", e)
+E           IOError: [Errno Cannot deserialize the user] unsupported pickle protocol: 3
+
+hfc/fabric/user.py:252: IOError
+____________ ClientTest.test_create_channel_not_list_of_signatures _____________
+
+self = <test.unit.client_test.ClientTest testMethod=test_create_channel_not_list_of_signatures>
+
+    def setUp(self):
+>       self.client = Client('test/fixtures/network.json')
+
+test/unit/client_test.py:22: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+hfc/fabric/client.py:75: in __init__
+    self.init_with_net_profile(net_profile)
+hfc/fabric/client.py:103: in init_with_net_profile
+    org = create_org(name, orgs[name], self.state_store)
+hfc/fabric/organization.py:76: in create_org
+    org.init_with_bundle(info)
+hfc/fabric/organization.py:50: in init_with_bundle
+    users[name].get('cert'))
+hfc/fabric/user.py:322: in create_user
+    user = User(name, org, state_store)
+hfc/fabric/user.py:56: in __init__
+    self._restore_state()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <hfc.fabric.user.User object at 0x7f96c5d013d0>
+
+    def _restore_state(self):
+        """ Restore user state. """
+        try:
+            state = self._state_store.get_value(self._state_store_key)
+            state_dict = pickle.loads(
+                binascii.unhexlify(state.encode("utf-8")))
+            self._name = state_dict['name']
+            self.enrollment_secret = state_dict['enrollment_secret']
+            enrollment = state_dict['enrollment']
+            if enrollment:
+                private_key = serialization.load_pem_private_key(
+                    enrollment['private_key'],
+                    password=None,
+                    backend=default_backend()
+                )
+                cert = enrollment['cert']
+                self.enrollment = Enrollment(private_key, cert)
+            self.affiliation = state_dict['affiliation']
+            self.account = state_dict['account']
+            self.roles = state_dict['roles']
+            self._org = state_dict['org']
+            self.msp_id = state_dict['msp_id']
+        except Exception as e:
+>           raise IOError("Cannot deserialize the user", e)
+E           IOError: [Errno Cannot deserialize the user] unsupported pickle protocol: 3
+
+hfc/fabric/user.py:252: IOError
+________________________ ClientTest.test_create_client _________________________
+
+self = <test.unit.client_test.ClientTest testMethod=test_create_client>
+
+    def setUp(self):
+>       self.client = Client('test/fixtures/network.json')
+
+test/unit/client_test.py:22: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+hfc/fabric/client.py:75: in __init__
+    self.init_with_net_profile(net_profile)
+hfc/fabric/client.py:103: in init_with_net_profile
+    org = create_org(name, orgs[name], self.state_store)
+hfc/fabric/organization.py:76: in create_org
+    org.init_with_bundle(info)
+hfc/fabric/organization.py:50: in init_with_bundle
+    users[name].get('cert'))
+hfc/fabric/user.py:322: in create_user
+    user = User(name, org, state_store)
+hfc/fabric/user.py:56: in __init__
+    self._restore_state()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <hfc.fabric.user.User object at 0x7f96c5cd23d0>
+
+    def _restore_state(self):
+        """ Restore user state. """
+        try:
+            state = self._state_store.get_value(self._state_store_key)
+            state_dict = pickle.loads(
+                binascii.unhexlify(state.encode("utf-8")))
+            self._name = state_dict['name']
+            self.enrollment_secret = state_dict['enrollment_secret']
+            enrollment = state_dict['enrollment']
+            if enrollment:
+                private_key = serialization.load_pem_private_key(
+                    enrollment['private_key'],
+                    password=None,
+                    backend=default_backend()
+                )
+                cert = enrollment['cert']
+                self.enrollment = Enrollment(private_key, cert)
+            self.affiliation = state_dict['affiliation']
+            self.account = state_dict['account']
+            self.roles = state_dict['roles']
+            self._org = state_dict['org']
+            self.msp_id = state_dict['msp_id']
+        except Exception as e:
+>           raise IOError("Cannot deserialize the user", e)
+E           IOError: [Errno Cannot deserialize the user] unsupported pickle protocol: 3
+
+hfc/fabric/user.py:252: IOError
+____________________ ClientTest.test_export_network_profile ____________________
+
+self = <test.unit.client_test.ClientTest testMethod=test_export_network_profile>
+
+    def setUp(self):
+>       self.client = Client('test/fixtures/network.json')
+
+test/unit/client_test.py:22: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+hfc/fabric/client.py:75: in __init__
+    self.init_with_net_profile(net_profile)
+hfc/fabric/client.py:103: in init_with_net_profile
+    org = create_org(name, orgs[name], self.state_store)
+hfc/fabric/organization.py:76: in create_org
+    org.init_with_bundle(info)
+hfc/fabric/organization.py:50: in init_with_bundle
+    users[name].get('cert'))
+hfc/fabric/user.py:322: in create_user
+    user = User(name, org, state_store)
+hfc/fabric/user.py:56: in __init__
+    self._restore_state()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <hfc.fabric.user.User object at 0x7f96c6efde90>
+
+    def _restore_state(self):
+        """ Restore user state. """
+        try:
+            state = self._state_store.get_value(self._state_store_key)
+            state_dict = pickle.loads(
+                binascii.unhexlify(state.encode("utf-8")))
+            self._name = state_dict['name']
+            self.enrollment_secret = state_dict['enrollment_secret']
+            enrollment = state_dict['enrollment']
+            if enrollment:
+                private_key = serialization.load_pem_private_key(
+                    enrollment['private_key'],
+                    password=None,
+                    backend=default_backend()
+                )
+                cert = enrollment['cert']
+                self.enrollment = Enrollment(private_key, cert)
+            self.affiliation = state_dict['affiliation']
+            self.account = state_dict['account']
+            self.roles = state_dict['roles']
+            self._org = state_dict['org']
+            self.msp_id = state_dict['msp_id']
+        except Exception as e:
+>           raise IOError("Cannot deserialize the user", e)
+E           IOError: [Errno Cannot deserialize the user] unsupported pickle protocol: 3
+
+hfc/fabric/user.py:252: IOError
+_________________________ ClientTest.test_get_channel __________________________
+
+self = <test.unit.client_test.ClientTest testMethod=test_get_channel>
+
+    def setUp(self):
+>       self.client = Client('test/fixtures/network.json')
+
+test/unit/client_test.py:22: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+hfc/fabric/client.py:75: in __init__
+    self.init_with_net_profile(net_profile)
+hfc/fabric/client.py:103: in init_with_net_profile
+    org = create_org(name, orgs[name], self.state_store)
+hfc/fabric/organization.py:76: in create_org
+    org.init_with_bundle(info)
+hfc/fabric/organization.py:50: in init_with_bundle
+    users[name].get('cert'))
+hfc/fabric/user.py:322: in create_user
+    user = User(name, org, state_store)
+hfc/fabric/user.py:56: in __init__
+    self._restore_state()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <hfc.fabric.user.User object at 0x7f96c5ce9890>
+
+    def _restore_state(self):
+        """ Restore user state. """
+        try:
+            state = self._state_store.get_value(self._state_store_key)
+            state_dict = pickle.loads(
+                binascii.unhexlify(state.encode("utf-8")))
+            self._name = state_dict['name']
+            self.enrollment_secret = state_dict['enrollment_secret']
+            enrollment = state_dict['enrollment']
+            if enrollment:
+                private_key = serialization.load_pem_private_key(
+                    enrollment['private_key'],
+                    password=None,
+                    backend=default_backend()
+                )
+                cert = enrollment['cert']
+                self.enrollment = Enrollment(private_key, cert)
+            self.affiliation = state_dict['affiliation']
+            self.account = state_dict['account']
+            self.roles = state_dict['roles']
+            self._org = state_dict['org']
+            self.msp_id = state_dict['msp_id']
+        except Exception as e:
+>           raise IOError("Cannot deserialize the user", e)
+E           IOError: [Errno Cannot deserialize the user] unsupported pickle protocol: 3
+
+hfc/fabric/user.py:252: IOError
+____________________ ClientTest.test_init_with_net_profile _____________________
+
+self = <test.unit.client_test.ClientTest testMethod=test_init_with_net_profile>
+
+    def setUp(self):
+>       self.client = Client('test/fixtures/network.json')
+
+test/unit/client_test.py:22: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+hfc/fabric/client.py:75: in __init__
+    self.init_with_net_profile(net_profile)
+hfc/fabric/client.py:103: in init_with_net_profile
+    org = create_org(name, orgs[name], self.state_store)
+hfc/fabric/organization.py:76: in create_org
+    org.init_with_bundle(info)
+hfc/fabric/organization.py:50: in init_with_bundle
+    users[name].get('cert'))
+hfc/fabric/user.py:322: in create_user
+    user = User(name, org, state_store)
+hfc/fabric/user.py:56: in __init__
+    self._restore_state()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <hfc.fabric.user.User object at 0x7f96c5ed1f10>
+
+    def _restore_state(self):
+        """ Restore user state. """
+        try:
+            state = self._state_store.get_value(self._state_store_key)
+            state_dict = pickle.loads(
+                binascii.unhexlify(state.encode("utf-8")))
+            self._name = state_dict['name']
+            self.enrollment_secret = state_dict['enrollment_secret']
+            enrollment = state_dict['enrollment']
+            if enrollment:
+                private_key = serialization.load_pem_private_key(
+                    enrollment['private_key'],
+                    password=None,
+                    backend=default_backend()
+                )
+                cert = enrollment['cert']
+                self.enrollment = Enrollment(private_key, cert)
+            self.affiliation = state_dict['affiliation']
+            self.account = state_dict['account']
+            self.roles = state_dict['roles']
+            self._org = state_dict['org']
+            self.msp_id = state_dict['msp_id']
+        except Exception as e:
+>           raise IOError("Cannot deserialize the user", e)
+E           IOError: [Errno Cannot deserialize the user] unsupported pickle protocol: 3
+
+hfc/fabric/user.py:252: IOError
+_________________________ ClientTest.test_new_channel __________________________
+
+self = <test.unit.client_test.ClientTest testMethod=test_new_channel>
+
+    def setUp(self):
+>       self.client = Client('test/fixtures/network.json')
+
+test/unit/client_test.py:22: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+hfc/fabric/client.py:75: in __init__
+    self.init_with_net_profile(net_profile)
+hfc/fabric/client.py:103: in init_with_net_profile
+    org = create_org(name, orgs[name], self.state_store)
+hfc/fabric/organization.py:76: in create_org
+    org.init_with_bundle(info)
+hfc/fabric/organization.py:50: in init_with_bundle
+    users[name].get('cert'))
+hfc/fabric/user.py:322: in create_user
+    user = User(name, org, state_store)
+hfc/fabric/user.py:56: in __init__
+    self._restore_state()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <hfc.fabric.user.User object at 0x7f96c5cc6d50>
+
+    def _restore_state(self):
+        """ Restore user state. """
+        try:
+            state = self._state_store.get_value(self._state_store_key)
+            state_dict = pickle.loads(
+                binascii.unhexlify(state.encode("utf-8")))
+            self._name = state_dict['name']
+            self.enrollment_secret = state_dict['enrollment_secret']
+            enrollment = state_dict['enrollment']
+            if enrollment:
+                private_key = serialization.load_pem_private_key(
+                    enrollment['private_key'],
+                    password=None,
+                    backend=default_backend()
+                )
+                cert = enrollment['cert']
+                self.enrollment = Enrollment(private_key, cert)
+            self.affiliation = state_dict['affiliation']
+            self.account = state_dict['account']
+            self.roles = state_dict['roles']
+            self._org = state_dict['org']
+            self.msp_id = state_dict['msp_id']
+        except Exception as e:
+>           raise IOError("Cannot deserialize the user", e)
+E           IOError: [Errno Cannot deserialize the user] unsupported pickle protocol: 3
+
+hfc/fabric/user.py:252: IOError
+
+-------- coverage: platform linux2, python 2.7.15-candidate-1 --------
+Name                                            Stmts   Miss Branch BrPart     Cover   Missing
+----------------------------------------------------------------------------------------------
+hfc/__init__.py                                     1      0      0      0   100.00%
+hfc/fabric/__init__.py                              9      4      0      0    55.56%   10-13
+hfc/fabric/block_decoder.py                       592    474    140      4    16.67%   72, 75, 90-101, 125-131, 135-151, 189-190, 201-219, 236-243, 257-259, 277-281, 293, 298, 320-327, 338-346, 357-363, 374-382, 393-403, 414-420, 431-444, 455-471, 482-487, 498-509, 520-529, 540-544, 556-565, 576-580, 592-665, 676-680, 691-711, 722-729, 740-755, 766-779, 790-818, 829-833, 844-864, 875-884, 895-898, 909-919, 930-936, 947-955, 966-973, 984-992, 1004-1007, 1018-1027, 1038-1049, 1060-1067, 1078-1084, 1095-1110, 1122-1148, 1159-1168, 1179-1202, 1213-1217, 1228-1233, 182->190, 184->187, 187->182, 292->293
+hfc/fabric/channel/__init__.py                      8      4      0      0    50.00%   14-17
+hfc/fabric/channel/channel.py                     327    260     98      3    16.47%   30, 61-62, 65, 92-93, 101, 109-110, 119, 127, 136, 140, 149-173, 176-179, 188, 198, 207-212, 218, 230-242, 257-264, 277-342, 360-370, 380, 393, 404-438, 449-503, 514-519, 533-538, 542-613, 632-635, 640-688, 698-706, 717-725, 737-770, 783-791, 803-811, 823-831, 847-855, 867, 879, 27->30, 60->61, 64->65
+hfc/fabric/channel/channel_configuration.py        12      0      4      0   100.00%
+hfc/fabric/channel/instantiation.py                43     43     14      0     0.00%   15-170
+hfc/fabric/channel/invocation.py                   40     40     16      0     0.00%   15-162
+hfc/fabric/client.py                              507    411    148      5    15.73%   46, 96, 104-123, 132-136, 144-148, 156-160, 168-169, 182-185, 196, 205, 214, 223, 235-238, 250, 266-316, 330-378, 393-413, 426-432, 445-450, 459, 474-558, 574-593, 602, 614, 623, 635, 656, 666, 680-682, 698-723, 740-783, 799-840, 850-891, 902-943, 956-987, 1001-1033, 1047-1079, 1093-1125, 1139-1169, 1181-1214, 43->46, 73->exit, 93->96, 101->110, 178->187
+hfc/fabric/config/__init__.py                       0      0      0      0   100.00%
+hfc/fabric/config/default.py                        4      0      2      0   100.00%
+hfc/fabric/eventhub.py                             21      9      0      0    57.14%   43, 50, 57, 71, 80, 89, 98, 108, 117
+hfc/fabric/msp/__init__.py                          0      0      0      0   100.00%
+hfc/fabric/orderer.py                              66     36     15      1    38.27%   32, 72-87, 93-125, 136-138, 151-152, 157, 162, 182-183, 29->32
+hfc/fabric/organization.py                         35      7     14      6    69.39%   42, 51-52, 60-62, 77, 37->39, 39->41, 41->42, 43->45, 45->52, 47->52
+hfc/fabric/peer.py                                 49     21      5      0    51.85%   53-54, 64-81, 84, 89, 107-108, 112-113, 127
+hfc/fabric/transaction/__init__.py                  8      4      0      0    50.00%   10-13
+hfc/fabric/transaction/tx_context.py               50     32     10      0    30.00%   20-27, 30, 35, 40, 45, 50, 55, 59, 65, 70, 75, 80, 85, 90, 105-119, 134-135
+hfc/fabric/transaction/tx_proposal_request.py      91     55     22      0    31.86%   44-60, 69, 79, 88, 98, 107, 117, 126, 136, 145, 155, 164, 174, 183, 193, 202, 212, 221, 231, 240, 250, 259, 269, 284-309, 333-337
+hfc/fabric/user.py                                120     22     20      1    73.57%   190, 226-227, 255, 260, 273-292, 323-326, 238->246
+hfc/fabric_ca/__init__.py                           9      4      0      0    55.56%   22-25
+hfc/fabric_ca/caservice.py                         65      8     12      4    81.82%   56, 75, 78, 83, 126, 136, 162, 178, 125->126, 132->136, 161->162, 175->178
+hfc/util/__init__.py                                8      4      0      0    50.00%   21-24
+hfc/util/channel.py                                10      4      4      2    57.14%   35-36, 41-42, 34->35, 38->41
+hfc/util/crypto/__init__.py                         8      4      0      0    50.00%   21-24
+hfc/util/crypto/crypto.py                         129     10     28      7    89.17%   167, 179, 230, 251, 257-258, 270, 296, 306, 329, 36->39, 250->251, 255->257, 269->270, 295->296, 305->306, 328->329
+hfc/util/keyvaluestore.py                          44      1     10      1    96.30%   143, 142->143
+hfc/util/utils.py                                 195    139     54      3    24.10%   47, 61-64, 80-88, 115, 130-146, 189-192, 209-218, 230-237, 253-258, 281-317, 330-336, 348-380, 394-455, 465-499, 40->exit, 44->47, 114->115
+hfc/version.py                                      1      0      0      0   100.00%
+----------------------------------------------------------------------------------------------
+TOTAL                                            2452   1596    616     37    30.31%
+
+=============================== warnings summary ===============================
+/home/lucas/work/pg/trustas/application/fabric-sdk-py/.tox/pylint/local/lib/python2.7/site-packages/_pytest/cacheprovider.py:55: PytestWarning: cache could not write path /home/lucas/work/pg/trustas/application/fabric-sdk-py/.pytest_cache/v/cache/nodeids
+  PytestWarning(fmt.format(**args) if args else fmt), self._config
+/home/lucas/work/pg/trustas/application/fabric-sdk-py/.tox/pylint/local/lib/python2.7/site-packages/_pytest/cacheprovider.py:55: PytestWarning: cache could not write path /home/lucas/work/pg/trustas/application/fabric-sdk-py/.pytest_cache/v/cache/lastfailed
+  PytestWarning(fmt.format(**args) if args else fmt), self._config
+
+-- Docs: https://docs.pytest.org/en/latest/warnings.html
+============== 25 failed, 39 passed, 2 warnings in 34.25 seconds ===============
+ERROR: InvocationError for command '/home/lucas/work/pg/trustas/application/fabric-sdk-py/.tox/pylint/bin/py.test --cov=hfc test -s' (exited with code 1)
+___________________________________ summary ____________________________________
+ERROR:   pylint: commands failed
+Makefile:22: recipe for target 'tox.pylint' failed
+make[1]: Leaving directory '/home/lucas/work/pg/trustas/application/fabric-sdk-py'
+Makefile:8: recipe for target 'check' failed
