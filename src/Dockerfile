@@ -7,4 +7,4 @@ WORKDIR fabric-sdk-py
 RUN make install
 WORKDIR ../
 RUN rm -rf fabric-sdk-py
-CMD ["python", "app.py"]
+CMD ["python", "test.py"]

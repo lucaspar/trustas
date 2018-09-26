@@ -15,7 +15,5 @@ if __name__ == "__main__":
     if len(res.failures) > 0:
         print("\t[ ABORTING: One or more tests did not pass ]\n")
         exit(1)
-
-    print("Initializing TrustAS...")
-
-    api.hfcSetup()
+    else:
+        print("\tPASS: TrustAS tests")
