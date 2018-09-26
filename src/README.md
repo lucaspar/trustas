@@ -2,8 +2,6 @@
 
 *An example network for running TrustAS*
 
-> The `hfc` module is the Fabric-SDK-Py v0.7.0 and is replicated here for reproducibility purposes. As of September 2018 this was its latest version available.
-
 > This network is derived from the [Fabric-SDK-Py E2E test / example](https://github.com/hyperledger/fabric-sdk-py/blob/v0.7.0/test/integration/e2e_test.py).
 
 ### <a name="preparing"></a>Preparing the environment

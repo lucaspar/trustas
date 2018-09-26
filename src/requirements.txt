@@ -1,15 +1,11 @@
 # TrustAS reqs
-pyope
-docker >=3.0.0
-docker-compose >= 1.7.0
 
-# Hyperledger Fabric Client - Python SDK reqs
-cryptography >= 1.9
-grpcio >= 1.0.1
-hkdf >= 0.0.3
-pycryptodomex >= 3.4.2
-pysha3 == 1.0b1
-requests >= 2.12.4
-rx >= 1.5.3
-six >= 1.4.0
-protobuf >= 3.5.2.post1
+# order preserving encryption
+pyope
+
+# containers
+docker>=3.0.0
+docker-compose>=1.7.0
+
+# fabric-sdk-py v0.7.0:
+git+https://github.com/hyperledger/fabric-sdk-py.git@34a336f8df1536f403e53a5d099bdcc156ff6268
