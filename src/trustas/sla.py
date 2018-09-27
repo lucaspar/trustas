@@ -75,8 +75,6 @@ class SLA:
             encryption_key = ope.OPE.generate_key()
         encrypted_sla = {}
 
-        print("Encrypted SLA / measurements:\n")
-
         # for every property, normalize and encrypt the data
         for k,v in self.PROPS.items():
 
@@ -90,8 +88,5 @@ class SLA:
             )
 
             encrypted_sla[k] = cipher.encrypt(int(norm_val))
-            print("\t{}:  \t{}".format(k, encrypted_sla[k]))
-
-        print("\n")
 
         return encryption_key, encrypted_sla

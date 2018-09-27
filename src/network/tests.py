@@ -7,11 +7,8 @@ import docker
 import logging
 import unittest
 
-from trustas import tests
-from trustas import api
-
-from utils import BaseTestCase
-from config import E2E_CONFIG
+from .utils import BaseTestCase
+from .config import E2E_CONFIG
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -361,8 +358,6 @@ class E2eTest(BaseTestCase):
                 channel_name=self.channel_name,
                 peer_names=['peer0.' + org, 'peer1.' + org]
             )
-            print("INST CHAINCODES ON PEER")
-            print(response)
             self.assertEqual(
                 response.chaincodes[0].name, CC_NAME, "Query failed")
             self.assertEqual(
@@ -375,8 +370,6 @@ class E2eTest(BaseTestCase):
     def test_in_sequence(self):
 
         logger.info("\n\nE2E testing started...")
-
-        print("STARTED")
 
         self.channel_create()
         time.sleep(5)  # wait for channel created
@@ -409,23 +402,6 @@ class E2eTest(BaseTestCase):
 
         logger.info("E2E all test cases done\n\n")
 
-        print("DONE")
-
-
-def testTrustAS():
-    suite = unittest.TestLoader().loadTestsFromModule(tests)
-    return unittest.TextTestRunner(verbosity=0).run(suite)
-
 
 if __name__ == "__main__":
-
-    print("\n\t\t>>> TrustAS <<<\n")
-
-    res = testTrustAS()
-    if len(res.failures) > 0:
-        print("\t[ ABORTING: One or more tests did not pass ]\n")
-        exit(1)
-
-    print("Initializing TrustAS...")
-
     unittest.main()

@@ -7,7 +7,7 @@ import unittest
 
 from hfc.fabric.client import Client
 from hfc.fabric.user import create_user
-from config import E2E_CONFIG
+from .config import E2E_CONFIG
 
 NETWORK_NAME = "test-network"
 

@@ -1,12 +1,17 @@
 #!/usr/bin/python3
+
+import logging
 import unittest
-from . import api
-from pyope import ope
 from random import randint
+
+from . import api
 from .sla import SLA
+from pyope import ope
 
-# Unit tests for TrustAS
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
 
+# Unit tests for PyOPE
 class TestExternalDependencies(unittest.TestCase):
 
     def test_pyope_integers(self):
@@ -43,19 +48,20 @@ class TestExternalDependencies(unittest.TestCase):
 
         self.assertTrue(cipher.decrypt(cipher.encrypt(-1337)) == -1337)
 
+# Integration tests for TrustAS
 class TestTrustAS(unittest.TestCase):
 
     def test_SLA(self):
         sampleSLA = SLA()
         self.assertTrue(sampleSLA.bandwidth > 0)
 
-    def testAgreementCreation(self):
+    def test_agreement_creation(self):
         sla = SLA()
         asn = randint(0, 2**16-1)
         aid, _, _ = api.createAgreement(asn, sla)
         self.assertTrue(len(str(aid)) == 36)    # 36 chars with hyphens
 
-    def testMeasurementsPublishing(self):
+    def test_measurement_publishing(self):
 
         asn = randint(0, 2**16-1)
         sla = SLA(latency=5)
@@ -70,12 +76,14 @@ class TestTrustAS(unittest.TestCase):
             "The latency measured should be greater than the SLA's even after encrypted."
         )
 
-        print("LATENCY")
-        print("Plaintext:\tMeasured: {},\t\tSLA: {}".format(measurements.latency, sla.latency))
-        print("Ciphertext:\tMeasured: {},\t\tSLA: {}".format(measured_data['latency'], sla_data['latency']))
-        print("\n")
+        logger.info("LATENCY")
+        logger.info("Plaintext:\tMeasured: {},\t\tSLA: {}".format(
+            measurements.latency, sla.latency))
+        logger.info("Ciphertext:\tMeasured: {},\t\tSLA: {}".format(
+            measured_data['latency'], sla_data['latency']))
+        logger.info("\n")
 
-    def testASHistoryRetrieval(self):
+    def test_history_retrieval(self):
 
         # define asn, sla and create an agreement
         asn = randint(0, 2**16-1)
