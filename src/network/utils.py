@@ -25,7 +25,7 @@ class BaseTestCase(unittest.TestCase):
         self.channel_tx = \
             E2E_CONFIG[NETWORK_NAME]['channel-artifacts']['channel.tx']
         self.compose_file_path = \
-            E2E_CONFIG[NETWORK_NAME]['docker']['compose_file_tls']
+            E2E_CONFIG[NETWORK_NAME]['docker']['compose_file_tls_cli']
 
         self.config_yaml = \
             E2E_CONFIG[NETWORK_NAME]['channel-artifacts']['config_yaml']
@@ -48,7 +48,7 @@ class BaseTestCase(unittest.TestCase):
                   "--tail=200"])
 
     def start_test_env(self):
-        cli_call(["docker-compose", "-f", self.compose_file_path, "up", "-d"])
+        cli_call(["docker-compose", "-f", self.compose_file_path, "up", "-d", "--scale", "cli=0"])
 
     def shutdown_test_env(self):
         cli_call(["docker-compose", "-f", self.compose_file_path, "down"])
