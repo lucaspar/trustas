@@ -5,7 +5,7 @@ from network import start
 from network import tests as net_tests
 from trustas import tests as tru_tests
 
-RUN_TESTS = True
+RUN_TESTS = False
 MODULES = [{
     'name': "TrustAS",
     'module': tru_tests,
@@ -43,3 +43,5 @@ if __name__ == "__main__":
 
     if RUN_TESTS:
         tests()
+
+    testModule(start)
