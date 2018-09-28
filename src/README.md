@@ -26,6 +26,38 @@ pip install -r requirements.txt
 
 ------------------------------------------------------------------
 
+
+### Installing Hyperledger Explorer for visualization
+
+##### Hyperledger Explorer dependencies
+
+```sh
+# install postgres and create user for explorer
+sudo apt install postgresql postgresql-contrib
+sudo -u postgres createuser hypex
+sudo -u postgres createdb fabricexplorer
+sudo -u postgres psql
+postgres=# alter user hypex with encrypted password 'password'
+postgres-# grant all privileges on database fabricexplorer to hypex
+postgres-# \q
+
+```
+##### Get and execute Hyperledger Explorer
+```sh
+git clone https://github.com/hyperledger/blockchain-explorer.git
+cd blockchain-explorer/app/persistence/fabric/postgreSQL/db
+sudo -u postgres psql -v dbname=fabricexplorer -v user=hypex -v passwd=8bfcd2f4a91e -f ./explorerpg.sql
+sudo -u postgres psql -v dbname=fabricexplorer -v user=hypex -v passwd=8bfcd2f4a91e -f ./updatepg.sql
+```
+
+Follow the Hyperledger Explorer readme to:
+- Configure the network
+- Build and execute it
+
+After that, visualize the network at [localhost:8080](http://localhost:8080) by default.
+
+------------------------------------------------------------------
+
 ### Other operations
 
 #### Open an interactive shell
