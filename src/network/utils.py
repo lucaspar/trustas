@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 import os
+import re
 import subprocess
 import time
 import unittest
@@ -40,12 +41,21 @@ class BaseTestCase(unittest.TestCase):
         self.start_test_env()
 
     def tearDown(self):
-        time.sleep(1)
+        self.check_logs()
+        time.sleep(3)
         self.shutdown_test_env()
 
+    # outputs log to trustas.log
     def check_logs(self):
-        cli_call(["docker-compose", "-f", self.compose_file_path, "logs",
-                  "--tail=200"])
+        output, _, _ = cli_call([
+            "docker-compose", "-f", self.compose_file_path, "logs",
+            "--tail=400"
+        ])
+        output = output.decode()
+        ansi_escape = re.compile(r'\x1B\[[0-?]*[ -/]*[@-~]')
+        output = ansi_escape.sub('', output)
+        with open("trustas.log", "w+") as fp:
+            fp.write(output)
 
     def start_test_env(self):
         # cli_call(["docker-compose", "-f", self.compose_file_path, "up", "-d"])
