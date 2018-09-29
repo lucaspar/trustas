@@ -48,6 +48,7 @@ class BaseTestCase(unittest.TestCase):
                   "--tail=200"])
 
     def start_test_env(self):
+        # cli_call(["docker-compose", "-f", self.compose_file_path, "up", "-d"])
         cli_call(["docker-compose", "-f", self.compose_file_path, "up", "-d", "--scale", "cli=0"])
 
     def shutdown_test_env(self):

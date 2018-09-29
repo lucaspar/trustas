@@ -215,7 +215,7 @@ class E2eTest(BaseTestCase):
     # Create channel and join
     def channel_init(self):
         self.channel_create()
-        time.sleep(3)  # wait for channel creation
+        time.sleep(5)  # wait for channel creation
         self.channel_join()
 
     # install and instantiate chaincode
@@ -237,11 +237,11 @@ class E2eTest(BaseTestCase):
 
         self.chaincode_install()
         self.chaincode_instantiate()
+        self.chaincode_invoke(args=['a', 'b', '33'])
 
         # custom operations
         # sla, met = self.fabricate_sla_and_metrics()
         # # self.chaincode_invoke(args=[sla, met])
-        # self.chaincode_invoke(args=['a', 'b', '33'])
 
         # self.query_block_by_txid()
         # self.query_block_by_hash()
