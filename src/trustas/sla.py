@@ -31,6 +31,8 @@ class SLA:
             if self.__isValidProp(k,v):
                 setattr(self, k, v)
 
+    # ===============
+    # PRIVATE METHODS
 
     # Checks if a property is valid according to the expected type and range
     # Returns True if valid, throws an exception otherwise
@@ -60,6 +62,8 @@ class SLA:
                 print("ERROR: Could not cast {} of type {} to integer".format(v, type(v)))
         return int(v / self.PROPS[k]['precision'])
 
+    # ==============
+    # PUBLIC METHODS
 
     # Print instance for debugging purposes
     def print(self):
@@ -68,7 +72,7 @@ class SLA:
         print("\n")
 
 
-    # Encrypt data using OPE (pyope)
+    # Encrypts props data using OPE (pyope)
     def encrypt(self, encryption_key=None):
 
         if encryption_key is None:

@@ -1,10 +1,15 @@
 import time
+import json
 import docker
 import logging
 import unittest
+from beeprint import pp
+
+import trustas
 
 from .utils import BaseTestCase
 from .config import E2E_CONFIG
+from random import randint
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -89,10 +94,6 @@ class E2eTest(BaseTestCase):
                     '/var/hyperledger/production/chaincodes/example_cc.1.0')
                 self.assertEqual(code, 0, "chaincodes pack not exists")
 
-
-    def chaincode_install_fail(self):
-        pass
-
     # Instantiating an example chaincode to peer
     def chaincode_instantiate(self):
 
@@ -108,16 +109,16 @@ class E2eTest(BaseTestCase):
                 cc_name=CC_NAME,
                 cc_version=CC_VERSION
             )
+            pp(response)
             logger.info(
                 "E2E: Chaincode instantiation response {}".format(response))
             self.assertTrue(response)
 
 
     # Invoking an example chaincode to peer
-    def chaincode_invoke(self):
+    def chaincode_invoke(self, args=['a', 'b', '100']):
 
         orgs = ["org1.example.com"]
-        args = ['a', 'b', '100']
         for org in orgs:
             org_admin = self.client.get_user(org, "Admin")
             response = self.client.chaincode_invoke(
@@ -129,58 +130,6 @@ class E2eTest(BaseTestCase):
                 cc_version=CC_VERSION
             )
             self.assertTrue(response)
-
-
-    # Query installed chaincodes on peer
-    def query_installed_chaincodes(self):
-
-        orgs = ["org1.example.com", "org2.example.com"]
-        for org in orgs:
-            org_admin = self.client.get_user(org, "Admin")
-            response = self.client.query_installed_chaincodes(
-                requestor=org_admin,
-                peer_names=['peer0.' + org, 'peer1.' + org],
-            )
-            self.assertEqual(
-                response.chaincodes[0].name, CC_NAME, "Query failed")
-            self.assertEqual(
-                response.chaincodes[0].version, CC_VERSION, "Query failed")
-            self.assertEqual(
-                response.chaincodes[0].path, CC_PATH, "Query failed")
-
-
-    # Querying channel
-    def query_channels(self):
-
-        orgs = ["org1.example.com"]
-        for org in orgs:
-            org_admin = self.client.get_user(org, "Admin")
-            response = self.client.query_channels(
-                requestor=org_admin,
-                peer_names=['peer0.' + org, 'peer1.' + org],
-            )
-            self.assertEqual(
-                response.channels[0].channel_id,
-                'businesschannel',
-                "Query failed")
-
-
-    # Querying information on the state of the Channel
-    def query_info(self):
-
-        orgs = ["org1.example.com"]
-        for org in orgs:
-            org_admin = self.client.get_user(org, "Admin")
-            response = self.client.query_info(
-                requestor=org_admin,
-                channel_name=self.channel_name,
-                peer_names=['peer0.' + org, 'peer1.' + org],
-            )
-            self.assertEqual(
-                response.height,
-                3,
-                "Query failed")
-
 
     # Querying block by tx id
     def query_block_by_txid(self):
@@ -236,6 +185,8 @@ class E2eTest(BaseTestCase):
                 peer_names=['peer0.' + org, 'peer1.' + org],
                 block_number='1'
             )
+            pp("RESPONSE")
+            pp(response["data"]["data"][0]["payload"])
             self.assertEqual(
                 response['header']['number'],
                 1,
@@ -261,49 +212,71 @@ class E2eTest(BaseTestCase):
                 self.channel_name,
                 "Query failed")
 
-
-    # Query instantiated chaincodes on peer
-    def query_instantiated_chaincodes(self):
-
-        orgs = ["org1.example.com", "org2.example.com"]
-        for org in orgs:
-            org_admin = self.client.get_user(org, "Admin")
-            response = self.client.query_instantiated_chaincodes(
-                requestor=org_admin,
-                channel_name=self.channel_name,
-                peer_names=['peer0.' + org, 'peer1.' + org]
-            )
-            self.assertEqual(
-                response.chaincodes[0].name, CC_NAME, "Query failed")
-            self.assertEqual(
-                response.chaincodes[0].version, CC_VERSION, "Query failed")
-            self.assertEqual(
-                response.chaincodes[0].path, CC_PATH, "Query failed")
-
-    def test_in_sequence(self):
-
-        # channel methods
+    # Create channel and join
+    def channel_init(self):
         self.channel_create()
-        time.sleep(5)           # wait for channel creation
+        time.sleep(3)  # wait for channel creation
         self.channel_join()
 
+    # install and instantiate chaincode
+    def chaincode_init(self):
         # chaincode methods
         self.chaincode_install()
-        self.chaincode_install_fail()
         self.chaincode_instantiate()
-        self.chaincode_invoke()
 
-        # query methods
-        self.query_installed_chaincodes()
-        self.query_channels()
-        self.query_info()
-        self.query_block_by_txid()
-        self.query_block_by_hash()
-        self.query_block()
-        self.query_transaction()
-        self.query_instantiated_chaincodes()
+    # Testing routine
+    def test_in_sequence(self):
 
-        logger.info("E2E all test cases done\n\n")
+        # initialization
+        # self.channel_init()
+        # self.chaincode_init()
+
+        self.channel_create()
+        time.sleep(5)  # wait for channel creation
+        self.channel_join()
+
+        self.chaincode_install()
+        self.chaincode_instantiate()
+
+        # custom operations
+        # sla, met = self.fabricate_sla_and_metrics()
+        # # self.chaincode_invoke(args=[sla, met])
+        # self.chaincode_invoke(args=['a', 'b', '33'])
+
+        # self.query_block_by_txid()
+        # self.query_block_by_hash()
+        # self.query_block()
+        # self.query_transaction()
+
+        # input("Press ENTER to end tests")
+
+        logger.info("Sequential test done\n\n")
+
+    def fabricate_sla_and_metrics(self):
+
+        # agreement properties and sample measurement
+        asn_a   = randint(0, 2**15-1)
+        asn_b   = randint(2**15, 2**16-1)
+        peers   = { asn_a, asn_b }
+        sla     = trustas.sla.SLA(latency=5)
+        metrics = trustas.sla.SLA(latency=8)
+
+        # create an agreement
+        agreement = trustas.agreement.Agreement(sla, peers)
+        agreement.append_metrics(metrics)
+
+        # get encrypted properties
+        enc_sla = agreement.get_encrypted_sla()
+        enc_met = agreement.get_encrypted_metrics()
+
+        # sanity check
+        self.assertGreater(
+            enc_met[0]['latency'],
+            enc_sla['latency'],
+            "The latency measured should be greater than the SLA's even after encrypted."
+        )
+
+        return json.dumps(enc_sla), json.dumps(enc_met)
 
 
 if __name__ == "__main__":

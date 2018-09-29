@@ -3,14 +3,9 @@ import unittest
 
 from network import start
 from network import tests as net_tests
-from trustas import tests as tru_tests
 
 RUN_TESTS = False
 MODULES = [{
-    'name': "TrustAS",
-    'module': tru_tests,
-    'testable': True,
-}, {
     'name': "Network",
     'module': net_tests,
     'testable': True,
