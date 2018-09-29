@@ -5,25 +5,46 @@ import uuid
 from pyope import ope
 
 class Agreement:
+    """Describes an agreement between ASes (peers).
+
+    Attributes:
+        id:         An uuid for this agreement.
+        enc_key:    Key used to encrypt SLA and metrics before
+                    making them public. Comes from SLA class.
+    """
 
     def __init__(self, SLA, peers):
-        self.met = []
-        self.met_enc = []
-        self.sla = SLA
+        """Instantiates a new agreement.
+
+        Args:
+            SLA:    An SLA instance describing the agreement.
+            peers:  A Set of ASNs which are part of the agreement.
+        """
+        self.__met = []
+        self.__met_enc = []
+        self.__sla = SLA
         self.id = uuid.uuid4()
-        self.encryption_key, self.sla_enc = SLA.encrypt()
+        self.enc_key, self.__sla_enc = SLA.encrypt()
 
     # Appends a set of measurements to this agreement
     def append_metrics(self, metrics):
-        self.met.append(metrics)
-        _, metrics_encrypted = metrics.encrypt(self.encryption_key)
-        self.met_enc.append(metrics_encrypted)
+        """Appends metrics to this Agreement object.
 
-    # Returns the encrypted SLA for publishing
+        Args:
+            metrics:    An SLA instance.
+        Returns:
+            None
+        Raises:
+            Nothing
+        """
+        self.__met.append(metrics)
+        _, metrics_encrypted = metrics.encrypt(self.enc_key)
+        self.__met_enc.append(metrics_encrypted)
+
     def get_encrypted_sla(self):
-        return self.sla_enc
+        """Returns encrypted SLA of agreement [dict]."""
+        return self.__sla_enc
 
-    # Returns the encrypted metrics list for publishing
     def get_encrypted_metrics(self):
-        print(type(self.met_enc))
-        return self.met_enc
+        """Returns encrypted agreement metrics [list of dicts]."""
+        return self.__met_enc
