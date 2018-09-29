@@ -21,7 +21,8 @@ class BaseTestCase(unittest.TestCase):
     def setUp(self):
         self.gopath_bak = os.environ.get('GOPATH', '')
         gopath = os.path.normpath(os.path.join(os.path.dirname(__file__),
-                                               "../fixtures/chaincode"))
+                                               "../test/fixtures/chaincode"))
+
         os.environ['GOPATH'] = os.path.abspath(gopath)
         self.channel_tx = \
             E2E_CONFIG[NETWORK_NAME]['channel-artifacts']['channel.tx']
@@ -63,58 +64,6 @@ class BaseTestCase(unittest.TestCase):
 
     def shutdown_test_env(self):
         cli_call(["docker-compose", "-f", self.compose_file_path, "down"])
-
-
-# This should be deprecated, and use client.get_user() API instead
-def get_peer_org_user(org, user, state_store):
-    """Loads the requested user for a given peer org
-        and returns a user object.
-    """
-
-    peer_user_base_path = os.path.join(
-        os.getcwd(),
-        'fixtures/e2e_cli/crypto-config/peerOrganizations/{0}'
-        '/users/{1}@{0}/msp/'.format(org, user)
-    )
-
-    key_path = os.path.join(
-        peer_user_base_path, 'keystore/',
-        E2E_CONFIG[NETWORK_NAME][org]['users'][user]['private_key']
-    )
-
-    cert_path = os.path.join(
-        peer_user_base_path, 'signcerts/',
-        E2E_CONFIG[NETWORK_NAME][org]['users'][user]['cert']
-    )
-
-    msp_id = E2E_CONFIG[NETWORK_NAME][org]['mspid']
-
-    return create_user(user, org, state_store, msp_id, key_path, cert_path)
-
-
-def get_orderer_org_user(org='example.com', user='Admin', state_store=None):
-    """Loads the admin user for a given orderer org and
-        returns an user object.
-        Currently, orderer org only has Admin
-
-    """
-    msp_path = os.path.join(
-        os.getcwd(),
-        'fixtures/e2e_cli/crypto-config/ordererOrganizations/'
-        'example.com/users/Admin@example.com/msp/')
-
-    key_path = os.path.join(
-        msp_path, 'keystore/',
-        E2E_CONFIG[NETWORK_NAME]['orderer']['users'][user]['private_key']
-    )
-
-    cert_path = os.path.join(
-        msp_path, 'signcerts',
-        E2E_CONFIG[NETWORK_NAME]['orderer']['users'][user]['cert']
-    )
-    msp_id = E2E_CONFIG[NETWORK_NAME]['orderer']['mspid']
-
-    return create_user(user, org, state_store, msp_id, key_path, cert_path)
 
 
 def cli_call(arg_list, expect_success=True, env=os.environ.copy()):
