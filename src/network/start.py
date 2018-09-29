@@ -3,7 +3,7 @@ import json
 import docker
 import logging
 import unittest
-from beeprint import pp
+from beeprint import pp, Config
 
 import trustas
 
@@ -14,8 +14,8 @@ from random import randint
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
-CC_PATH = 'github.com/example_cc'
-CC_NAME = 'example_cc'
+CC_PATH = 'github.com/banana'
+CC_NAME = 'banana'
 CC_VERSION = '1.0'
 
 
@@ -91,14 +91,14 @@ class E2eTest(BaseTestCase):
                 peer0_container = dc.containers.get(peer + '.' + org)
                 code, output = peer0_container.exec_run(
                     'test -f '
-                    '/var/hyperledger/production/chaincodes/example_cc.1.0')
+                    '/var/hyperledger/production/chaincodes/' + CC_NAME + '.' + CC_VERSION)
                 self.assertEqual(code, 0, "chaincodes pack not exists")
 
+
     # Instantiating an example chaincode to peer
-    def chaincode_instantiate(self):
+    def chaincode_instantiate(self, args=['a', '200', 'b', '300']):
 
         orgs = ["org1.example.com"]
-        args = ['a', '200', 'b', '300']
         for org in orgs:
             org_admin = self.client.get_user(org, "Admin")
             response = self.client.chaincode_instantiate(
@@ -109,7 +109,6 @@ class E2eTest(BaseTestCase):
                 cc_name=CC_NAME,
                 cc_version=CC_VERSION
             )
-            pp(response)
             logger.info(
                 "E2E: Chaincode instantiation response {}".format(response))
             self.assertTrue(response)
@@ -174,7 +173,7 @@ class E2eTest(BaseTestCase):
 
 
     # Querying block by block number
-    def query_block(self):
+    def query_block(self, block_number=0):
 
         orgs = ["org1.example.com"]
         for org in orgs:
@@ -183,16 +182,15 @@ class E2eTest(BaseTestCase):
                 requestor=org_admin,
                 channel_name=self.channel_name,
                 peer_names=['peer0.' + org, 'peer1.' + org],
-                block_number='1'
+                block_number=str(block_number)
             )
-            pp("RESPONSE")
-            pp(response["data"]["data"][0]["payload"])
             self.assertEqual(
                 response['header']['number'],
-                1,
-                "Query failed")
+                block_number,
+                "Query failed: block numbers do not match")
             self.blockheader = response['header']
 
+        return response
 
     # Querying transaction by tx id
     def query_transaction(self):
@@ -212,6 +210,8 @@ class E2eTest(BaseTestCase):
                 self.channel_name,
                 "Query failed")
 
+        return response.get('transaction_envelope').get('payload')
+
     # Create channel and join
     def channel_init(self):
         self.channel_create()
@@ -227,6 +227,10 @@ class E2eTest(BaseTestCase):
     # Testing routine
     def test_in_sequence(self):
 
+        pp_conf = Config()
+        pp_conf.max_depth = 20
+        pp_conf.text_autoclip_maxline = 50
+
         # initialization
         # self.channel_init()
         # self.chaincode_init()
@@ -236,17 +240,16 @@ class E2eTest(BaseTestCase):
         self.channel_join()
 
         self.chaincode_install()
-        self.chaincode_instantiate()
-        self.chaincode_invoke(args=['a', 'b', '33'])
+        self.chaincode_instantiate(args=['a', '100', 'b', '100'])
+        self.chaincode_invoke(args=['a', 'b', '20'])
 
         # custom operations
         # sla, met = self.fabricate_sla_and_metrics()
-        # # self.chaincode_invoke(args=[sla, met])
+        # self.chaincode_invoke(args=['a', 'b', sla])
 
-        # self.query_block_by_txid()
-        # self.query_block_by_hash()
-        # self.query_block()
-        # self.query_transaction()
+        res = self.query_block(block_number=2)
+        # res = self.query_transaction()
+        pp(res, config=pp_conf)
 
         # input("Press ENTER to end tests")
 
@@ -262,7 +265,7 @@ class E2eTest(BaseTestCase):
         metrics = trustas.sla.SLA(latency=8)
 
         # create an agreement
-        agreement = trustas.agreement.Agreement(sla, peers)
+        agreement = trustas.agreement.Agreement(SLA=sla, peers=peers)
         agreement.append_metrics(metrics)
 
         # get encrypted properties
