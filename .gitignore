@@ -7,3 +7,12 @@ vendor/
 # python
 *.pyc
 __pycache__
+
+# cryptographic keys generated
+**/fabric-ca-server/keystore
+
+# logs
+*.log
+
+# others
+.vscode/

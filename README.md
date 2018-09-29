@@ -1,19 +1,16 @@
 # TrustAS
 > Establishing trust among autonomous systems
 
-## Built with:
-
-- [Hyperledger Fabric](https://github.com/hyperledger/fabric)
-
 ## Software versions
 
 Software        | Version
 --------------- | -----------
 OS              | Ubuntu 18.04.1 LTS
-Go              | 1.10.3
-Hyperledger     | 1.2.0
-Docker          | 18.06.0-ce
-Docker Compose  | 1.21.2
+[Go](https://golang.org/doc/install)                                | 1.10.3
+[Hyperledger](https://hyperledger-fabric.readthedocs.io/en/release-1.2/getting_started.html)    | 1.2.0
+[Docker](https://docs.docker.com/install/linux/docker-ce/ubuntu/)   | 18.06.0-ce
+[Docker Compose](https://docs.docker.com/compose/install/)          | 1.21.2
+[Fabric-SDK-Py](https://github.com/hyperledger/fabric-sdk-py)       | 0.7.0
 
 ## Requirements
 
@@ -33,6 +30,18 @@ cd trustas
 ```
 
 ## Getting Started
+
+```sh
+cd application
+./network.sh
+```
+
+In another terminal:
+```sh
+docker-compose up
+```
+
+## Getting Started [OLD]
 
 #### All 3 terminals:
 
