@@ -4,7 +4,7 @@ import unittest
 from network import start
 from network import tests as net_tests
 
-RUN_TESTS = False
+RUN_TESTS = True
 MODULES = [{
     'name': "Network",
     'module': net_tests,
@@ -23,7 +23,9 @@ def tests():
         if len(result.failures) > 0:
             print("\t[ ABORTING: {} module failed one or more tests ]\n".format(m["name"]))
             exit(1)
-    print("\tPASS: All tests were successful :)\n")
+
+    print("\n\tPASS: All tests were successful :)\n")
+
 
 if __name__ == "__main__":
 
@@ -39,4 +41,4 @@ if __name__ == "__main__":
     if RUN_TESTS:
         tests()
 
-    testModule(start)
+    # testModule(start)

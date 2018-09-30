@@ -15,8 +15,8 @@ from random import randint
 # SETTINGS
 CREATE_LOGS = True
 LOG_FILE    = "logs/main.log"
-CC_PATH     = 'github.com/banana'
-CC_NAME     = 'banana'
+CC_PATH     = 'github.com/example_cc'
+CC_NAME     = 'example_cc'
 CC_VERSION  = '1.0'
 
 # logging config
@@ -256,7 +256,7 @@ class E2eTest(BaseTestCase):
         # sla, met = self.fabricate_sla_and_metrics()
         # self.chaincode_invoke(args=['a', 'b', sla])
 
-        res = self.query_block(block_number=2)
+        res = self.query_block(block_number=1)
         # res = self.query_transaction()
         # pp(res, config=pp_conf)
 
