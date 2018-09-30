@@ -12,17 +12,24 @@ from .utils import BaseTestCase
 from .config import E2E_CONFIG
 from random import randint
 
+# SETTINGS
 CREATE_LOGS = True
 LOG_FILE    = "logs/main.log"
-CC_PATH     = 'github.com/trustas_cc'
-CC_NAME     = 'trustas_cc'
+CC_PATH     = 'github.com/banana'
+CC_NAME     = 'banana'
 CC_VERSION  = '1.0'
 
+# logging config
 logging.basicConfig(
     level=logging.DEBUG,
     filename=LOG_FILE if CREATE_LOGS else ""
 )
 logger = logging.getLogger(__name__)
+
+# beeprint config
+pp_conf = Config()
+pp_conf.max_depth = 20
+pp_conf.text_autoclip_maxline = 50
 
 class E2eTest(BaseTestCase):
 
@@ -104,6 +111,7 @@ class E2eTest(BaseTestCase):
     def chaincode_instantiate(self, args=['a', '200']):
 
         orgs = ["org1.example.com"]
+        logger.info("Instantiating chaincode...")
         for org in orgs:
             org_admin = self.client.get_user(org, "Admin")
             response = self.client.chaincode_instantiate(
@@ -232,10 +240,6 @@ class E2eTest(BaseTestCase):
     # Testing routine
     def test_in_sequence(self):
 
-        pp_conf = Config()
-        pp_conf.max_depth = 20
-        pp_conf.text_autoclip_maxline = 50
-
         # initialization
         # self.channel_init()
         # self.chaincode_init()
@@ -245,14 +249,14 @@ class E2eTest(BaseTestCase):
         self.channel_join()
 
         self.chaincode_install()
-        self.chaincode_instantiate(args=['a', '100'])
+        self.chaincode_instantiate(args=['a', '100', 'b', '200'])
         # self.chaincode_invoke(args=['a', 'b', '20'])
 
         # custom operations
         # sla, met = self.fabricate_sla_and_metrics()
         # self.chaincode_invoke(args=['a', 'b', sla])
 
-        # res = self.query_block(block_number=2)
+        res = self.query_block(block_number=2)
         # res = self.query_transaction()
         # pp(res, config=pp_conf)
 
