@@ -50,8 +50,8 @@ class BaseTestCase(unittest.TestCase):
     # Logs Hyperledger network output
     def __log_network(self):
         output, _, _ = cli_call([
-            "docker-compose", "-f", self.compose_file_path, "logs",
-            "-f"
+            "docker-compose", "-f", self.compose_file_path,
+            "logs", "-f"
         ])
         output = output.decode()
         ansi_escape = re.compile(r'\x1B\[[0-?]*[ -/]*[@-~]')
@@ -76,7 +76,12 @@ class BaseTestCase(unittest.TestCase):
 
     def shutdown_test_env(self):
         print(" > Shutting down network")
-        cli_call(["docker-compose", "-f", self.compose_file_path, "down"])
+
+        # Get network down
+        cli_call([ "docker-compose", "-f", self.compose_file_path, "down", "--volumes" ])
+
+        # Remove unwanted containers, images, and files
+        cli_call(["./cleanup.sh"])
 
 
 def cli_call(arg_list, expect_success=True, env=os.environ.copy()):

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import unittest
-
+from beeprint import pp
 from network import start
 from network import tests as net_tests
 
@@ -22,6 +22,9 @@ def tests():
         result = testModule(m["module"])
         if len(result.failures) > 0:
             print("\t[ ABORTING: {} module failed one or more tests ]\n".format(m["name"]))
+            exit(1)
+        if len(result.errors) > 0:
+            print("\t[ ABORTING: {} had an execution error ]\n".format(m["name"]))
             exit(1)
 
     print("\n\tPASS: All tests were successful :)\n")
