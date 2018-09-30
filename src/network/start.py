@@ -2,6 +2,7 @@ import time
 import json
 import docker
 import logging
+import sys
 import unittest
 from beeprint import pp, Config
 
@@ -11,16 +12,18 @@ from .utils import BaseTestCase
 from .config import E2E_CONFIG
 from random import randint
 
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
-
-CC_PATH = 'github.com/banana'
-CC_NAME = 'banana'
+CREATE_LOGS = True
+LOG_FILE = "logs/main.log"
+CC_PATH = 'github.com/trustas_cc'
+CC_NAME = 'trustas_cc'
 CC_VERSION = '1.0'
+
+logging.basicConfig(
+    level=logging.DEBUG, filename=LOG_FILE if CREATE_LOGS else "")
+logger = logging.getLogger(__name__)
 
 
 class E2eTest(BaseTestCase):
-
     def setUp(self):
         super(E2eTest, self).setUp()
 
