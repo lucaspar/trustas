@@ -1,5 +1,7 @@
 # Data structure for Service Level Agreements
 # Can describe an SLA agreed (ideal) or a set of measured properties (real)
+import math
+import random
 
 from pyope import ope
 
@@ -17,8 +19,7 @@ class SLA:
         'availability'  : { 'type': float, 'min': 0, 'max': 1e2,       'precision': 1e-8,  'desc': 'Link availability [% of time]'},
     }
 
-
-    def __init__( self, bandwidth=100, latency=5, packet_loss=1e-2,
+    def __init__( self, randomize=False, bandwidth=100, latency=5, packet_loss=1e-2,
             jitter=2, repair=5, guarantee=1-5e-2, availability=1-1e-2 ):
 
         # eliminates "has no attribute" warning
@@ -28,7 +29,34 @@ class SLA:
         # set all properties received in constructor
         props = locals()
         for k,v in props.items():
-            if self.__isValidProp(k,v):
+
+            # ignore if there is no property with the name
+            if k not in self.PROPS:
+                continue
+
+            # pick random value in field range
+            if randomize:
+
+                if self.PROPS[k]["type"] == float:
+
+                    # get number of digits from precision
+                    rounding_digits = int( max( 0,
+                        math.log(1 / self.PROPS[k]["precision"], 10))
+                    )
+                    value = random.uniform(
+                        self.PROPS[k]["min"],
+                        self.PROPS[k]["max"]
+                    )
+                    value = round(value, rounding_digits)
+
+                elif self.PROPS[k]["type"] == int:
+                    value = random.randint(self.PROPS[k]["min"],
+                                          self.PROPS[k]["max"])
+
+                setattr(self, k, value)
+
+            # or pick from the props
+            elif self.__isValidProp(k,v):
                 setattr(self, k, v)
 
     # ===============
@@ -36,11 +64,31 @@ class SLA:
 
     # Checks if a property is valid according to the expected type and range
     # Returns True if valid, throws an exception otherwise
-    def __isValidProp(self, k, v):
+    def __isValidProp(self, k, v, should_raise=True):
+        """Checks if property is valid based on self.PROPS.
+
+        Args:
+            k:              Property key
+            v:              Property value
+            should_raise:   Flag that enables raise behavior
+        Returns:
+            True if valid.
+            False if invalid AND should_raise is False
+        Raises:
+            (Only if should_raise is True)
+            TypeError: if property type does not match self.PROPS
+            ValueError: if property value is out of the range defined in self.PROPS
+        """
+
         if k not in self.PROPS:
             return True
         if type(v) is not self.PROPS[k]['type']:
-            raise TypeError("Property {} must be a {}, not a {}.".format(k, self.PROPS[k]['type'], type(v)))
+            msg = "Property {} must be a {}, not a {}.".format(k, self.PROPS[k]['type'], type(v))
+            if should_raise:
+                raise TypeError(msg)
+            else:
+                print(msg)
+                return False
 
         norm_val = self.__normalizeProp(k, v)
         norm_min = int(self.PROPS[k]['min'] / self.PROPS[k]['precision'])
