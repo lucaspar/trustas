@@ -15,7 +15,6 @@ from .config import E2E_CONFIG
 NETWORK_NAME = "test-network"
 LOG_FILE = "logs/trustas." + str(time.time()) + ".log"
 
-
 class BaseTestCase(unittest.TestCase):
     """
     Base class for test cases.
@@ -24,9 +23,8 @@ class BaseTestCase(unittest.TestCase):
 
     def setUp(self):
         self.gopath_bak = os.environ.get('GOPATH', '')
-        gopath = os.path.normpath(
-            os.path.join(
-                os.path.dirname(__file__), "../test/fixtures/chaincode"))
+        gopath = os.path.normpath(os.path.join(os.path.dirname(__file__),
+                                               "../test/fixtures/chaincode"))
 
         os.environ['GOPATH'] = os.path.abspath(gopath)
         self.channel_tx = \
@@ -51,8 +49,10 @@ class BaseTestCase(unittest.TestCase):
 
     # Logs Hyperledger network output
     def __log_network(self):
-        output, _, _ = cli_call(
-            ["docker-compose", "-f", self.compose_file_path, "logs", "-f"])
+        output, _, _ = cli_call([
+            "docker-compose", "-f", self.compose_file_path, "logs",
+            "-f"
+        ])
         output = output.decode()
         ansi_escape = re.compile(r'\x1B\[[0-?]*[ -/]*[@-~]')
         output = ansi_escape.sub('', output)
@@ -68,10 +68,7 @@ class BaseTestCase(unittest.TestCase):
     def start_test_env(self):
         # cli_call(["docker-compose", "-f", self.compose_file_path, "up", "-d"])
         print(" > Setting network... see it with \"docker stats\"")
-        cli_call([
-            "docker-compose", "-f", self.compose_file_path, "up", "-d",
-            "--scale", "cli=0"
-        ])
+        cli_call(["docker-compose", "-f", self.compose_file_path, "up", "-d", "--scale", "cli=0"])
         time.sleep(1)
         network_logs = threading.Thread(target=self.__log_network)
         network_logs.start()
@@ -94,8 +91,8 @@ def cli_call(arg_list, expect_success=True, env=os.environ.copy()):
     Returns: (string, string, int) output message, error message, return code
 
     """
-    p = subprocess.Popen(
-        arg_list, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=env)
+    p = subprocess.Popen(arg_list, stdout=subprocess.PIPE,
+                         stderr=subprocess.PIPE, env=env)
     output, error = p.communicate()
     if p.returncode != 0:
         if output:
@@ -103,5 +100,6 @@ def cli_call(arg_list, expect_success=True, env=os.environ.copy()):
         if error:
             print("Error Message:\n" + str(error))
         if expect_success:
-            raise subprocess.CalledProcessError(p.returncode, arg_list, output)
+            raise subprocess.CalledProcessError(
+                p.returncode, arg_list, output)
     return output, error, p.returncode

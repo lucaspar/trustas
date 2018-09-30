@@ -13,17 +13,19 @@ from .config import E2E_CONFIG
 from random import randint
 
 CREATE_LOGS = True
-LOG_FILE = "logs/main.log"
-CC_PATH = 'github.com/trustas_cc'
-CC_NAME = 'trustas_cc'
-CC_VERSION = '1.0'
+LOG_FILE    = "logs/main.log"
+CC_PATH     = 'github.com/trustas_cc'
+CC_NAME     = 'trustas_cc'
+CC_VERSION  = '1.0'
 
 logging.basicConfig(
-    level=logging.DEBUG, filename=LOG_FILE if CREATE_LOGS else "")
+    level=logging.DEBUG,
+    filename=LOG_FILE if CREATE_LOGS else ""
+)
 logger = logging.getLogger(__name__)
 
-
 class E2eTest(BaseTestCase):
+
     def setUp(self):
         super(E2eTest, self).setUp()
 
@@ -99,7 +101,7 @@ class E2eTest(BaseTestCase):
 
 
     # Instantiating an example chaincode to peer
-    def chaincode_instantiate(self, args=['a', '200', 'b', '300']):
+    def chaincode_instantiate(self, args=['a', '200']):
 
         orgs = ["org1.example.com"]
         for org in orgs:
@@ -243,16 +245,16 @@ class E2eTest(BaseTestCase):
         self.channel_join()
 
         self.chaincode_install()
-        self.chaincode_instantiate(args=['a', '100', 'b', '100'])
-        self.chaincode_invoke(args=['a', 'b', '20'])
+        self.chaincode_instantiate(args=['a', '100'])
+        # self.chaincode_invoke(args=['a', 'b', '20'])
 
         # custom operations
         # sla, met = self.fabricate_sla_and_metrics()
         # self.chaincode_invoke(args=['a', 'b', sla])
 
-        res = self.query_block(block_number=2)
+        # res = self.query_block(block_number=2)
         # res = self.query_transaction()
-        pp(res, config=pp_conf)
+        # pp(res, config=pp_conf)
 
         # input("Press ENTER to end tests")
 
