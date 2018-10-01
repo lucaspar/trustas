@@ -14,7 +14,7 @@ import trustas
 EXP_DIR = "experiments"
 MAX_ASN = 2**16-1
 
-def privacy_cost(network_size=100, connections=1000):
+def privacy_cost(network_size=100, connections=100, mpa=10):
     """Simulates agreements with and without privacy (encryption).
 
     Agreements are simulated based on a set of parameters passed.
@@ -25,6 +25,7 @@ def privacy_cost(network_size=100, connections=1000):
     Args:
         network_size:   number (S) of ASes in the network
         connections:    number of interconnections among ASes
+        mpa:            metric sets per agreement
     Raises:
         ValueError:     if S (network_size) is less than 3
         ValueError:     if the number of connections is too large (nCr formula)
@@ -87,7 +88,8 @@ def privacy_cost(network_size=100, connections=1000):
         size = len(pairs)
         agreements = []
         for idx,pair in enumerate(pairs):
-            agreement = __agreement_factory(pair[0], pair[1])
+            agreement = __agreement_factory(
+                pair[0], pair[1], metric_samples=mpa)
 
             # get encrypted properties
             enc_sla = agreement.get_encrypted_sla()
@@ -179,7 +181,31 @@ def privacy_cost(network_size=100, connections=1000):
     print("> Printing to files...")
     __agreements_to_file(agreements, filepath=working_dir, extras=exp)
 
+def package_demos():
+    """Print examples of the encryption used to stdout."""
+
+    asn_a   = random.randint(0, 2**15 - 1)
+    asn_b   = random.randint(2**15, 2**16-1)
+    peers   = { asn_a, asn_b }
+    sla     = trustas.sla.SLA(latency=5)
+    metrics = trustas.sla.SLA(latency=10)
+
+    # create an agreement
+    agreement = trustas.agreement.Agreement(SLA=sla, peers=peers)
+    agreement.append_metrics(metrics)
+
+    # get encrypted properties
+    enc_sla = agreement.get_encrypted_sla()
+    enc_met = agreement.get_encrypted_metrics()
+
+    sla.print()
+    metrics.print()
+
+    pp(enc_sla)
+    pp(enc_met)
+
 
 def run():
     """Run all experiments available."""
-    privacy_cost()
+    # privacy_cost()
+    package_demos()
