@@ -52,3 +52,14 @@ class Agreement:
     def get_encrypted_metrics(self):
         """Returns encrypted agreement metrics [list of dicts]."""
         return self.__met_enc
+
+    def get_plaintext_sla(self):
+        """Returns PLAINTEXT SLA of agreement [dict]."""
+        return self.__sla.extract()
+
+    def get_plaintext_metrics(self):
+        """Returns PLAINTEXT agreement metrics [list of dicts]."""
+        plain_metrics = []
+        for m in self.__met:
+            plain_metrics.append(m.extract())
+        return plain_metrics

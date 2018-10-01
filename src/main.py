@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import unittest
 from beeprint import pp
+from trustas import experiments
 from network import start
 from network import tests as net_tests
 
@@ -54,4 +55,5 @@ if __name__ == "__main__":
     if RUN_TESTS:
         tests()
 
+    experiments.run()
     # testModule(start)
