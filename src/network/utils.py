@@ -1,8 +1,10 @@
 # SPDX-License-Identifier: Apache-2.0
 
+import errno
 import os
 import re
 import subprocess
+import threading
 import time
 import unittest
 
@@ -11,6 +13,7 @@ from hfc.fabric.user import create_user
 from .config import E2E_CONFIG
 
 NETWORK_NAME = "test-network"
+LOG_FILE = "logs/trustas." + str(time.time()) + ".log"
 
 class BaseTestCase(unittest.TestCase):
     """
@@ -42,28 +45,43 @@ class BaseTestCase(unittest.TestCase):
         self.start_test_env()
 
     def tearDown(self):
-        self.check_logs()
-        time.sleep(3)
         self.shutdown_test_env()
 
-    # outputs log to trustas.log
-    def check_logs(self):
+    # Logs Hyperledger network output
+    def __log_network(self):
         output, _, _ = cli_call([
-            "docker-compose", "-f", self.compose_file_path, "logs",
-            "--tail=400"
+            "docker-compose", "-f", self.compose_file_path,
+            "logs", "-f"
         ])
         output = output.decode()
         ansi_escape = re.compile(r'\x1B\[[0-?]*[ -/]*[@-~]')
         output = ansi_escape.sub('', output)
-        with open("trustas.log", "w+") as fp:
+        if not os.path.exists(os.path.dirname(LOG_FILE)):
+            try:
+                os.makedirs(os.path.dirname(LOG_FILE))
+            except OSError as exc:  # Guard against race condition
+                if exc.errno != errno.EEXIST:
+                    raise
+        with open(LOG_FILE, "w+") as fp:
             fp.write(output)
 
     def start_test_env(self):
         # cli_call(["docker-compose", "-f", self.compose_file_path, "up", "-d"])
+        print(" > Setting network... see it with \"docker stats\"")
         cli_call(["docker-compose", "-f", self.compose_file_path, "up", "-d", "--scale", "cli=0"])
+        time.sleep(1)
+        network_logs = threading.Thread(target=self.__log_network)
+        network_logs.start()
+        print(" > Logging Network output to \"{}\"".format(LOG_FILE))
 
     def shutdown_test_env(self):
-        cli_call(["docker-compose", "-f", self.compose_file_path, "down"])
+        print(" > Shutting down network")
+
+        # Get network down
+        cli_call([ "docker-compose", "-f", self.compose_file_path, "down", "--volumes" ])
+
+        # Remove unwanted containers, images, and files
+        cli_call(["./cleanup.sh"])
 
 
 def cli_call(arg_list, expect_success=True, env=os.environ.copy()):

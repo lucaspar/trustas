@@ -11,6 +11,7 @@ class Agreement:
         id:         An uuid for this agreement.
         enc_key:    Key used to encrypt SLA and metrics before
                     making them public. Comes from SLA class.
+        sla:        SLA set for this agreement.
     """
 
     def __init__(self, SLA, peers):
@@ -26,7 +27,10 @@ class Agreement:
         self.id = uuid.uuid4()
         self.enc_key, self.__sla_enc = SLA.encrypt()
 
-    # Appends a set of measurements to this agreement
+    @property
+    def sla(self):
+        return self.__sla
+
     def append_metrics(self, metrics):
         """Appends metrics to this Agreement object.
 
@@ -48,3 +52,14 @@ class Agreement:
     def get_encrypted_metrics(self):
         """Returns encrypted agreement metrics [list of dicts]."""
         return self.__met_enc
+
+    def get_plaintext_sla(self):
+        """Returns PLAINTEXT SLA of agreement [dict]."""
+        return self.__sla.extract()
+
+    def get_plaintext_metrics(self):
+        """Returns PLAINTEXT agreement metrics [list of dicts]."""
+        plain_metrics = []
+        for m in self.__met:
+            plain_metrics.append(m.extract())
+        return plain_metrics
