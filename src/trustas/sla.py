@@ -6,6 +6,11 @@ import random
 from pyope import ope
 
 class SLA:
+    """Represents a Service Level Agreement or a set of measured properties.
+
+    The SLA by itself does not imply there exists an agreement. See the Agreement class for that.
+
+    """
 
     # Known properties of the SLA.
     # Only these will be encrypted and passed to the blockchain.
@@ -98,31 +103,61 @@ class SLA:
 
         return True
 
-    # Normalizes a property before encryption
-    #   Float props are multiplied by their inverted precision.
-    #   This maps the domain [min, max] to [min/precision, max/precision]
-    #   allowing the casting of floats to integers with this precision
+
     def __normalizeProp(self, k, v):
+        """Maps a property to the integer spectrum before encryption.
+
+        Float props are multiplied by their inverted precision.
+        This maps the domain [min, max] to [min/precision, max/precision]
+            allowing the casting of floats to integers with this precision
+
+        Args:
+            k: key of property to be normalized.
+            v: value of property to be normalized.
+        Returns:
+            Normalized property as an integer.
+        Raises:
+            TypeError if casting to integer fails.
+        """
         if type(v) is not float:
             try:
                 return int(v)
             except:
-                print("ERROR: Could not cast {} of type {} to integer".format(v, type(v)))
+                raise TypeError(
+                    "Could not cast {} of type {} to integer".format( v, type(v) )
+                )
         return int(v / self.PROPS[k]['precision'])
 
     # ==============
     # PUBLIC METHODS
 
-    # Print instance for debugging purposes
     def print(self):
+        """Prints the instance props to stdout for debugging purposes."""
         for k,v in self.PROPS.items():
             print("\t{}\t{}".format(self.__getattribute__(k), v['desc']))
         print("\n")
 
 
-    # Encrypts props data using OPE (pyope)
     def encrypt(self, encryption_key=None):
+        """Encrypts props data using OPE (PyOPE)
 
+        The property keys are not encrypted, only their values.
+        The encryption algorithm used is the Order Preserving Encryption
+        provided by PyOPE library. The ciphertexts reveals the order between
+        plaintexts (a and b) encrypted with the same key (k), as in:
+
+            a > b    iff    enc(a,k) > enc(b,k)
+
+        This is useful to compare whether a measurement is within the
+        SLA of the corresponding agreement.
+
+        Args:
+            encryption_key: used to encrypt the data.
+        Returns:
+            A tuple with:
+                The encryption_key used.
+                A dict with the encrypted properties.
+        """
         if encryption_key is None:
             encryption_key = ope.OPE.generate_key()
         encrypted_sla = {}
@@ -142,3 +177,21 @@ class SLA:
             encrypted_sla[k] = cipher.encrypt(int(norm_val))
 
         return encryption_key, encrypted_sla
+
+
+    def extract(self):
+        """Extracts a plaintext (readable) dict from this SLA instance.
+
+        Sometimes it is useful to have a simple dict with the SLA properties.
+        It works like a version of self.encrypt() without the encryption part.
+
+        Returns
+            A dict with the plaintext properties.
+        """
+
+        plaintext_sla = {}
+        # for every property, create a dict entry
+        for k, v in self.PROPS.items():
+            plaintext_sla[k] = self.__getattribute__(k)
+
+        return plaintext_sla
