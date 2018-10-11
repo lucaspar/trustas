@@ -83,6 +83,21 @@ class E2eTest(BaseTestCase):
             fcn='init',
             args=args)
 
+        """
+        # Getting current state for 'a':
+        args = 'a'
+        tx_prop = create_tx_prop_req(
+            prop_type=CC_INSTANTIATE,
+            cc_type=CC_TYPE_GOLANG,
+            cc_name=CC_NAME,
+            cc_version=CC_VERSION,
+            fcn='getAsset',         # implement function `getAsset` in chaincode
+            args=args)
+        tx_context_dep = create_tx_context(org1_admin, crypto, tx_prop)
+        res = channel.send_instantiate_proposal(tx_context_dep, [peer])
+        logger.debug(res)
+        """
+
         org1 = 'org1.example.com'
         crypto = ecies()
         org1_admin = get_peer_org_user(org1, 'Admin', self.client.state_store)
@@ -124,94 +139,6 @@ class E2eTest(BaseTestCase):
         res, _ = q.get(timeout=5)
         logger.debug(res)
         self.assertEqual(res.status, 200)
-
-    # Create an channel for further testing.
-    def channel_create(self):
-
-        logger.info("E2E: Channel creation start: name={}".format(
-            self.channel_name))
-
-        # By default, self.user is the admin of org1
-        response = self.client.channel_create('orderer.example.com',
-                                              self.channel_name,
-                                              self.user,
-                                              self.config_yaml,
-                                              self.channel_profile)
-        self.assertTrue(response)
-
-        logger.info("E2E: Channel creation done: name={}".format(
-            self.channel_name))
-
-    # Join peers of two orgs into the existing channel
-    def channel_join(self):
-
-        # channel must already exist when to join
-        channel = self.client.get_channel(self.channel_name)
-        self.assertIsNotNone(channel)
-
-        orgs = ["org1.example.com", "org2.example.com"]
-        for org in orgs:
-            org_admin = self.client.get_user(org, 'Admin')
-            response = self.client.channel_join(
-                requestor=org_admin,
-                channel_name=self.channel_name,
-                peer_names=['peer0.' + org, 'peer1.' + org],
-                orderer_name='orderer.example.com'
-            )
-            self.assertTrue(response)
-            # Verify the ledger exists now in the peer node
-            dc = docker.from_env()
-            for peer in ['peer0', 'peer1']:
-                peer0_container = dc.containers.get(peer + '.' + org)
-                code, output = peer0_container.exec_run(
-                    'test -f '
-                    '/var/hyperledger/production/ledgersData/chains/chains/{}'
-                    '/blockfile_000000'.format(self.channel_name))
-                self.assertEqual(code, 0, "Local ledger not exists")
-
-    # Installing an example chaincode to peer
-    def chaincode_install(self):
-
-        orgs = ["org1.example.com", "org2.example.com"]
-        for org in orgs:
-            org_admin = self.client.get_user(org, "Admin")
-            response = self.client.chaincode_install(
-                requestor=org_admin,
-                peer_names=['peer0.' + org, 'peer1.' + org],
-                cc_path=CC_PATH,
-                cc_name=CC_NAME,
-                cc_version=CC_VERSION
-            )
-            self.assertTrue(response)
-            # Verify the cc pack exists now in the peer node
-            dc = docker.from_env()
-            for peer in ['peer0', 'peer1']:
-                peer0_container = dc.containers.get(peer + '.' + org)
-                code, output = peer0_container.exec_run(
-                    'test -f '
-                    '/var/hyperledger/production/chaincodes/' + CC_NAME + '.' + CC_VERSION)
-                self.assertEqual(code, 0, "chaincodes pack not exists")
-
-
-    # Instantiating an example chaincode to peer
-    def chaincode_instantiate(self, args=['a', '200']):
-
-        orgs = ["org1.example.com"]
-        logger.info("Instantiating chaincode...")
-        for org in orgs:
-            org_admin = self.client.get_user(org, "Admin")
-            response = self.client.chaincode_instantiate(
-                requestor=org_admin,
-                channel_name=self.channel_name,
-                peer_names=['peer0.' + org, 'peer1.' + org],
-                args=args,
-                cc_name=CC_NAME,
-                cc_version=CC_VERSION
-            )
-            logger.info(
-                "E2E: Chaincode instantiation response {}".format(response))
-            self.assertTrue(response)
-
 
     # Invoking an example chaincode to peer
     def chaincode_invoke(self, args=['a', 'b', '100']):
@@ -317,22 +244,6 @@ class E2eTest(BaseTestCase):
 
         self.instantiate_chaincode()
 
-        # print("    creating channel")
-        # self.channel_create()
-        # time.sleep(5)  # wait for channel creation
-
-        # print("    joining channel")
-        # self.channel_join()
-        # time.sleep(5)
-
-        # print("    installing chaincode")
-        # self.chaincode_install()
-        # time.sleep(5)
-
-        # print("    instantiating chaincode")
-        # self.chaincode_instantiate(args=['a', '200', 'b', '300'])
-        # # time.sleep(5)
-
         print("    invoking chaincode")
         self.chaincode_invoke(args=['a', 'b', '20'])
 
@@ -345,39 +256,10 @@ class E2eTest(BaseTestCase):
         # res = self.query_transaction()
         # pp(res, config=pp_conf)
 
-        print("STATE STORE")
-        pp(self.client.state_store.get_attrs())
-
         # input("Press ENTER to end tests")
 
         logger.info("Sequential test done\n\n")
 
-    def fabricate_sla_and_metrics(self):
-
-        pass
-        # # agreement properties and sample measurement
-        # asn_a   = randint(0, 2**15-1)
-        # asn_b   = randint(2**15, 2**16-1)
-        # peers   = { asn_a, asn_b }
-        # sla     = trustas.sla.SLA(latency=5)
-        # metrics = trustas.sla.SLA(latency=8)
-
-        # # create an agreement
-        # agreement = trustas.agreement.Agreement(SLA=sla, peers=peers)
-        # agreement.append_metrics(metrics)
-
-        # # get encrypted properties
-        # enc_sla = agreement.get_encrypted_sla()
-        # enc_met = agreement.get_encrypted_metrics()
-
-        # # sanity check
-        # self.assertGreater(
-        #     enc_met[0]['latency'],
-        #     enc_sla['latency'],
-        #     "The latency measured should be greater than the SLA's even after encrypted."
-        # )
-
-        # return json.dumps(enc_sla), json.dumps(enc_met)
 
 if __name__ == "__main__":
     unittest.main()
