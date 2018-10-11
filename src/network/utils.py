@@ -66,7 +66,11 @@ class BaseTestCase(unittest.TestCase):
             fp.write(output)
 
     def start_test_env(self):
-        # cli_call(["docker-compose", "-f", self.compose_file_path, "up", "-d"])
+
+        print(" > Removing old assets")
+        # Remove unwanted containers, images, and files
+        cli_call(["./cleanup.sh"])
+
         print(" > Setting network... see it with \"docker stats\"")
         cli_call(["docker-compose", "-f", self.compose_file_path, "up", "-d", "--scale", "cli=0"])
         time.sleep(1)
@@ -79,9 +83,6 @@ class BaseTestCase(unittest.TestCase):
 
         # Get network down
         cli_call([ "docker-compose", "-f", self.compose_file_path, "down", "--volumes" ])
-
-        # Remove unwanted containers, images, and files
-        cli_call(["./cleanup.sh"])
 
 
 # This should be deprecated, and use client.get_user() API instead
