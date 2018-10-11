@@ -30,7 +30,7 @@ class BaseTestCase(unittest.TestCase):
         self.channel_tx = \
             E2E_CONFIG[NETWORK_NAME]['channel-artifacts']['channel.tx']
         self.compose_file_path = \
-            E2E_CONFIG[NETWORK_NAME]['docker']['compose_file_tls_cli']
+            E2E_CONFIG[NETWORK_NAME]['docker']['compose_file_tls']
 
         self.config_yaml = \
             E2E_CONFIG[NETWORK_NAME]['channel-artifacts']['config_yaml']
@@ -82,6 +82,52 @@ class BaseTestCase(unittest.TestCase):
 
         # Remove unwanted containers, images, and files
         cli_call(["./cleanup.sh"])
+
+
+# This should be deprecated, and use client.get_user() API instead
+def get_peer_org_user(org, user, state_store):
+    """Loads the requested user for a given peer org
+        and returns a user object.
+    """
+
+    peer_user_base_path = os.path.join(
+        os.getcwd(),
+        'test/fixtures/e2e_cli/crypto-config/peerOrganizations/{0}'
+        '/users/{1}@{0}/msp/'.format(org, user))
+
+    key_path = os.path.join(
+        peer_user_base_path, 'keystore/',
+        E2E_CONFIG['test-network'][org]['users'][user]['private_key'])
+
+    cert_path = os.path.join(
+        peer_user_base_path, 'signcerts/',
+        E2E_CONFIG['test-network'][org]['users'][user]['cert'])
+
+    msp_id = E2E_CONFIG['test-network'][org]['mspid']
+
+    return create_user(user, org, state_store, msp_id, key_path, cert_path)
+
+
+def get_orderer_org_user(org='example.com', user='Admin', state_store=None):
+    """Loads the admin user for a given orderer org and
+        returns an user object.
+        Currently, orderer org only has Admin
+    """
+    msp_path = os.path.join(
+        os.getcwd(),
+        'test/fixtures/e2e_cli/crypto-config/ordererOrganizations/'
+        'example.com/users/Admin@example.com/msp/')
+
+    key_path = os.path.join(
+        msp_path, 'keystore/',
+        E2E_CONFIG['test-network']['orderer']['users'][user]['private_key'])
+
+    cert_path = os.path.join(
+        msp_path, 'signcerts',
+        E2E_CONFIG['test-network']['orderer']['users'][user]['cert'])
+    msp_id = E2E_CONFIG['test-network']['orderer']['mspid']
+
+    return create_user(user, org, state_store, msp_id, key_path, cert_path)
 
 
 def cli_call(arg_list, expect_success=True, env=os.environ.copy()):
