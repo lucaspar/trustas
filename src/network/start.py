@@ -16,7 +16,7 @@ from random import randint
 from hfc.fabric.peer import create_peer
 from hfc.fabric.transaction.tx_context import create_tx_context
 from hfc.fabric.transaction.tx_proposal_request import create_tx_prop_req, \
-    CC_TYPE_GOLANG, CC_INSTANTIATE, CC_INSTALL, TXProposalRequest
+    CC_TYPE_GOLANG, CC_INSTANTIATE, CC_INSTALL, CC_INVOKE, CC_QUERY, TXProposalRequest
 from hfc.util.crypto.crypto import ecies
 from hfc.util.utils import send_transaction, build_tx_req
 from .utils import get_peer_org_user, \
@@ -24,13 +24,19 @@ from .utils import get_peer_org_user, \
 from .e2e_utils import build_channel_request, \
     build_join_channel_req
 
+# ----------
 # SETTINGS
-CREATE_LOGS = True
-LOG_FILE    = "logs/main.log"
-CC_PATH     = 'github.com/example_cc'
-CC_NAME     = 'example_cc'
-CC_VERSION  = '1.0'
-TEST_NETWORK = E2E_CONFIG['test-network']
+
+CREATE_LOGS     = True
+LOG_FILE        = "logs/main.log"
+
+TEST_NETWORK    = E2E_CONFIG['test-network']
+CC_PATH         = 'github.com/trustas_cc'
+CC_NAME         = 'trustas_cc'
+CC_VERSION      = '1.0'
+DEFAULT_SLEEP   = 5
+
+# ----------
 
 # logging config
 logging.basicConfig(
@@ -44,6 +50,9 @@ pp_conf = Config()
 pp_conf.max_depth = 20
 pp_conf.text_autoclip_maxline = 50
 
+# ----------
+
+
 class E2eTest(BaseTestCase):
 
     def setUp(self):
@@ -52,213 +61,135 @@ class E2eTest(BaseTestCase):
     def tearDown(self):
         super(E2eTest, self).tearDown()
 
-    def instantiate_chaincode(self):
+    def test_in_sequence(self):
+        """Test sequential execution"""
 
+        # set ledger configs
+        self.configure()
+
+        # create the channel and chaincode
+        self.init_ledger()
+
+        # call chaincode invoke function
+        res = self.cc_call('invoke', args=['a', 'b', '100'])
+
+        # create an agreement
+        args = ['123', '456', 'SLA_MAROTO', 'aid_p1234567890']
+        self.cc_call('createAgreement', args)
+        time.sleep(DEFAULT_SLEEP)
+
+        # query an agreement
+        args = ['aid_p1234567890']
+        res = self.cc_call('queryAgreement', args)
+
+    def configure(self):
         peer_config = TEST_NETWORK['org1.example.com']['peers']['peer0']
-        tls_cacerts = peer_config['tls_cacerts']
-
-        opts = (('grpc.ssl_target_name_override',
-                 peer_config['server_hostname']), )
 
         endpoint = peer_config['grpc_request_endpoint']
-
+        tls_cacerts = peer_config['tls_cacerts']
+        opts = (('grpc.ssl_target_name_override',
+                 peer_config['server_hostname']), )
         peer = create_peer(
             endpoint=endpoint, tls_cacerts=tls_cacerts, opts=opts)
 
-        # for chain code install
+        self.peers = [peer]
+        self.org1 = 'org1.example.com'
+        self.crypto = ecies()
+        self.org1_admin = get_peer_org_user(self.org1, 'Admin',
+                                            self.client.state_store)
+
+    def init_ledger(self):
+
+        # create channel and join it
+        self.create_channel()
+        time.sleep(DEFAULT_SLEEP)
+        self.join_channel()
+        time.sleep(DEFAULT_SLEEP)
+
+        # install and instantiate the chaincode
+        self.cc_install()
+        time.sleep(DEFAULT_SLEEP)
+        args = ['a', '100', 'b', '40']
+        self.cc_call(fcn='init', args=args, prop_type=CC_INSTANTIATE)
+
+    def create_channel(self):
+        """Creates the default channel"""
+
+        request = build_channel_request(self.client, self.channel_tx,
+                                        self.channel_name)
+        self.client._create_channel(request)
+
+    def join_channel(self):
+        """Joins the default channel"""
+
+        self.channel = self.client.new_channel(self.channel_name)
+        join_req = build_join_channel_req(self.org1, self.channel, self.client)
+        self.channel.join_channel(join_req)
+
+    def cc_install(self):
         tran_prop_req_in = create_tx_prop_req(
             prop_type=CC_INSTALL,
             cc_path=CC_PATH,
             cc_type=CC_TYPE_GOLANG,
             cc_name=CC_NAME,
             cc_version=CC_VERSION)
+        tx_ctx = create_tx_context(self.org1_admin, self.crypto,
+                                   tran_prop_req_in)
+        self.client.send_install_proposal(tx_ctx, self.peers)
 
-        # for chain code deploy
-        args = ['a', '100', 'b', '40']
-        tran_prop_req_dep = create_tx_prop_req(
-            prop_type=CC_INSTANTIATE,
+
+    def cc_call(self, fcn, args, prop_type=CC_INVOKE):
+        """Instantiate chaincode or invoke a cc function with args
+        Args:
+            fcn:        Chaincode function name
+            args:       Chaincode function arguments
+            prop_type:  Proposal request type (default CC_INVOKE)
+        Returns:
+            Chaincode response
+            None when prop_type is not valid
+        """
+
+        tran_prop_req = create_tx_prop_req(
+            prop_type=prop_type,
             cc_type=CC_TYPE_GOLANG,
             cc_name=CC_NAME,
             cc_version=CC_VERSION,
-            fcn='init',
+            fcn=fcn,
             args=args)
+        tx_ctx = create_tx_context(self.org1_admin, self.crypto, tran_prop_req)
 
-        """
-        # Getting current state for 'a':
-        args = 'a'
-        tx_prop = create_tx_prop_req(
-            prop_type=CC_INSTANTIATE,
-            cc_type=CC_TYPE_GOLANG,
-            cc_name=CC_NAME,
-            cc_version=CC_VERSION,
-            fcn='getAsset',         # implement function `getAsset` in chaincode
-            args=args)
-        tx_context_dep = create_tx_context(org1_admin, crypto, tx_prop)
-        res = channel.send_instantiate_proposal(tx_context_dep, [peer])
-        logger.debug(res)
-        """
+        # invoke vs instantiate
+        if prop_type == CC_INVOKE:
+            # send standard invocation
+            res = self.channel.send_tx_proposal(tx_ctx, self.peers)
+        elif prop_type == CC_INSTANTIATE:
+            # instantiate chaincode and wait for propagation
+            res = self.channel.send_instantiate_proposal(tx_ctx, self.peers)
+            time.sleep(DEFAULT_SLEEP)
+        else:
+            logger.error("Invalid proposal request type." + \
+            "Must be {} or {}.".format(CC_INVOKE, CC_INSTANTIATE))
 
-        org1 = 'org1.example.com'
-        crypto = ecies()
-        org1_admin = get_peer_org_user(org1, 'Admin', self.client.state_store)
-
-        # create a channel
-        request = build_channel_request(self.client, self.channel_tx,
-                                        self.channel_name)
-
-        self.client._create_channel(request)
-        time.sleep(5)
-
-        # join channel
-        channel = self.client.new_channel(self.channel_name)
-        join_req = build_join_channel_req(org1, channel, self.client)
-        channel.join_channel(join_req)
-        time.sleep(5)
-
-        # install chain code
-        tx_context_in = create_tx_context(org1_admin, crypto, tran_prop_req_in)
-
-        self.client.send_install_proposal(tx_context_in, [peer])
-        time.sleep(5)
-
-        # deploy the chain code
-        tx_context_dep = create_tx_context(org1_admin, crypto,
-                                           tran_prop_req_dep)
-        res = channel.send_instantiate_proposal(tx_context_dep, [peer])
-        time.sleep(5)
+            return None
 
         # send the transaction to the channel
-        tx_context = create_tx_context(org1_admin, crypto, TXProposalRequest())
         tran_req = build_tx_req(res)
-        response = send_transaction(channel.orderers, tran_req, tx_context)
-        time.sleep(5)
+        tx_2_ctx = create_tx_context(self.org1_admin, self.crypto,
+                                     TXProposalRequest())
+        response = send_transaction(self.channel.orderers, tran_req, tx_2_ctx)
 
+        # wait for chaincode instantiation consensus
+        if prop_type == CC_INSTANTIATE:
+            time.sleep(DEFAULT_SLEEP)
+
+        # collect results
         q = Queue(1)
         response.subscribe(
             on_next=lambda x: q.put(x), on_error=lambda x: q.put(x))
-        res, _ = q.get(timeout=5)
-        logger.debug(res)
-        self.assertEqual(res.status, 200)
+        res, ign = q.get(timeout=DEFAULT_SLEEP)
+        # self.assertEqual(res.status, 200)
 
-    # Invoking an example chaincode to peer
-    def chaincode_invoke(self, args=['a', 'b', '100']):
-
-        orgs = ["org1.example.com"]
-        for org in orgs:
-            org_admin = self.client.get_user(org, "Admin")
-            response = self.client.chaincode_invoke(
-                requestor=org_admin,
-                channel_name=self.channel_name,
-                # peer_names=['peer0.' + org, 'peer1.' + org],
-                peer_names=['peer0.' + org],
-                args=args,
-                cc_name=CC_NAME,
-                cc_version=CC_VERSION)
-            self.assertTrue(response)
-
-    # Querying block by tx id
-    def query_block_by_txid(self):
-        orgs = ["org1.example.com"]
-        for org in orgs:
-            org_admin = self.client.get_user(org, "Admin")
-            response = self.client.query_block_by_txid(
-                requestor=org_admin,
-                channel_name=self.channel_name,
-                # peer_names=['peer0.' + org, 'peer1.' + org],
-                peer_names=['peer0.' + org],
-                tx_id=self.client.txid_for_test)
-            self.assertEqual(
-                response['header']['number'],
-                1,
-                "Query failed")
-
-
-    # Querying block by block hash
-    def query_block_by_hash(self):
-
-        orgs = ["org1.example.com"]
-        for org in orgs:
-            org_admin = self.client.get_user(org, "Admin")
-
-            response = self.client.query_info(
-                requestor=org_admin,
-                channel_name=self.channel_name,
-                # peer_names=['peer0.' + org, 'peer1.' + org],
-                peer_names=['peer0.' + org],
-            )
-
-            response = self.client.query_block_by_hash(
-                requestor=org_admin,
-                channel_name=self.channel_name,
-                # peer_names=['peer0.' + org, 'peer1.' + org],
-                peer_names=['peer0.' + org],
-                block_hash=response.currentBlockHash)
-            self.assertEqual(
-                response['header']['number'],
-                2,
-                "Query failed")
-
-
-    # Querying block by block number
-    def query_block(self, block_number=0):
-
-        orgs = ["org1.example.com"]
-        for org in orgs:
-            org_admin = self.client.get_user(org, "Admin")
-            response = self.client.query_block(
-                requestor=org_admin,
-                channel_name=self.channel_name,
-                # peer_names=['peer0.' + org, 'peer1.' + org],
-                peer_names=['peer0.' + org],
-                block_number=str(block_number))
-            self.assertEqual(
-                response['header']['number'],
-                block_number,
-                "Query failed: block numbers do not match")
-            self.blockheader = response['header']
-
-        return response
-
-    # Querying transaction by tx id
-    def query_transaction(self):
-
-        orgs = ["org1.example.com"]
-        for org in orgs:
-            org_admin = self.client.get_user(org, "Admin")
-            response = self.client.query_transaction(
-                requestor=org_admin,
-                channel_name=self.channel_name,
-                # peer_names=['peer0.' + org, 'peer1.' + org],
-                peer_names=['peer0.' + org],
-                tx_id=self.client.txid_for_test)
-            self.assertEqual(
-                response.get('transaction_envelope').get('payload').get(
-                    'header').get('channel_header').get('channel_id'),
-                self.channel_name,
-                "Query failed")
-
-        return response.get('transaction_envelope').get('payload')
-
-    # Testing routine
-    def test_in_sequence(self):
-
-        self.instantiate_chaincode()
-
-        print("    invoking chaincode")
-        self.chaincode_invoke(args=['a', 'b', '20'])
-
-        # custom operations
-        # sla, met = self.fabricate_sla_and_metrics()
-        # self.chaincode_invoke(args=['a', 'b', sla])
-
-        print("    querying block")
-        res = self.query_block(block_number=1)
-        # res = self.query_transaction()
-        # pp(res, config=pp_conf)
-
-        # input("Press ENTER to end tests")
-
-        logger.info("Sequential test done\n\n")
+        return res
 
 
 if __name__ == "__main__":
