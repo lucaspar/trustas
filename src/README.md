@@ -104,6 +104,7 @@ python test/integration/e2e_test.py
 
 If you've encountered any issues regarding the Hyperledger network:
 
+0. If it was working before, check the **Common Error Messages** below.
 1. **Follow this readme** and [prepare your environment](#preparing) first.
 2. Eliminate the **"works on my machine"** scenarios:
     - **Race conditions** - try calling `time.sleep(5)` before a faulty chaincode operation.
@@ -112,3 +113,18 @@ If you've encountered any issues regarding the Hyperledger network:
     - Look for `ERRO(R)` and `WARN(ING)`
     - Check the [chaincode output](#cc_out) if chaincode has been modified
 4. Pray for a miracle
+
+## Common Error Messages
+
+> TypeError: '_Rendezvous' object does not support indexing
+
+The chaincode may have returned an error. Could simply be an yet-to-be-created asset when it was queried. Try adding a sleep after creating it, so the orderer has some time to do its job.
+
+For more insight, check the main log at `logs/main.log`. An error may look like this:
+```log
+DEBUG:hfc.util.utils:<_Rendezvous of RPC that terminated with:
+	status = StatusCode.UNKNOWN
+	details = "chaincode error (status: 500, message: {"Error":"Agreement aid_p1234567890 does not exist"})"
+	debug_error_string = "{"created":"@1539665957.387897414","description":"Error received from peer","file":"src/core/lib/surface/call.cc","file_line":1099,"grpc_message":"chaincode error (status: 500, message: {"Error":"Agreement aid_p1234567890 does not exist"})","grpc_status":2}"
+>
+```
