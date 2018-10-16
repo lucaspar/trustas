@@ -114,7 +114,7 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
 		return t.queryAgreement(stub, args)
 	}
 
-	return shim.Error("Invalid invoke function name. Expecting \"invoke\", \"delete\", or \"query\"")
+	return shim.Error("Invalid invoke function name. Expecting \"invoke\", \"delete\", \"query\", \"createAgreement\", or \"queryAgreement\"")
 }
 
 // Represents a regular transaction of X units from A to B

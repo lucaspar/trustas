@@ -14,6 +14,7 @@ from queue import Queue
 from random import randint
 
 from hfc.fabric.peer import create_peer
+from hfc.protos.peer import query_pb2
 from hfc.fabric.transaction.tx_context import create_tx_context
 from hfc.fabric.transaction.tx_proposal_request import create_tx_prop_req, \
     CC_TYPE_GOLANG, CC_INSTANTIATE, CC_INSTALL, CC_INVOKE, CC_QUERY, TXProposalRequest
@@ -34,7 +35,7 @@ TEST_NETWORK    = E2E_CONFIG['test-network']
 CC_PATH         = 'github.com/trustas_cc'
 CC_NAME         = 'trustas_cc'
 CC_VERSION      = '1.0'
-DEFAULT_SLEEP   = 5
+DEFAULT_SLEEP   = 4
 
 # ----------
 
@@ -65,24 +66,25 @@ class E2eTest(BaseTestCase):
         """Test sequential execution"""
 
         # set ledger configs
-        self.configure()
+        self.__configure()
 
         # create the channel and chaincode
-        self.init_ledger()
-
-        # call chaincode invoke function
-        res = self.cc_call('invoke', args=['a', 'b', '100'])
+        self.__init_ledger()
 
         # create an agreement
         args = ['123', '456', 'SLA_MAROTO', 'aid_p1234567890']
-        self.cc_call('createAgreement', args)
+        self.__cc_call('createAgreement', args)
         time.sleep(DEFAULT_SLEEP)
 
         # query an agreement
         args = ['aid_p1234567890']
-        res = self.cc_call('queryAgreement', args)
+        res = self.__cc_query('queryAgreement', args=args)
+        logger.info("Query Result: %s", json.dumps(res).encode('utf-8'))
 
-    def configure(self):
+
+    def __configure(self):
+        """Get network configuration and make it available from self."""
+
         peer_config = TEST_NETWORK['org1.example.com']['peers']['peer0']
 
         endpoint = peer_config['grpc_request_endpoint']
@@ -98,35 +100,73 @@ class E2eTest(BaseTestCase):
         self.org1_admin = get_peer_org_user(self.org1, 'Admin',
                                             self.client.state_store)
 
-    def init_ledger(self):
+    def __init_ledger(self):
+        """Creates channel and chaincode"""
 
         # create channel and join it
-        self.create_channel()
+        self.__create_channel()
         time.sleep(DEFAULT_SLEEP)
-        self.join_channel()
+        self.__join_channel()
         time.sleep(DEFAULT_SLEEP)
 
         # install and instantiate the chaincode
-        self.cc_install()
+        self.__cc_install()
         time.sleep(DEFAULT_SLEEP)
         args = ['a', '100', 'b', '40']
-        self.cc_call(fcn='init', args=args, prop_type=CC_INSTANTIATE)
+        self.__cc_call(fcn='init', args=args, prop_type=CC_INSTANTIATE)
 
-    def create_channel(self):
+
+    def __cc_query(self, fcn, args):
+        """Runs chaincode query functions"""
+
+        request = create_tx_prop_req(
+            prop_type=CC_QUERY,
+            cc_name=CC_NAME,
+            cc_type=CC_TYPE_GOLANG,
+            fcn=fcn,
+            args=args)
+
+        tx_context = create_tx_context(self.org1_admin, self.crypto,
+                                       TXProposalRequest())
+        tx_context.tx_prop_req = request
+
+        response = self.channel.send_tx_proposal(
+            tx_context, self.peers)
+
+        queue = Queue(1)
+        response.subscribe(
+            on_next=lambda x: queue.put(x), on_error=lambda x: queue.put(x))
+
+        try:
+            res = queue.get(timeout=DEFAULT_SLEEP)
+            logger.debug(res)
+            response = res[0][0][0]
+            if response.response:
+                pld = response.response.payload
+                logger.debug("Query Payload: %s", pld)
+                pld = json.loads(pld.decode('utf-8'))
+                return pld
+            return response
+
+        except Exception:
+            logger.error("Failed to query chaincode: {}", sys.exc_info()[0])
+            raise
+
+    def __create_channel(self):
         """Creates the default channel"""
 
         request = build_channel_request(self.client, self.channel_tx,
                                         self.channel_name)
         self.client._create_channel(request)
 
-    def join_channel(self):
+    def __join_channel(self):
         """Joins the default channel"""
 
         self.channel = self.client.new_channel(self.channel_name)
         join_req = build_join_channel_req(self.org1, self.channel, self.client)
         self.channel.join_channel(join_req)
 
-    def cc_install(self):
+    def __cc_install(self):
         tran_prop_req_in = create_tx_prop_req(
             prop_type=CC_INSTALL,
             cc_path=CC_PATH,
@@ -138,7 +178,7 @@ class E2eTest(BaseTestCase):
         self.client.send_install_proposal(tx_ctx, self.peers)
 
 
-    def cc_call(self, fcn, args, prop_type=CC_INVOKE):
+    def __cc_call(self, fcn, args, prop_type=CC_INVOKE):
         """Instantiate chaincode or invoke a cc function with args
         Args:
             fcn:        Chaincode function name
