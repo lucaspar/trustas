@@ -160,16 +160,16 @@ def privacy_cost(network_size=100, connections=100, mpa=10):
 
     working_dir = os.path.join(EXP_DIR, EXP_NAME)
 
-    print("> Validating data...")
+    print(" > Validating data...")
     __validate_data()
 
-    print("> Creating ASes...")
+    print(" > Creating ASes...")
     as_list     = __generate_ases()
 
-    print("> Generating pairs...")
+    print(" > Generating pairs...")
     as_pairs    = __generate_as_pairs(as_list)
 
-    print("> Generating agreements...")
+    print(" > Generating agreements...")
     agreements  = __generate_agreements(as_pairs)
 
     # Experiment information
@@ -178,7 +178,7 @@ def privacy_cost(network_size=100, connections=100, mpa=10):
         "network_size": network_size,
         "connections": connections
     }]
-    print("> Printing to files...")
+    print(" > Printing to files...")
     __agreements_to_file(agreements, filepath=working_dir, extras=exp)
 
 def package_demos():

@@ -5,6 +5,7 @@ from trustas import experiments
 from network import start
 from network import tests as net_tests
 
+RUN_EXPERIMENTS = False
 RUN_TESTS = False
 MODULES = [{
     'name': "Network",
@@ -45,5 +46,7 @@ if __name__ == "__main__":
     if RUN_TESTS:
         tests()
 
-    # experiments.run()
+    if RUN_EXPERIMENTS:
+        experiments.run()
+
     testModule(start)

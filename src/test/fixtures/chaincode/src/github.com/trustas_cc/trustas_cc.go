@@ -17,8 +17,11 @@ limitations under the License.
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"strconv"
+	// "strings"
+	"time"
 
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 	pb "github.com/hyperledger/fabric/protos/peer"
@@ -52,7 +55,7 @@ type Measurement struct {
 // Init : chaincode initialization / reset.
 // =============================================================================
 func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
-	fmt.Println("ex02 Init")
+	fmt.Println("TrustAS Init")
 	_, args := stub.GetFunctionAndParameters()
 	var A, B string    // Entities
 	var Aval, Bval int // Asset holdings
@@ -92,7 +95,7 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
 // Invoke : executed on chaincode invocations.
 // =============================================================================
 func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
-	fmt.Println("ex02 Invoke")
+	fmt.Println("TrustAS Invoke")
 	function, args := stub.GetFunctionAndParameters()
 	if function == "invoke" {
 		// Make payment of X units from A to B
@@ -103,9 +106,15 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
 	} else if function == "query" {
 		// Queries chaincode
 		return t.query(stub, args)
+	} else if function == "createAgreement" {
+		// Create an agreement in the chaincode
+		return t.createAgreement(stub, args)
+	} else if function == "queryAgreement" {
+		// Create an agreement in the chaincode
+		return t.queryAgreement(stub, args)
 	}
 
-	return shim.Error("Invalid invoke function name. Expecting \"invoke\", \"delete\", or \"query\"")
+	return shim.Error("Invalid invoke function name. Expecting \"invoke\", \"delete\", \"query\", \"createAgreement\", or \"queryAgreement\"")
 }
 
 // Represents a regular transaction of X units from A to B
@@ -164,6 +173,99 @@ func (t *SimpleChaincode) invoke(stub shim.ChaincodeStubInterface, args []string
 	}
 
 	return shim.Success(nil)
+}
+
+// Make Timestamp - creates a timestamp in ms
+// ============================================================================================================================
+func makeTimestamp() int64 {
+	return time.Now().UnixNano() / (int64(time.Millisecond) / int64(time.Nanosecond))
+}
+
+// Creates an interconnection agreement between A and B
+// =============================================================================
+func (t *SimpleChaincode) createAgreement(stub shim.ChaincodeStubInterface, args []string) pb.Response {
+	var Asn1, Asn2 int // ASes
+	var SLA string     // Agreement SLA
+	var AID string     // Agreement ID
+	var err error
+
+	// retrieve args
+	if len(args) != 4 {
+		return shim.Error("Incorrect number of arguments. Expecting 3")
+	}
+	Asn1, err = strconv.Atoi(args[0])
+	if err != nil {
+		return shim.Error("1st argument must be a numeric string")
+	}
+	Asn2, err = strconv.Atoi(args[1])
+	if err != nil {
+		return shim.Error("1st argument must be a numeric string")
+	}
+	SLA = args[2]
+	AID = args[3]
+
+	fmt.Println("Creating agreement", AID)
+
+	var agreement Agreement
+	agreement.ObjectType = "Peering"
+	agreement.Timestamp = makeTimestamp()
+	agreement.Asn1 = Asn1
+	agreement.Asn2 = Asn2
+	agreement.SLA = SLA
+	agreement.ID = AID
+
+	// Checks whether the agreement exists
+	Agr, err := stub.GetState(AID)
+	if err != nil {
+		fmt.Println("Failed checking agreement")
+		return shim.Error("Failed checking agreement")
+	}
+	if Agr != nil {
+		fmt.Println("Agreement already exists: " + AID)
+		return shim.Error("This agreement already exists")
+	}
+
+	// Write agreement to the ledger
+	agrBytes, _ := json.Marshal(agreement)
+	err = stub.PutState(AID, agrBytes)
+	if err != nil {
+		fmt.Println("Could not save new agreement to ledger: " + err.Error())
+		return shim.Error(err.Error())
+	}
+
+	fmt.Println("Created agreement", AID)
+	return shim.Success(nil)
+}
+
+// Retrieve an agreement from the ledger
+// =============================================================================
+func (t *SimpleChaincode) queryAgreement(stub shim.ChaincodeStubInterface, args []string) pb.Response {
+	var AID string // Agreement ID
+	var err error
+
+	if len(args) != 1 {
+		return shim.Error("Incorrect number of arguments. Expecting an agreement identifier.")
+	}
+
+	AID = args[0]
+	fmt.Println("Querying for agreement", AID)
+
+	// Get the state from the ledger
+	agrBytes, err := stub.GetState(AID)
+	if err != nil {
+		jsonResp := "{\"Error\":\"Failed to get state for " + AID + "\"}"
+		return shim.Error(jsonResp)
+	}
+
+	if agrBytes == nil {
+		jsonResp := "{\"Error\":\"Agreement " + AID + " does not exist\"}"
+		return shim.Error(jsonResp)
+	}
+
+	// var agreement Agreement
+	// json.Unmarshal(agrBytes, &agreement)
+	fmt.Printf("Query Response:%s\n", agrBytes)
+	return shim.Success(agrBytes)
 }
 
 // Deletes an entity from state
