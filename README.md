@@ -1,107 +1,23 @@
-# Paillier Chaincode
-> Proof of Concept of Hyperledger Fabric Chaincode with Homomorphic Encryption using the Paillier Cryptosystem.
+# TrustAS
+> Establishing trust among autonomous systems
 
-- [Hyperledger Fabric](https://github.com/hyperledger/fabric)
-- [Paillier implementation used (Go)](https://github.com/didiercrunch/paillier)
+## What is this
 
-### Operations allowed:
+**A novel way of establishing trust among Autonomous Systems on the Internet.**
 
-- Ciphertexts addition
-- Ciphertext-scalar multiplication
+TrustAS uses Order Preserving Encryption to create **confidence** among ASes based on their interconnection history, which is stored in a permissioned blockchain. The usage of cryptography delivers **privacy by design** when handling SLAs. A distributed ledger guarantees the history is both **immutable** and **verifiable**.
 
-### Requirements
+TrustAS enables **anyone** in the permissioned network to verify whether an agreed SLA was respected or not, for each of its properties (e.g. latency, bandwidth, jitter). Hence, potentially increasing the amount of **confidence** on a third party before any new agreement takes place.
 
-1. [Install Go](https://golang.org/doc/install)
+## Software versions
 
-2. Clone Hyperledger Fabric samples
-```sh
-git clone -b master https://github.com/hyperledger/fabric-samples.git
-cd fabric-samples
-```
+Software        | Version
+--------------- | -----------
+OS              | Ubuntu 18.04.1 LTS
+[Go](https://golang.org/doc/install)                                | 1.10.3
+[Hyperledger](https://hyperledger-fabric.readthedocs.io/en/release-1.2/getting_started.html)    | 1.2.0
+[Docker](https://docs.docker.com/install/linux/docker-ce/ubuntu/)   | 18.06.0-ce
+[Docker Compose](https://docs.docker.com/compose/install/)          | 1.21.2
+[Fabric-SDK-Py](https://github.com/hyperledger/fabric-sdk-py)       | 0.7.0
 
-3. Clone this repo and fetch all dependencies
-```sh
-cd ~/go/src     # or $GOPATH/src
-git clone https://github.com/lucaspar/pacc
-cd pacc
-govendor fetch +outside
-```
-
-### Execution
-
-##### All 3 terminals:
-
-```sh
-# from Hyperledger Fabric samples directory (see requirements above):
-cd chaincode-docker-devmode
-
-```
-
-##### Terminal 1 - Start Fabric network
-
-```sh
-
-docker-compose -f docker-compose-simple.yaml up
-
-```
-
-##### Terminal 2 - Run chaincode
-
-```sh
-
-docker exec -it chaincode bash
-cd pacc
-go build
-CORE_PEER_ADDRESS=peer:7051 CORE_CHAINCODE_ID_NAME=mycc:0 ./pacc
-
-```
-
-##### Terminal 3 - Install, instantiate, invoke, and query chaincode
-
-```sh
-
-docker exec -it cli bash
-cd /opt/gopath/src
-peer chaincode install -p chaincodedev/chaincode/pacc -n mycc -v 0
-peer chaincode instantiate -n mycc -v 0 -c '{"Args":["a","10"]}' -C myc
-peer chaincode invoke -n mycc -c '{"Args":["set", "a", "20"]}' -C myc
-peer chaincode query -n mycc -c '{"Args":["query","a"]}' -C myc
-
-```
-
-### Extended operations
-
-#### Handling external chaincode dependencies
-
-##### Using `govendor`:
-
-```sh
-# if govendor is not installed:
-sudo apt install govendor
-
-govendor init
-govendor add +external                  # Add all external packages, or
-govendor add github.com/external/pkg    # Add specific external package
-
-```
-
-#####  Using `gom`:
-
-```sh
-# if gom is not installed:
-go get github.com/mattn/gom
-
-gom gen gomfile
-vim Gomfile         # IMPORTANT: remove hyperledger deps from `Gomfile`
-gom install         # install vendor dependencies
-gom build           # and test it
-
-```
-
-### Common Issues
-
-#### "Cannot find package 'plugin' in any of:"
-
-**Temporary solution:**
-
-> Rename 'vendor' directory to something else (this won't work with external deps, a permanent solution is still needed).
+## [Execution](src/README.md)

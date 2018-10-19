@@ -1,3 +1,0 @@
-gom 'github.com/didiercrunch/paillier', :commit => '63054a6528ecaeac8fe536dbe98c27aad1d1e05d'
-# gom 'github.com/hyperledger/fabric', :commit => '1c94e9e9108409ba3278d2bc40a184b1ef7127e9'
-gom 'github.com/pkg/errors', :commit => '816c9085562cd7ee03e7f8188a1cfd942858cded'
