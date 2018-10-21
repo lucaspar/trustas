@@ -78,20 +78,24 @@ After that, visualize the network at [localhost:8080](http://localhost:8080) by 
 
 ### Other operations
 
-
 #### Open an interactive shell
 ```sh
 docker-compose -f test/fixtures/docker-compose-2orgs-4peers-tls-cli.yaml run --rm cli
 ```
 Inside the container, explore the `scripts/` directory for commands to interact with fabric.
 
-
-#### Real time logs
+#### Monitor logs
 You can check the files at `logs/`, or:
 ```sh
 docker-compose -f test/fixtures/docker-compose-2orgs-4peers-tls-cli.yaml logs -f
 ```
 
+#### Monitor blockchain size on disk
+```sh
+docker exec -it peer0.org1.example.com /bin/bash
+cd /var/hyperledger/production/
+watch du -h *
+```
 
 #### Run a specific test
 ```sh
