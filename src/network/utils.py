@@ -21,7 +21,7 @@ class BaseTestCase(unittest.TestCase):
     All test cases can feel free to implement this.
     """
 
-    def setUp(self):
+    def setUp(self, wipe_all):
         self.gopath_bak = os.environ.get('GOPATH', '')
         gopath = os.path.normpath(os.path.join(os.path.dirname(__file__),
                                                "../test/fixtures/chaincode"))
@@ -42,10 +42,11 @@ class BaseTestCase(unittest.TestCase):
         self.assertIsNotNone(self.user, 'org1 admin should not be None')
 
         # Boot up the testing network
-        self.start_test_env()
+        self.start_test_env(wipe_all)
 
-    def tearDown(self):
-        self.shutdown_test_env()
+    def tearDown(self, keep_network=False):
+        if not keep_network:
+            self.shutdown_test_env()
 
     # Logs Hyperledger network output
     def __log_network(self):
@@ -65,11 +66,12 @@ class BaseTestCase(unittest.TestCase):
         with open(LOG_FILE, "w+") as fp:
             fp.write(output)
 
-    def start_test_env(self):
+    def start_test_env(self, wipe_all):
 
-        print(" > Removing old assets")
-        # Remove unwanted containers, images, and files
-        cli_call(["./cleanup.sh"])
+        if wipe_all:
+            print(" > Wiping old assets")
+            # Remove unwanted containers, images, and files
+            cli_call(["./cleanup.sh"])
 
         print(" > Setting network... see it with \"docker stats\"")
         cli_call(["docker-compose", "-f", self.compose_file_path, "up", "-d", "--scale", "cli=0"])
