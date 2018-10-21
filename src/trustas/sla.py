@@ -12,16 +12,17 @@ class SLA:
 
     """
 
+    # >>>>>>> EXPERIMENTS WITH OPE PRECISION x DATA SIZE <<<<<<<<<
     # Known properties of the SLA.
     # Only these will be encrypted and passed to the blockchain.
     PROPS = {
-        'bandwidth'     : { 'type': int,   'min': 1, 'max': 1e9,       'precision': 1,     'desc': 'Available bandwidth [Mbps]'},
-        'latency'       : { 'type': int,   'min': 0, 'max': 1e3,       'precision': 1,     'desc': 'Expected latency [ms]'},
-        'packet_loss'   : { 'type': float, 'min': 0, 'max': 1e2,       'precision': 1e-8,  'desc': 'Expected packet loss [%]'},
-        'jitter'        : { 'type': int,   'min': 0, 'max': 1e3,       'precision': 1,     'desc': 'Expected jitter [ms]'},
-        'repair'        : { 'type': int,   'min': 0, 'max': 2**16-1,   'precision': 1,     'desc': 'Repair time [min]'},
-        'guarantee'     : { 'type': float, 'min': 0, 'max': 1e2,       'precision': 1e-8,  'desc': 'SLA guarantee [% of time]'},
-        'availability'  : { 'type': float, 'min': 0, 'max': 1e2,       'precision': 1e-8,  'desc': 'Link availability [% of time]'},
+        'bandwidth'     : { 'type': int,   'min': 1, 'max': 1e6,  'precision': 1,     'desc': 'Available bandwidth [Mbps]'},
+        'latency'       : { 'type': int,   'min': 0, 'max': 1e3,  'precision': 1,     'desc': 'Expected latency [ms]'},        # latencies >1s are too high
+        'packet_loss'   : { 'type': float, 'min': 0, 'max': 1e2,  'precision': 1e-2,  'desc': 'Expected packet loss [%]'},
+        'jitter'        : { 'type': int,   'min': 0, 'max': 1e3,  'precision': 1,     'desc': 'Expected jitter [ms]'},
+        'repair'        : { 'type': int,   'min': 0, 'max': 1440, 'precision': 1,     'desc': 'Repair time [min]'},             # max 1 day
+        'guarantee'     : { 'type': float, 'min': 0, 'max': 1e2,  'precision': 1e-4,  'desc': 'SLA guarantee [% of time]'},
+        'availability'  : { 'type': float, 'min': 0, 'max': 1e2,  'precision': 1e-4,  'desc': 'Link availability [% of time]'},
     }
 
     def __init__( self, randomize=False, bandwidth=100, latency=5, packet_loss=1e-2,
