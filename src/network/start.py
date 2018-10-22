@@ -1,19 +1,15 @@
-import time
+import csv
 import json
-import docker
 import logging
 import os
+import random
 import sys
+import time
 import unittest
+
+import matplotlib.pyplot as plt
 from beeprint import pp, Config
-
-import trustas
-
-from .utils import BaseTestCase
-from .config import E2E_CONFIG
 from queue import Queue
-from random import randint
-
 from hfc.fabric.peer import create_peer
 from hfc.protos.peer import query_pb2
 from hfc.fabric.transaction.tx_context import create_tx_context
@@ -21,10 +17,11 @@ from hfc.fabric.transaction.tx_proposal_request import create_tx_prop_req, \
     CC_TYPE_GOLANG, CC_INSTANTIATE, CC_INSTALL, CC_INVOKE, CC_QUERY, TXProposalRequest
 from hfc.util.crypto.crypto import ecies
 from hfc.util.utils import send_transaction, build_tx_req
-from .utils import get_peer_org_user, \
-    BaseTestCase
-from .e2e_utils import build_channel_request, \
-    build_join_channel_req
+
+import trustas
+from .config import E2E_CONFIG
+from .utils import get_peer_org_user, BaseTestCase, cli_call, mkdir_p
+from .e2e_utils import build_channel_request, build_join_channel_req
 
 # ----------
 # SETTINGS
@@ -33,8 +30,10 @@ CREATE_LOGS     = True
 KEEP_NETWORK    = False
 WIPE_ALL        = False
 LOG_FILE        = "logs/main.log"
+EXP_DIR         = "experiments"
 
 DEFAULT_SLEEP   = 5
+HALF_SLEEP      = DEFAULT_SLEEP * 0.5
 LONGER_SLEEP    = DEFAULT_SLEEP * 1.5
 DOUBLE_SLEEP    = DEFAULT_SLEEP * 2
 
@@ -100,14 +99,59 @@ class E2eTest(BaseTestCase):
 
 
     def __cc_ops(self):
+        """A sequence of chaincode operations simulating agreements"""
 
-        # create an agreement and wait
-        args = ['123', '456', 'SLA_MAROTO', 'aid_p1234567890']
-        self.__cc_call('createAgreement', args)
+        exp_net_size    = 100
+        exp_connections = 1000
+        exp_mpa         = 0     # TODO: create new chaincode function before increasing MPA
+        exp_path = os.path.join("A",
+            "{}_{}_{}".format( exp_net_size, exp_connections, exp_mpa),
+            str(time.time()))
+        exp_settings = {
+            "experiment_path"   : exp_path,
+            "network_size"      : exp_net_size,
+            "connections"       : exp_connections,
+            "mpa"               : exp_mpa,
+            "storage"           : "json"
+        }
+
+        # simulate agreements
+        agreements = trustas.experiments.exp_privacy_cost(**exp_settings)
+
+        # create agreement entries in the blockchain
+        data_x = []
+        data_y = []
+        for idx, ag in enumerate(agreements):
+            peers = ag.peers
+            sla = json.dumps(ag.get_plaintext_sla())
+            args = [str(ag.id), str(peers[0]), str(peers[1]), sla]
+            self.__cc_call('createAgreement', args)
+
+            if (idx + 1) % 10 == 0:
+                time.sleep(HALF_SLEEP)
+                data_x.append(idx+1)
+                data_y.append(measure_blockchain_size())
+
+        save_data(
+            data_x,
+            data_y,
+            file="size",
+            title="Blockchain growth",
+            path=exp_path,
+            xlabel="Number of agreements",
+            ylabel="Blockchain size (bytes)")
+
+        # # create metric entries in the blockchain
+        # for ag in agreements:
+        #     peers = ag.peers
+        #     met = json.dumps(ag.get_encrypted_metrics)
+        #     args = [str(ag.id), met]
+        #     self.__cc_call('publishMetrics', args)
+
         time.sleep(DEFAULT_SLEEP)
 
-        # query an agreement
-        args = ['aid_p1234567890']
+        # query a random agreement
+        args = [str(random.choice(agreements).id)]
         res = self.__cc_call('queryAgreement', args=args, prop_type=CC_QUERY)
         logger.info("Query Result: %s", json.dumps(res).encode('utf-8'))
 
@@ -259,9 +303,68 @@ class E2eTest(BaseTestCase):
         response.subscribe(
             on_next=lambda x: q.put(x), on_error=lambda x: q.put(x))
         res, _ = q.get(timeout=DEFAULT_SLEEP)
-        # self.assertEqual(res.status, 200)
 
         return res
+
+
+def save_data(x, y, path, file, title='', label='', xlabel='', ylabel='', legend=''):
+    """Saves generated data (plot + csv) to path.
+
+    Args:
+        x:          X axis data.
+        y:          Y axis data.
+        path:       part of output directory as in: [EXP_DIR]/[path]/data
+        title:      title of plot.
+        file:       filenames used for svg and csv output
+        xlabel:     X axis label.
+        ylabel:     Y axis label.
+        legend:     plot legend.
+    Returns:
+        None (only outputs files).
+    """
+    working_dir = os.path.join(EXP_DIR, path, "data")
+    mkdir_p(working_dir)
+    svg_filepath = os.path.join(working_dir, file + ".svg")
+    csv_filepath = os.path.join(working_dir, file + ".csv")
+
+    # plot and save
+    plt.plot(x, y, label=label)
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)
+    plt.title(title)
+    plt.legend(legend)
+    plt.savefig(svg_filepath)
+
+    # build csv and save
+    rows = zip(x, y)
+    with open(csv_filepath, 'w+', newline='') as csvfile:
+        spamwriter = csv.writer(csvfile, quoting=csv.QUOTE_MINIMAL)
+        spamwriter.writerow([xlabel, ylabel])
+        for r in rows:
+            spamwriter.writerow(r)
+
+
+def measure_blockchain_size(peer="peer0.org1.example.com"):
+    """Measures blockchain size through a command line call to a container.
+
+    Args:
+        peer:   The container name (also full peer name) to consult.
+    Returns:
+        Integer which is the current ledger size in bytes on disk.
+    """
+
+    output, error, _ = cli_call([
+        "docker", "exec", "-it", peer, "du",
+        "/var/hyperledger/production/ledgersData/chains/chains/businesschannel"
+    ])
+    if error:
+        return None
+    try:
+        size = output.decode("utf-8").split()[0]
+        size = int(size)
+        return size
+    except:
+        return None
 
 
 if __name__ == "__main__":
