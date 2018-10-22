@@ -29,8 +29,8 @@ docker stats
 Terminal 2 - Chaincode output watcher
 ```sh
 # You can watch the logs in real time
-#   You will see an error when executing before starting a network
-watch docker logs -tf dev-peer0.org1.example.com-trustas_cc-1.0
+#   An error is expected when executing before starting the network
+watch docker logs -tf --tail 30 dev-peer0.org1.example.com-trustas_cc-1.0
 
 # Alternatively, you can save the chaincode output to file after an execution
 docker logs -tf dev-peer0.org1.example.com-trustas_cc-1.0 > logs/cc.$(date "%s").log
@@ -100,7 +100,6 @@ watch -n1 docker exec -it peer0.org1.example.com du -h /var/hyperledger/producti
 docker exec -it peer0.org1.example.com /bin/bash
 cd /var/hyperledger/production/ledgersData/chains/chains
 watch du -h businesschannel
-
 ```
 
 #### Run a specific test
