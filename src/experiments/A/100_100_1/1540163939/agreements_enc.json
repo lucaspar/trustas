@@ -1,0 +1,2006 @@
+[{
+    "timestamp": "2018-10-21T20:18:59.625998",
+    "network_size": 100,
+    "connections": 100,
+    "mpa": 1
+}, {
+    "id": "b577c449-e694-4f0e-95db-816270457e40",
+    "sla": {
+        "bandwidth": 212512085167,
+        "latency": 584768,
+        "packet_loss": 72419425,
+        "jitter": 333517,
+        "repair": 1337049,
+        "guarantee": 411665134108,
+        "availability": 155668168565
+    },
+    "met": [{
+        "bandwidth": 538182965571,
+        "latency": 873170,
+        "packet_loss": 26309147,
+        "jitter": 664089,
+        "repair": 1989584,
+        "guarantee": 61862108328,
+        "availability": 54881125965
+    }]
+}, {
+    "id": "a66fbb8e-19ed-4cbb-b27a-ea98a0cb7402",
+    "sla": {
+        "bandwidth": 619103929744,
+        "latency": 352736,
+        "packet_loss": 72646473,
+        "jitter": 581264,
+        "repair": 252953,
+        "guarantee": 4182681761,
+        "availability": 956481513092
+    },
+    "met": [{
+        "bandwidth": 649368824096,
+        "latency": 503958,
+        "packet_loss": 68592010,
+        "jitter": 557263,
+        "repair": 1749654,
+        "guarantee": 885645325093,
+        "availability": 726633365148
+    }]
+}, {
+    "id": "ded77c55-5a8c-4d5f-bff9-8b39b8a058ec",
+    "sla": {
+        "bandwidth": 593352390044,
+        "latency": 829653,
+        "packet_loss": 53567708,
+        "jitter": 245103,
+        "repair": 721026,
+        "guarantee": 437828219688,
+        "availability": 67704451599
+    },
+    "met": [{
+        "bandwidth": 464653855625,
+        "latency": 788011,
+        "packet_loss": 32111823,
+        "jitter": 524782,
+        "repair": 1778161,
+        "guarantee": 226512249809,
+        "availability": 103912238903
+    }]
+}, {
+    "id": "b120131b-bab5-4f15-bd2c-cb374741155d",
+    "sla": {
+        "bandwidth": 900787966496,
+        "latency": 165723,
+        "packet_loss": 71536024,
+        "jitter": 727069,
+        "repair": 93741,
+        "guarantee": 38493404368,
+        "availability": 611859910510
+    },
+    "met": [{
+        "bandwidth": 13443025519,
+        "latency": 384872,
+        "packet_loss": 38165018,
+        "jitter": 845262,
+        "repair": 403286,
+        "guarantee": 170936956947,
+        "availability": 790483123157
+    }]
+}, {
+    "id": "f8661d9b-009d-4b15-9bdd-b1093dbedb74",
+    "sla": {
+        "bandwidth": 641837662366,
+        "latency": 649597,
+        "packet_loss": 42625695,
+        "jitter": 720272,
+        "repair": 1704736,
+        "guarantee": 183557911908,
+        "availability": 664995704587
+    },
+    "met": [{
+        "bandwidth": 171843695095,
+        "latency": 792639,
+        "packet_loss": 84627322,
+        "jitter": 85876,
+        "repair": 2055134,
+        "guarantee": 730692659155,
+        "availability": 945757094160
+    }]
+}, {
+    "id": "9dca11ba-99c1-47db-8c1a-dbcc2214cfc1",
+    "sla": {
+        "bandwidth": 174510815142,
+        "latency": 26409,
+        "packet_loss": 75672981,
+        "jitter": 537638,
+        "repair": 372774,
+        "guarantee": 439881901028,
+        "availability": 38017569206
+    },
+    "met": [{
+        "bandwidth": 625324009123,
+        "latency": 692191,
+        "packet_loss": 53663485,
+        "jitter": 912934,
+        "repair": 1507301,
+        "guarantee": 313562924788,
+        "availability": 365785100729
+    }]
+}, {
+    "id": "3ce9b09d-119e-4c26-aa1c-18fab6c92b3b",
+    "sla": {
+        "bandwidth": 138830817017,
+        "latency": 927831,
+        "packet_loss": 41633694,
+        "jitter": 522122,
+        "repair": 782006,
+        "guarantee": 870474814824,
+        "availability": 719028430479
+    },
+    "met": [{
+        "bandwidth": 427341583885,
+        "latency": 369015,
+        "packet_loss": 72980597,
+        "jitter": 894396,
+        "repair": 448155,
+        "guarantee": 464478755080,
+        "availability": 965557571744
+    }]
+}, {
+    "id": "87b58931-c151-4cc8-b173-d601826346fc",
+    "sla": {
+        "bandwidth": 131408212198,
+        "latency": 60786,
+        "packet_loss": 67110521,
+        "jitter": 283124,
+        "repair": 1259202,
+        "guarantee": 634542568326,
+        "availability": 991753276890
+    },
+    "met": [{
+        "bandwidth": 180174511922,
+        "latency": 6535,
+        "packet_loss": 81576011,
+        "jitter": 369129,
+        "repair": 961656,
+        "guarantee": 724022125675,
+        "availability": 623107385480
+    }]
+}, {
+    "id": "eb018ffe-fd03-4aec-823a-63f5cea74a41",
+    "sla": {
+        "bandwidth": 793109035549,
+        "latency": 574258,
+        "packet_loss": 35054271,
+        "jitter": 832985,
+        "repair": 1616129,
+        "guarantee": 939724439163,
+        "availability": 416230135262
+    },
+    "met": [{
+        "bandwidth": 191801440846,
+        "latency": 259970,
+        "packet_loss": 39164957,
+        "jitter": 463835,
+        "repair": 1619002,
+        "guarantee": 424507012832,
+        "availability": 639017061401
+    }]
+}, {
+    "id": "e2a7edbf-2d5e-4368-94d6-fc45df8402d9",
+    "sla": {
+        "bandwidth": 24905046732,
+        "latency": 673947,
+        "packet_loss": 60047542,
+        "jitter": 158255,
+        "repair": 1147659,
+        "guarantee": 243061625564,
+        "availability": 631047995599
+    },
+    "met": [{
+        "bandwidth": 727655832749,
+        "latency": 632589,
+        "packet_loss": 88866171,
+        "jitter": 28508,
+        "repair": 273302,
+        "guarantee": 939042657005,
+        "availability": 657098175592
+    }]
+}, {
+    "id": "b818e06c-04f9-4887-80aa-c389741b6b17",
+    "sla": {
+        "bandwidth": 24833380398,
+        "latency": 31796,
+        "packet_loss": 72411425,
+        "jitter": 685466,
+        "repair": 1073915,
+        "guarantee": 47750029485,
+        "availability": 671109155123
+    },
+    "met": [{
+        "bandwidth": 447738100466,
+        "latency": 978267,
+        "packet_loss": 9073486,
+        "jitter": 40091,
+        "repair": 966392,
+        "guarantee": 945311604816,
+        "availability": 575112227146
+    }]
+}, {
+    "id": "ff70c5c5-4d13-4f93-969d-a09eb32f144c",
+    "sla": {
+        "bandwidth": 806976148282,
+        "latency": 829087,
+        "packet_loss": 35164572,
+        "jitter": 519848,
+        "repair": 1313136,
+        "guarantee": 345844296117,
+        "availability": 76215174330
+    },
+    "met": [{
+        "bandwidth": 984490982749,
+        "latency": 865880,
+        "packet_loss": 65342282,
+        "jitter": 133714,
+        "repair": 365160,
+        "guarantee": 937145349281,
+        "availability": 963906425594
+    }]
+}, {
+    "id": "3825c187-d5d7-4f57-b9ba-40e259d4a9bd",
+    "sla": {
+        "bandwidth": 726477732338,
+        "latency": 713617,
+        "packet_loss": 69167745,
+        "jitter": 895863,
+        "repair": 1682401,
+        "guarantee": 926408960113,
+        "availability": 947424573897
+    },
+    "met": [{
+        "bandwidth": 732470641420,
+        "latency": 783660,
+        "packet_loss": 52138730,
+        "jitter": 463556,
+        "repair": 282898,
+        "guarantee": 340101047996,
+        "availability": 768416495622
+    }]
+}, {
+    "id": "c74e402b-1196-4b09-929d-8720728eb65d",
+    "sla": {
+        "bandwidth": 672596260417,
+        "latency": 518722,
+        "packet_loss": 24273788,
+        "jitter": 279495,
+        "repair": 1985007,
+        "guarantee": 996248492717,
+        "availability": 636964842319
+    },
+    "met": [{
+        "bandwidth": 272132282063,
+        "latency": 620166,
+        "packet_loss": 55876740,
+        "jitter": 418441,
+        "repair": 233264,
+        "guarantee": 220641308161,
+        "availability": 355463568257
+    }]
+}, {
+    "id": "8580b885-e49f-436a-a617-959cb986f71f",
+    "sla": {
+        "bandwidth": 243091541777,
+        "latency": 216017,
+        "packet_loss": 92757591,
+        "jitter": 737670,
+        "repair": 1990636,
+        "guarantee": 756653036786,
+        "availability": 657909794249
+    },
+    "met": [{
+        "bandwidth": 165346430885,
+        "latency": 57622,
+        "packet_loss": 38782498,
+        "jitter": 828449,
+        "repair": 1174728,
+        "guarantee": 366380998045,
+        "availability": 3335841941
+    }]
+}, {
+    "id": "e21b98b6-7e19-41df-99d2-7c7e8953bb6a",
+    "sla": {
+        "bandwidth": 818078968804,
+        "latency": 216270,
+        "packet_loss": 66067917,
+        "jitter": 302579,
+        "repair": 249507,
+        "guarantee": 817343517755,
+        "availability": 827619911273
+    },
+    "met": [{
+        "bandwidth": 683212222647,
+        "latency": 400664,
+        "packet_loss": 94761210,
+        "jitter": 201817,
+        "repair": 265292,
+        "guarantee": 329215319442,
+        "availability": 857815221171
+    }]
+}, {
+    "id": "03f5239d-f19c-4b4a-9283-abfc45a65a3a",
+    "sla": {
+        "bandwidth": 637083114148,
+        "latency": 446917,
+        "packet_loss": 21373066,
+        "jitter": 139404,
+        "repair": 353824,
+        "guarantee": 4864263021,
+        "availability": 258650262320
+    },
+    "met": [{
+        "bandwidth": 812779923198,
+        "latency": 403211,
+        "packet_loss": 57173714,
+        "jitter": 819101,
+        "repair": 170419,
+        "guarantee": 749393521320,
+        "availability": 582831812234
+    }]
+}, {
+    "id": "4d22119b-3891-41e1-b112-682c451a77f7",
+    "sla": {
+        "bandwidth": 543475187070,
+        "latency": 588745,
+        "packet_loss": 87311782,
+        "jitter": 428804,
+        "repair": 1831128,
+        "guarantee": 157471943205,
+        "availability": 612431994296
+    },
+    "met": [{
+        "bandwidth": 398231868324,
+        "latency": 482706,
+        "packet_loss": 83617416,
+        "jitter": 743703,
+        "repair": 405901,
+        "guarantee": 838101806987,
+        "availability": 837978947874
+    }]
+}, {
+    "id": "22ffea78-ca0e-452b-96a4-ccb7947ed81b",
+    "sla": {
+        "bandwidth": 945687838936,
+        "latency": 943694,
+        "packet_loss": 92120882,
+        "jitter": 207632,
+        "repair": 390222,
+        "guarantee": 652700651850,
+        "availability": 195499194594
+    },
+    "met": [{
+        "bandwidth": 415341821037,
+        "latency": 260257,
+        "packet_loss": 81652480,
+        "jitter": 543620,
+        "repair": 374684,
+        "guarantee": 453304040875,
+        "availability": 700918524179
+    }]
+}, {
+    "id": "53da1480-2857-4cce-b5fe-70fddade5db8",
+    "sla": {
+        "bandwidth": 633148251181,
+        "latency": 204338,
+        "packet_loss": 10696648,
+        "jitter": 211951,
+        "repair": 2045527,
+        "guarantee": 546667948937,
+        "availability": 15216040283
+    },
+    "met": [{
+        "bandwidth": 631740814897,
+        "latency": 486325,
+        "packet_loss": 88975828,
+        "jitter": 933608,
+        "repair": 772293,
+        "guarantee": 926606319387,
+        "availability": 101321550878
+    }]
+}, {
+    "id": "c2f70808-dd52-4ef9-94e1-39a04e2e9ab9",
+    "sla": {
+        "bandwidth": 495054131225,
+        "latency": 910884,
+        "packet_loss": 70193552,
+        "jitter": 430290,
+        "repair": 1912060,
+        "guarantee": 270969706173,
+        "availability": 940673716780
+    },
+    "met": [{
+        "bandwidth": 739639047883,
+        "latency": 600831,
+        "packet_loss": 32277973,
+        "jitter": 773464,
+        "repair": 1499186,
+        "guarantee": 506353406588,
+        "availability": 811776679347
+    }]
+}, {
+    "id": "b45e2d14-931b-437f-bce0-21c9f5fdbf43",
+    "sla": {
+        "bandwidth": 317309271437,
+        "latency": 893014,
+        "packet_loss": 46550431,
+        "jitter": 464741,
+        "repair": 1712587,
+        "guarantee": 710718435413,
+        "availability": 399120626941
+    },
+    "met": [{
+        "bandwidth": 293821534944,
+        "latency": 188895,
+        "packet_loss": 32679497,
+        "jitter": 409065,
+        "repair": 1917484,
+        "guarantee": 249118925178,
+        "availability": 652898854592
+    }]
+}, {
+    "id": "4c2177b4-32e4-49fe-8371-8e9b06ae0571",
+    "sla": {
+        "bandwidth": 332180662479,
+        "latency": 685052,
+        "packet_loss": 97838298,
+        "jitter": 329620,
+        "repair": 136079,
+        "guarantee": 372235093696,
+        "availability": 350594725438
+    },
+    "met": [{
+        "bandwidth": 507999199140,
+        "latency": 953852,
+        "packet_loss": 16260214,
+        "jitter": 83077,
+        "repair": 481826,
+        "guarantee": 785176245248,
+        "availability": 528701144878
+    }]
+}, {
+    "id": "878fc2dc-db49-4ae4-8789-913918dd7c98",
+    "sla": {
+        "bandwidth": 543539717333,
+        "latency": 422318,
+        "packet_loss": 43683724,
+        "jitter": 918389,
+        "repair": 858105,
+        "guarantee": 161420174876,
+        "availability": 506618133275
+    },
+    "met": [{
+        "bandwidth": 78317106131,
+        "latency": 441657,
+        "packet_loss": 76131381,
+        "jitter": 525425,
+        "repair": 177979,
+        "guarantee": 990178494136,
+        "availability": 189788320533
+    }]
+}, {
+    "id": "4846bf31-1fdc-41c2-8548-c0eb725f0bbb",
+    "sla": {
+        "bandwidth": 384105148356,
+        "latency": 116314,
+        "packet_loss": 69371340,
+        "jitter": 64088,
+        "repair": 1954502,
+        "guarantee": 539063756301,
+        "availability": 30007012294
+    },
+    "met": [{
+        "bandwidth": 334247397321,
+        "latency": 776551,
+        "packet_loss": 55863698,
+        "jitter": 210370,
+        "repair": 155641,
+        "guarantee": 779203743997,
+        "availability": 568485663834
+    }]
+}, {
+    "id": "7cc632ae-97f8-44a8-a821-07ee74c516a5",
+    "sla": {
+        "bandwidth": 631773673543,
+        "latency": 738291,
+        "packet_loss": 33813659,
+        "jitter": 982617,
+        "repair": 1769793,
+        "guarantee": 415298586110,
+        "availability": 702521328210
+    },
+    "met": [{
+        "bandwidth": 373115829675,
+        "latency": 849870,
+        "packet_loss": 43355866,
+        "jitter": 138744,
+        "repair": 461715,
+        "guarantee": 729900512892,
+        "availability": 467965060543
+    }]
+}, {
+    "id": "57033a8b-c908-479f-9120-cd40d2cf84e1",
+    "sla": {
+        "bandwidth": 54018850502,
+        "latency": 709873,
+        "packet_loss": 84815702,
+        "jitter": 650064,
+        "repair": 1739446,
+        "guarantee": 538085588381,
+        "availability": 750936699166
+    },
+    "met": [{
+        "bandwidth": 518700952009,
+        "latency": 641257,
+        "packet_loss": 80559092,
+        "jitter": 834118,
+        "repair": 1702275,
+        "guarantee": 957647381327,
+        "availability": 512087174275
+    }]
+}, {
+    "id": "5e2bc374-7546-4857-b169-a2afc17abf81",
+    "sla": {
+        "bandwidth": 53613905661,
+        "latency": 239288,
+        "packet_loss": 46997261,
+        "jitter": 363788,
+        "repair": 1434729,
+        "guarantee": 81854128778,
+        "availability": 271790406682
+    },
+    "met": [{
+        "bandwidth": 524965706455,
+        "latency": 597444,
+        "packet_loss": 87680127,
+        "jitter": 343690,
+        "repair": 1090514,
+        "guarantee": 207206872938,
+        "availability": 64311712451
+    }]
+}, {
+    "id": "97a73948-f182-4b5e-8a94-73f9388b7f77",
+    "sla": {
+        "bandwidth": 981678987053,
+        "latency": 969400,
+        "packet_loss": 55151693,
+        "jitter": 260018,
+        "repair": 447446,
+        "guarantee": 800659258759,
+        "availability": 362153635882
+    },
+    "met": [{
+        "bandwidth": 227036536218,
+        "latency": 651619,
+        "packet_loss": 10480847,
+        "jitter": 481718,
+        "repair": 157628,
+        "guarantee": 681362865787,
+        "availability": 620327007128
+    }]
+}, {
+    "id": "9cbd4016-cf09-46bf-90d1-96bd6bc3a1af",
+    "sla": {
+        "bandwidth": 398423906741,
+        "latency": 700044,
+        "packet_loss": 66738869,
+        "jitter": 41061,
+        "repair": 286417,
+        "guarantee": 228695453013,
+        "availability": 992521048267
+    },
+    "met": [{
+        "bandwidth": 231165674599,
+        "latency": 174916,
+        "packet_loss": 76581359,
+        "jitter": 993655,
+        "repair": 1235143,
+        "guarantee": 292845106025,
+        "availability": 628846226103
+    }]
+}, {
+    "id": "385a96c1-b72b-4092-9028-cecef19e2b0b",
+    "sla": {
+        "bandwidth": 485397568609,
+        "latency": 88123,
+        "packet_loss": 4492711,
+        "jitter": 264994,
+        "repair": 863301,
+        "guarantee": 822555710207,
+        "availability": 507976791730
+    },
+    "met": [{
+        "bandwidth": 575618805631,
+        "latency": 19159,
+        "packet_loss": 8306892,
+        "jitter": 812295,
+        "repair": 1067916,
+        "guarantee": 433187098299,
+        "availability": 728158813643
+    }]
+}, {
+    "id": "fc107104-af19-4183-a5c6-db87faaf8674",
+    "sla": {
+        "bandwidth": 350584447760,
+        "latency": 539126,
+        "packet_loss": 97695142,
+        "jitter": 760098,
+        "repair": 50606,
+        "guarantee": 937733283755,
+        "availability": 130374050074
+    },
+    "met": [{
+        "bandwidth": 238618470209,
+        "latency": 384253,
+        "packet_loss": 22134115,
+        "jitter": 449883,
+        "repair": 791630,
+        "guarantee": 661171532992,
+        "availability": 416855258000
+    }]
+}, {
+    "id": "47e2992e-e5e1-4933-9bed-aeff2f988085",
+    "sla": {
+        "bandwidth": 98468424964,
+        "latency": 167771,
+        "packet_loss": 72146355,
+        "jitter": 700308,
+        "repair": 492892,
+        "guarantee": 341077785500,
+        "availability": 334993951353
+    },
+    "met": [{
+        "bandwidth": 511831800984,
+        "latency": 158040,
+        "packet_loss": 65548254,
+        "jitter": 266433,
+        "repair": 1895403,
+        "guarantee": 355564387615,
+        "availability": 183368336516
+    }]
+}, {
+    "id": "202a5c60-4f5f-4916-a005-76c7e999bef2",
+    "sla": {
+        "bandwidth": 882166182588,
+        "latency": 700973,
+        "packet_loss": 84299874,
+        "jitter": 702940,
+        "repair": 1381563,
+        "guarantee": 998921572053,
+        "availability": 685110369034
+    },
+    "met": [{
+        "bandwidth": 216970567202,
+        "latency": 30439,
+        "packet_loss": 87427943,
+        "jitter": 505530,
+        "repair": 1502419,
+        "guarantee": 738150120989,
+        "availability": 692693041931
+    }]
+}, {
+    "id": "89f9db1c-3c75-4fad-a53d-ea849ed0f249",
+    "sla": {
+        "bandwidth": 478176939754,
+        "latency": 553516,
+        "packet_loss": 14758191,
+        "jitter": 502587,
+        "repair": 1743701,
+        "guarantee": 747321519383,
+        "availability": 255373060982
+    },
+    "met": [{
+        "bandwidth": 394916463856,
+        "latency": 643617,
+        "packet_loss": 95104839,
+        "jitter": 394559,
+        "repair": 1997937,
+        "guarantee": 11541962484,
+        "availability": 313931749642
+    }]
+}, {
+    "id": "21fafdb0-598f-40b5-bef3-ed6cca83b9ad",
+    "sla": {
+        "bandwidth": 364799262970,
+        "latency": 487737,
+        "packet_loss": 80027126,
+        "jitter": 90415,
+        "repair": 260106,
+        "guarantee": 287910358855,
+        "availability": 757686047524
+    },
+    "met": [{
+        "bandwidth": 200878159673,
+        "latency": 351616,
+        "packet_loss": 80842503,
+        "jitter": 128,
+        "repair": 710473,
+        "guarantee": 874934577239,
+        "availability": 624436726025
+    }]
+}, {
+    "id": "143ecf30-2057-4ccf-90d0-935b0e68f1d0",
+    "sla": {
+        "bandwidth": 87811124166,
+        "latency": 73152,
+        "packet_loss": 63347917,
+        "jitter": 793788,
+        "repair": 854262,
+        "guarantee": 467638225483,
+        "availability": 455509061576
+    },
+    "met": [{
+        "bandwidth": 515363973594,
+        "latency": 203555,
+        "packet_loss": 65872508,
+        "jitter": 805883,
+        "repair": 1529235,
+        "guarantee": 419340164433,
+        "availability": 513677024776
+    }]
+}, {
+    "id": "f85247e4-d413-421d-8d4a-e8194f5c5b08",
+    "sla": {
+        "bandwidth": 875003769984,
+        "latency": 646826,
+        "packet_loss": 52974684,
+        "jitter": 149587,
+        "repair": 123612,
+        "guarantee": 722455805536,
+        "availability": 648998456479
+    },
+    "met": [{
+        "bandwidth": 264754724494,
+        "latency": 32340,
+        "packet_loss": 99438695,
+        "jitter": 820580,
+        "repair": 1578551,
+        "guarantee": 972029209934,
+        "availability": 177298942614
+    }]
+}, {
+    "id": "8b49a105-d9ff-4468-86ee-160b0efcc2a1",
+    "sla": {
+        "bandwidth": 428189456990,
+        "latency": 665331,
+        "packet_loss": 43192707,
+        "jitter": 163058,
+        "repair": 1796948,
+        "guarantee": 659948657125,
+        "availability": 543726699265
+    },
+    "met": [{
+        "bandwidth": 468972615071,
+        "latency": 394099,
+        "packet_loss": 62773736,
+        "jitter": 390497,
+        "repair": 1399290,
+        "guarantee": 59318681908,
+        "availability": 752094373578
+    }]
+}, {
+    "id": "7644ddba-8874-4c9e-9d64-54c1213d01c8",
+    "sla": {
+        "bandwidth": 902850926307,
+        "latency": 687434,
+        "packet_loss": 71717075,
+        "jitter": 389129,
+        "repair": 1895543,
+        "guarantee": 490272569120,
+        "availability": 14466113749
+    },
+    "met": [{
+        "bandwidth": 494275346446,
+        "latency": 410309,
+        "packet_loss": 73437820,
+        "jitter": 301180,
+        "repair": 1771494,
+        "guarantee": 447890004744,
+        "availability": 592245728421
+    }]
+}, {
+    "id": "16de70e9-88f5-429a-9e1c-7d48aae9b547",
+    "sla": {
+        "bandwidth": 846446599888,
+        "latency": 709638,
+        "packet_loss": 89758855,
+        "jitter": 665524,
+        "repair": 177702,
+        "guarantee": 329649451081,
+        "availability": 474469023250
+    },
+    "met": [{
+        "bandwidth": 67507794149,
+        "latency": 956092,
+        "packet_loss": 70878171,
+        "jitter": 756855,
+        "repair": 84096,
+        "guarantee": 669581686444,
+        "availability": 634051657166
+    }]
+}, {
+    "id": "26f71434-35aa-4e31-8b70-1dff0226bb85",
+    "sla": {
+        "bandwidth": 372620325545,
+        "latency": 506868,
+        "packet_loss": 72942233,
+        "jitter": 298929,
+        "repair": 2055365,
+        "guarantee": 477288262818,
+        "availability": 649376753852
+    },
+    "met": [{
+        "bandwidth": 858833557479,
+        "latency": 565282,
+        "packet_loss": 4255753,
+        "jitter": 958615,
+        "repair": 1386363,
+        "guarantee": 210423439090,
+        "availability": 173599532942
+    }]
+}, {
+    "id": "3a2b3b5c-899e-4553-871e-c5f362718f6a",
+    "sla": {
+        "bandwidth": 233943784620,
+        "latency": 496787,
+        "packet_loss": 54628735,
+        "jitter": 249595,
+        "repair": 1325766,
+        "guarantee": 792729347031,
+        "availability": 93161330510
+    },
+    "met": [{
+        "bandwidth": 769317787414,
+        "latency": 127212,
+        "packet_loss": 49761291,
+        "jitter": 66630,
+        "repair": 123906,
+        "guarantee": 209658134659,
+        "availability": 459405384307
+    }]
+}, {
+    "id": "20bd5659-baef-48c2-8bb8-5342af131d2c",
+    "sla": {
+        "bandwidth": 204140945046,
+        "latency": 352114,
+        "packet_loss": 80192684,
+        "jitter": 394084,
+        "repair": 561776,
+        "guarantee": 238709078971,
+        "availability": 521811857418
+    },
+    "met": [{
+        "bandwidth": 673300215047,
+        "latency": 726251,
+        "packet_loss": 49245340,
+        "jitter": 53325,
+        "repair": 853908,
+        "guarantee": 665140437872,
+        "availability": 32637563445
+    }]
+}, {
+    "id": "036998c6-e44e-489e-927d-421cceec5dae",
+    "sla": {
+        "bandwidth": 938862007800,
+        "latency": 526471,
+        "packet_loss": 4801399,
+        "jitter": 326155,
+        "repair": 811423,
+        "guarantee": 382041830340,
+        "availability": 599377846699
+    },
+    "met": [{
+        "bandwidth": 149434765465,
+        "latency": 834333,
+        "packet_loss": 48838081,
+        "jitter": 599428,
+        "repair": 1519360,
+        "guarantee": 351619043530,
+        "availability": 864433561861
+    }]
+}, {
+    "id": "294db8bb-7146-4fc7-b668-75294f8c34d2",
+    "sla": {
+        "bandwidth": 283768422262,
+        "latency": 774988,
+        "packet_loss": 62675541,
+        "jitter": 791545,
+        "repair": 16699,
+        "guarantee": 968783790156,
+        "availability": 901670450876
+    },
+    "met": [{
+        "bandwidth": 615214873160,
+        "latency": 530859,
+        "packet_loss": 52177784,
+        "jitter": 840688,
+        "repair": 1872900,
+        "guarantee": 51699767373,
+        "availability": 528186130372
+    }]
+}, {
+    "id": "650ab169-09cc-433c-b18e-674c3bf3dcac",
+    "sla": {
+        "bandwidth": 944889755299,
+        "latency": 738996,
+        "packet_loss": 49850962,
+        "jitter": 926157,
+        "repair": 863309,
+        "guarantee": 987135103077,
+        "availability": 299172564989
+    },
+    "met": [{
+        "bandwidth": 769394578896,
+        "latency": 845360,
+        "packet_loss": 53272770,
+        "jitter": 331341,
+        "repair": 299638,
+        "guarantee": 972082201598,
+        "availability": 495418536474
+    }]
+}, {
+    "id": "67fb6943-736f-49b7-9d69-a465928d552d",
+    "sla": {
+        "bandwidth": 404772102113,
+        "latency": 970668,
+        "packet_loss": 86918523,
+        "jitter": 190350,
+        "repair": 1164604,
+        "guarantee": 55665288370,
+        "availability": 342830887558
+    },
+    "met": [{
+        "bandwidth": 194830135266,
+        "latency": 971796,
+        "packet_loss": 57146500,
+        "jitter": 904352,
+        "repair": 769741,
+        "guarantee": 261602796432,
+        "availability": 514153723327
+    }]
+}, {
+    "id": "149ba0a9-6161-477d-98e4-422876eed557",
+    "sla": {
+        "bandwidth": 276787912958,
+        "latency": 162090,
+        "packet_loss": 72323930,
+        "jitter": 123293,
+        "repair": 1174463,
+        "guarantee": 346864962279,
+        "availability": 999722070675
+    },
+    "met": [{
+        "bandwidth": 404630190210,
+        "latency": 156148,
+        "packet_loss": 83559642,
+        "jitter": 180575,
+        "repair": 1989413,
+        "guarantee": 404574166199,
+        "availability": 12765320143
+    }]
+}, {
+    "id": "7d3c09cc-52cb-4044-8a35-b32659075c37",
+    "sla": {
+        "bandwidth": 678483380551,
+        "latency": 520007,
+        "packet_loss": 75986005,
+        "jitter": 870471,
+        "repair": 806244,
+        "guarantee": 207427353802,
+        "availability": 52126549740
+    },
+    "met": [{
+        "bandwidth": 912646902150,
+        "latency": 513184,
+        "packet_loss": 28865243,
+        "jitter": 617021,
+        "repair": 193372,
+        "guarantee": 582178483376,
+        "availability": 244989437575
+    }]
+}, {
+    "id": "9bcfb151-a1b1-4ece-a96a-179a1d99ddeb",
+    "sla": {
+        "bandwidth": 853028392424,
+        "latency": 499949,
+        "packet_loss": 52548955,
+        "jitter": 909421,
+        "repair": 1612341,
+        "guarantee": 117849573014,
+        "availability": 523504330188
+    },
+    "met": [{
+        "bandwidth": 311655893581,
+        "latency": 129751,
+        "packet_loss": 69007962,
+        "jitter": 778227,
+        "repair": 1588828,
+        "guarantee": 717086993441,
+        "availability": 860683882333
+    }]
+}, {
+    "id": "5a86e491-0493-41a7-9e9b-dcf33c04cce3",
+    "sla": {
+        "bandwidth": 82748693624,
+        "latency": 226731,
+        "packet_loss": 7098570,
+        "jitter": 596574,
+        "repair": 458086,
+        "guarantee": 628698855208,
+        "availability": 333444278672
+    },
+    "met": [{
+        "bandwidth": 841340960966,
+        "latency": 726381,
+        "packet_loss": 89579981,
+        "jitter": 851093,
+        "repair": 378887,
+        "guarantee": 226029242968,
+        "availability": 319171288646
+    }]
+}, {
+    "id": "ee160765-50af-4b03-8523-b24e4af41985",
+    "sla": {
+        "bandwidth": 824887621811,
+        "latency": 215278,
+        "packet_loss": 44730674,
+        "jitter": 992005,
+        "repair": 586072,
+        "guarantee": 306659850280,
+        "availability": 383797180348
+    },
+    "met": [{
+        "bandwidth": 231909779973,
+        "latency": 495984,
+        "packet_loss": 65791135,
+        "jitter": 525427,
+        "repair": 392795,
+        "guarantee": 919150750674,
+        "availability": 31967278902
+    }]
+}, {
+    "id": "1e3ba2a4-313b-4668-b0ea-61cf0b416e5c",
+    "sla": {
+        "bandwidth": 512172510297,
+        "latency": 861442,
+        "packet_loss": 9707627,
+        "jitter": 1120,
+        "repair": 126966,
+        "guarantee": 505747890043,
+        "availability": 749130019615
+    },
+    "met": [{
+        "bandwidth": 767893096050,
+        "latency": 585674,
+        "packet_loss": 65807380,
+        "jitter": 232911,
+        "repair": 136782,
+        "guarantee": 257550194366,
+        "availability": 230770039653
+    }]
+}, {
+    "id": "192cf2f5-5852-4e48-9361-9c2d720a88eb",
+    "sla": {
+        "bandwidth": 761864220441,
+        "latency": 641997,
+        "packet_loss": 79412768,
+        "jitter": 49165,
+        "repair": 1782754,
+        "guarantee": 849733930143,
+        "availability": 42919501796
+    },
+    "met": [{
+        "bandwidth": 318808106173,
+        "latency": 433012,
+        "packet_loss": 9480272,
+        "jitter": 475604,
+        "repair": 1267827,
+        "guarantee": 232428594293,
+        "availability": 262721912671
+    }]
+}, {
+    "id": "c9e1616c-0361-4b43-a775-26c58ea351f3",
+    "sla": {
+        "bandwidth": 498977269786,
+        "latency": 945848,
+        "packet_loss": 6006333,
+        "jitter": 224822,
+        "repair": 625839,
+        "guarantee": 696781115053,
+        "availability": 186807069355
+    },
+    "met": [{
+        "bandwidth": 959641507060,
+        "latency": 140944,
+        "packet_loss": 85061455,
+        "jitter": 565724,
+        "repair": 1894050,
+        "guarantee": 321069419696,
+        "availability": 721334627558
+    }]
+}, {
+    "id": "75bbb407-5aa8-4fb7-9423-b5c7718cc88c",
+    "sla": {
+        "bandwidth": 925014891946,
+        "latency": 266480,
+        "packet_loss": 53732751,
+        "jitter": 828690,
+        "repair": 28075,
+        "guarantee": 334247500218,
+        "availability": 27847319855
+    },
+    "met": [{
+        "bandwidth": 674891547407,
+        "latency": 70514,
+        "packet_loss": 59674817,
+        "jitter": 918515,
+        "repair": 976124,
+        "guarantee": 102295200691,
+        "availability": 678015299676
+    }]
+}, {
+    "id": "599193e1-5c8e-4847-aaf3-182f1af340e1",
+    "sla": {
+        "bandwidth": 942352103804,
+        "latency": 848745,
+        "packet_loss": 99287619,
+        "jitter": 545753,
+        "repair": 93300,
+        "guarantee": 881279569989,
+        "availability": 40137668474
+    },
+    "met": [{
+        "bandwidth": 965945797821,
+        "latency": 729566,
+        "packet_loss": 76184460,
+        "jitter": 918167,
+        "repair": 1812261,
+        "guarantee": 861796157686,
+        "availability": 591662269348
+    }]
+}, {
+    "id": "fcfabc68-38a8-498c-8447-c16fb48d6f0f",
+    "sla": {
+        "bandwidth": 985165087574,
+        "latency": 440953,
+        "packet_loss": 6181999,
+        "jitter": 629957,
+        "repair": 1237292,
+        "guarantee": 742825880110,
+        "availability": 852960806439
+    },
+    "met": [{
+        "bandwidth": 983133010562,
+        "latency": 616318,
+        "packet_loss": 26909602,
+        "jitter": 16325,
+        "repair": 960450,
+        "guarantee": 149535056553,
+        "availability": 268322006377
+    }]
+}, {
+    "id": "4e306582-cae2-4d02-b2aa-c92caae99900",
+    "sla": {
+        "bandwidth": 503339461861,
+        "latency": 338320,
+        "packet_loss": 74370162,
+        "jitter": 630095,
+        "repair": 1591679,
+        "guarantee": 237745144393,
+        "availability": 69188469141
+    },
+    "met": [{
+        "bandwidth": 98114084218,
+        "latency": 119048,
+        "packet_loss": 66897985,
+        "jitter": 819463,
+        "repair": 194236,
+        "guarantee": 72356240513,
+        "availability": 842679921612
+    }]
+}, {
+    "id": "e8640c43-348f-4db3-b4eb-89cab61463dd",
+    "sla": {
+        "bandwidth": 517908059224,
+        "latency": 874616,
+        "packet_loss": 88958740,
+        "jitter": 476735,
+        "repair": 1325325,
+        "guarantee": 189398266151,
+        "availability": 725389955387
+    },
+    "met": [{
+        "bandwidth": 149575690832,
+        "latency": 636022,
+        "packet_loss": 3288036,
+        "jitter": 399218,
+        "repair": 352188,
+        "guarantee": 710103721682,
+        "availability": 127588423075
+    }]
+}, {
+    "id": "b81d2b39-57df-44a4-98af-a0520cbbf3ed",
+    "sla": {
+        "bandwidth": 639451706075,
+        "latency": 717182,
+        "packet_loss": 5727239,
+        "jitter": 53235,
+        "repair": 1971995,
+        "guarantee": 164563530771,
+        "availability": 5580143742
+    },
+    "met": [{
+        "bandwidth": 797300984403,
+        "latency": 783669,
+        "packet_loss": 74043017,
+        "jitter": 315853,
+        "repair": 2027481,
+        "guarantee": 827273095480,
+        "availability": 235017425921
+    }]
+}, {
+    "id": "1ba6d707-4a10-4c06-98b7-35f6d1761cec",
+    "sla": {
+        "bandwidth": 17815145949,
+        "latency": 800365,
+        "packet_loss": 58443715,
+        "jitter": 675892,
+        "repair": 1993396,
+        "guarantee": 587975660357,
+        "availability": 36048109060
+    },
+    "met": [{
+        "bandwidth": 668848815289,
+        "latency": 444731,
+        "packet_loss": 34387677,
+        "jitter": 129048,
+        "repair": 1644962,
+        "guarantee": 57159192819,
+        "availability": 846926290168
+    }]
+}, {
+    "id": "69da7763-eb03-4457-8bdb-f93e151f2353",
+    "sla": {
+        "bandwidth": 826704260331,
+        "latency": 713332,
+        "packet_loss": 83413803,
+        "jitter": 462220,
+        "repair": 503825,
+        "guarantee": 294546061300,
+        "availability": 22321191037
+    },
+    "met": [{
+        "bandwidth": 712238902944,
+        "latency": 792027,
+        "packet_loss": 5445138,
+        "jitter": 472890,
+        "repair": 1959850,
+        "guarantee": 842003279782,
+        "availability": 171733733935
+    }]
+}, {
+    "id": "e97fd505-0adc-4e00-b31f-6b12795426d3",
+    "sla": {
+        "bandwidth": 622404812420,
+        "latency": 144937,
+        "packet_loss": 70716606,
+        "jitter": 394124,
+        "repair": 827839,
+        "guarantee": 870226387121,
+        "availability": 825555958197
+    },
+    "met": [{
+        "bandwidth": 314283642642,
+        "latency": 556651,
+        "packet_loss": 66096579,
+        "jitter": 530708,
+        "repair": 1819990,
+        "guarantee": 364019444345,
+        "availability": 807792256119
+    }]
+}, {
+    "id": "af92cb90-c48f-4a95-8c37-6b993e25a1a6",
+    "sla": {
+        "bandwidth": 259884228332,
+        "latency": 569026,
+        "packet_loss": 60838625,
+        "jitter": 149781,
+        "repair": 896231,
+        "guarantee": 388388976809,
+        "availability": 150152078041
+    },
+    "met": [{
+        "bandwidth": 377479624364,
+        "latency": 434550,
+        "packet_loss": 18460600,
+        "jitter": 590307,
+        "repair": 454644,
+        "guarantee": 209259440355,
+        "availability": 917882121517
+    }]
+}, {
+    "id": "18bb51fd-c01e-44d4-8183-3d77bbd6ed69",
+    "sla": {
+        "bandwidth": 364081645529,
+        "latency": 239555,
+        "packet_loss": 6083503,
+        "jitter": 12707,
+        "repair": 964338,
+        "guarantee": 862152547659,
+        "availability": 103865588848
+    },
+    "met": [{
+        "bandwidth": 101265296517,
+        "latency": 807932,
+        "packet_loss": 12749183,
+        "jitter": 524603,
+        "repair": 1779126,
+        "guarantee": 877500193519,
+        "availability": 18130007334
+    }]
+}, {
+    "id": "c6f28f24-f718-4053-8378-615f521f3862",
+    "sla": {
+        "bandwidth": 122032147616,
+        "latency": 460601,
+        "packet_loss": 89169385,
+        "jitter": 34761,
+        "repair": 275949,
+        "guarantee": 653396704167,
+        "availability": 575821492678
+    },
+    "met": [{
+        "bandwidth": 443586074794,
+        "latency": 821667,
+        "packet_loss": 34780717,
+        "jitter": 55296,
+        "repair": 771592,
+        "guarantee": 878707931819,
+        "availability": 515447960532
+    }]
+}, {
+    "id": "e49b859b-5228-441d-aa51-44137e2feb34",
+    "sla": {
+        "bandwidth": 169297959270,
+        "latency": 994038,
+        "packet_loss": 78617980,
+        "jitter": 830068,
+        "repair": 212094,
+        "guarantee": 462955222500,
+        "availability": 549906475342
+    },
+    "met": [{
+        "bandwidth": 619223997248,
+        "latency": 601589,
+        "packet_loss": 26680106,
+        "jitter": 715259,
+        "repair": 1176426,
+        "guarantee": 522642559389,
+        "availability": 635767519340
+    }]
+}, {
+    "id": "755fbbee-4cb6-42d0-bfb9-b9dedbfcc48b",
+    "sla": {
+        "bandwidth": 63725253033,
+        "latency": 107371,
+        "packet_loss": 46956562,
+        "jitter": 302161,
+        "repair": 668298,
+        "guarantee": 405753245887,
+        "availability": 844801146075
+    },
+    "met": [{
+        "bandwidth": 722778356620,
+        "latency": 236491,
+        "packet_loss": 27967299,
+        "jitter": 667877,
+        "repair": 1982831,
+        "guarantee": 728547428164,
+        "availability": 519045375593
+    }]
+}, {
+    "id": "d7b57644-ea67-42a3-8d75-831470bbe2be",
+    "sla": {
+        "bandwidth": 400042277370,
+        "latency": 647448,
+        "packet_loss": 383428,
+        "jitter": 496622,
+        "repair": 1228865,
+        "guarantee": 947665208021,
+        "availability": 692471109722
+    },
+    "met": [{
+        "bandwidth": 377177688454,
+        "latency": 140852,
+        "packet_loss": 54382803,
+        "jitter": 385486,
+        "repair": 312769,
+        "guarantee": 529618734251,
+        "availability": 237053469088
+    }]
+}, {
+    "id": "8ec1f926-35ad-4974-806d-1399d3e22e19",
+    "sla": {
+        "bandwidth": 806325164750,
+        "latency": 918434,
+        "packet_loss": 42608321,
+        "jitter": 431671,
+        "repair": 734634,
+        "guarantee": 203606681611,
+        "availability": 948018621258
+    },
+    "met": [{
+        "bandwidth": 949025388521,
+        "latency": 639129,
+        "packet_loss": 90384881,
+        "jitter": 640809,
+        "repair": 175996,
+        "guarantee": 160303221792,
+        "availability": 403845607655
+    }]
+}, {
+    "id": "5d9cb8e7-43c2-4b1c-a896-0588c83030d5",
+    "sla": {
+        "bandwidth": 350653547390,
+        "latency": 191563,
+        "packet_loss": 89408581,
+        "jitter": 992158,
+        "repair": 1760632,
+        "guarantee": 304113357421,
+        "availability": 377046322671
+    },
+    "met": [{
+        "bandwidth": 783993854273,
+        "latency": 494201,
+        "packet_loss": 76728695,
+        "jitter": 6573,
+        "repair": 708680,
+        "guarantee": 149744605316,
+        "availability": 14892883180
+    }]
+}, {
+    "id": "f5fce05a-9c30-4d02-8dfc-940b1357bfbc",
+    "sla": {
+        "bandwidth": 65311038220,
+        "latency": 474117,
+        "packet_loss": 44908811,
+        "jitter": 792022,
+        "repair": 348708,
+        "guarantee": 906725567041,
+        "availability": 36007504270
+    },
+    "met": [{
+        "bandwidth": 768309608310,
+        "latency": 598993,
+        "packet_loss": 41163479,
+        "jitter": 634756,
+        "repair": 238175,
+        "guarantee": 377252694677,
+        "availability": 838977080198
+    }]
+}, {
+    "id": "903c0f9e-9f2e-488c-bd7f-0c7cc23a42e7",
+    "sla": {
+        "bandwidth": 988300684932,
+        "latency": 529954,
+        "packet_loss": 29258286,
+        "jitter": 782354,
+        "repair": 315251,
+        "guarantee": 208946714319,
+        "availability": 179377613533
+    },
+    "met": [{
+        "bandwidth": 370105541084,
+        "latency": 963437,
+        "packet_loss": 58410327,
+        "jitter": 856229,
+        "repair": 796081,
+        "guarantee": 226781067195,
+        "availability": 955365018035
+    }]
+}, {
+    "id": "acada0c7-9676-41a2-83f5-2c8066acafa5",
+    "sla": {
+        "bandwidth": 495669331486,
+        "latency": 99605,
+        "packet_loss": 51627193,
+        "jitter": 210529,
+        "repair": 1735849,
+        "guarantee": 453845028060,
+        "availability": 218485656151
+    },
+    "met": [{
+        "bandwidth": 805764402817,
+        "latency": 985748,
+        "packet_loss": 26680936,
+        "jitter": 311216,
+        "repair": 1100674,
+        "guarantee": 577650268739,
+        "availability": 4322009330
+    }]
+}, {
+    "id": "d88513f9-c46a-4aec-afb1-bf43571fcb55",
+    "sla": {
+        "bandwidth": 218872103370,
+        "latency": 203238,
+        "packet_loss": 96269142,
+        "jitter": 667169,
+        "repair": 221098,
+        "guarantee": 476955514109,
+        "availability": 865340037064
+    },
+    "met": [{
+        "bandwidth": 257313387016,
+        "latency": 458887,
+        "packet_loss": 32407421,
+        "jitter": 59381,
+        "repair": 96829,
+        "guarantee": 208618874585,
+        "availability": 241952037451
+    }]
+}, {
+    "id": "2d6c96fd-a4b4-41fd-bdc6-77601b43addc",
+    "sla": {
+        "bandwidth": 988502245509,
+        "latency": 324054,
+        "packet_loss": 13420688,
+        "jitter": 615088,
+        "repair": 1810681,
+        "guarantee": 624508519704,
+        "availability": 141563496564
+    },
+    "met": [{
+        "bandwidth": 477989759839,
+        "latency": 215989,
+        "packet_loss": 8066044,
+        "jitter": 263955,
+        "repair": 90953,
+        "guarantee": 118570660773,
+        "availability": 92621140746
+    }]
+}, {
+    "id": "492c358a-ee0a-4b90-b777-9bc97f24a5ce",
+    "sla": {
+        "bandwidth": 424735881442,
+        "latency": 2538,
+        "packet_loss": 43031323,
+        "jitter": 800982,
+        "repair": 1090483,
+        "guarantee": 515392882519,
+        "availability": 703413157245
+    },
+    "met": [{
+        "bandwidth": 914851503651,
+        "latency": 82289,
+        "packet_loss": 82087790,
+        "jitter": 436896,
+        "repair": 1112795,
+        "guarantee": 464512373316,
+        "availability": 320641664774
+    }]
+}, {
+    "id": "8cec1b20-7614-44f6-963f-23bf8585ced4",
+    "sla": {
+        "bandwidth": 647478374985,
+        "latency": 565069,
+        "packet_loss": 25769145,
+        "jitter": 59209,
+        "repair": 1567,
+        "guarantee": 627298539994,
+        "availability": 60168116259
+    },
+    "met": [{
+        "bandwidth": 568100058472,
+        "latency": 15696,
+        "packet_loss": 75812032,
+        "jitter": 756002,
+        "repair": 294980,
+        "guarantee": 642116709029,
+        "availability": 50792697060
+    }]
+}, {
+    "id": "1a219654-b9c8-4562-87c9-09a2994f7509",
+    "sla": {
+        "bandwidth": 686074539507,
+        "latency": 925226,
+        "packet_loss": 62769191,
+        "jitter": 630890,
+        "repair": 813458,
+        "guarantee": 519268246709,
+        "availability": 760542326975
+    },
+    "met": [{
+        "bandwidth": 833063160387,
+        "latency": 850291,
+        "packet_loss": 90174023,
+        "jitter": 484660,
+        "repair": 895041,
+        "guarantee": 560580874163,
+        "availability": 326148885939
+    }]
+}, {
+    "id": "0a1dc186-fc0e-4185-9ff7-501d1a04801a",
+    "sla": {
+        "bandwidth": 150301810306,
+        "latency": 381681,
+        "packet_loss": 38788015,
+        "jitter": 794672,
+        "repair": 1105017,
+        "guarantee": 952328760589,
+        "availability": 302163682139
+    },
+    "met": [{
+        "bandwidth": 231592353135,
+        "latency": 912114,
+        "packet_loss": 841616,
+        "jitter": 656059,
+        "repair": 1528840,
+        "guarantee": 512718883235,
+        "availability": 857062486842
+    }]
+}, {
+    "id": "4d33df12-ac51-4585-9867-63c547cd5062",
+    "sla": {
+        "bandwidth": 392589892751,
+        "latency": 145248,
+        "packet_loss": 27150598,
+        "jitter": 931011,
+        "repair": 62051,
+        "guarantee": 522824373750,
+        "availability": 786289405247
+    },
+    "met": [{
+        "bandwidth": 938480331019,
+        "latency": 776416,
+        "packet_loss": 99366082,
+        "jitter": 54595,
+        "repair": 838912,
+        "guarantee": 402038677899,
+        "availability": 831124092964
+    }]
+}, {
+    "id": "e837afcc-b7b8-4002-b496-b2fc0410489b",
+    "sla": {
+        "bandwidth": 935674717545,
+        "latency": 768526,
+        "packet_loss": 46401057,
+        "jitter": 723099,
+        "repair": 1451032,
+        "guarantee": 111850946848,
+        "availability": 881668741105
+    },
+    "met": [{
+        "bandwidth": 460172066941,
+        "latency": 350926,
+        "packet_loss": 63996137,
+        "jitter": 492919,
+        "repair": 1621576,
+        "guarantee": 171699328042,
+        "availability": 197453643600
+    }]
+}, {
+    "id": "0720f940-5f3e-48f9-b581-0d615a44957f",
+    "sla": {
+        "bandwidth": 833383612541,
+        "latency": 820973,
+        "packet_loss": 17483208,
+        "jitter": 605657,
+        "repair": 164030,
+        "guarantee": 247977303143,
+        "availability": 251761341208
+    },
+    "met": [{
+        "bandwidth": 322249246007,
+        "latency": 758136,
+        "packet_loss": 24658724,
+        "jitter": 292070,
+        "repair": 1923265,
+        "guarantee": 529211140915,
+        "availability": 987618255940
+    }]
+}, {
+    "id": "5f063df7-3d3a-470e-8529-dac5384dfa86",
+    "sla": {
+        "bandwidth": 720588376609,
+        "latency": 227561,
+        "packet_loss": 87069581,
+        "jitter": 615831,
+        "repair": 1688977,
+        "guarantee": 153211967683,
+        "availability": 716512591565
+    },
+    "met": [{
+        "bandwidth": 900052028826,
+        "latency": 160965,
+        "packet_loss": 5439888,
+        "jitter": 457253,
+        "repair": 1634568,
+        "guarantee": 85823278630,
+        "availability": 206561542467
+    }]
+}, {
+    "id": "505a185f-8596-4628-84f0-f6b2662f53f5",
+    "sla": {
+        "bandwidth": 304784817072,
+        "latency": 951076,
+        "packet_loss": 77394119,
+        "jitter": 52749,
+        "repair": 1639648,
+        "guarantee": 713112467321,
+        "availability": 832311716786
+    },
+    "met": [{
+        "bandwidth": 49732003150,
+        "latency": 799526,
+        "packet_loss": 761413,
+        "jitter": 440288,
+        "repair": 1829343,
+        "guarantee": 141716764522,
+        "availability": 751306455795
+    }]
+}, {
+    "id": "fd4c2975-0b28-4ac9-9a43-c4f8b5969e2d",
+    "sla": {
+        "bandwidth": 931214485118,
+        "latency": 695440,
+        "packet_loss": 77092041,
+        "jitter": 546399,
+        "repair": 63334,
+        "guarantee": 355010401368,
+        "availability": 219169244859
+    },
+    "met": [{
+        "bandwidth": 951915416327,
+        "latency": 915980,
+        "packet_loss": 58063805,
+        "jitter": 581546,
+        "repair": 1704267,
+        "guarantee": 811343419690,
+        "availability": 781033542009
+    }]
+}, {
+    "id": "77f7464b-0ca7-4cef-9b14-91af41568755",
+    "sla": {
+        "bandwidth": 417712823488,
+        "latency": 517882,
+        "packet_loss": 16333677,
+        "jitter": 629477,
+        "repair": 699127,
+        "guarantee": 70173702816,
+        "availability": 638810225640
+    },
+    "met": [{
+        "bandwidth": 751063291258,
+        "latency": 102421,
+        "packet_loss": 31519912,
+        "jitter": 149684,
+        "repair": 357320,
+        "guarantee": 373396214375,
+        "availability": 906268099085
+    }]
+}, {
+    "id": "03ddf687-9934-46bf-bd2d-f6efcfb81252",
+    "sla": {
+        "bandwidth": 100804014849,
+        "latency": 669913,
+        "packet_loss": 20877768,
+        "jitter": 159637,
+        "repair": 1784838,
+        "guarantee": 461418235257,
+        "availability": 670479785683
+    },
+    "met": [{
+        "bandwidth": 593509553939,
+        "latency": 405768,
+        "packet_loss": 48713594,
+        "jitter": 384921,
+        "repair": 708310,
+        "guarantee": 161738567826,
+        "availability": 998525376073
+    }]
+}, {
+    "id": "f7e872d9-2e38-4f15-affc-1349c23545d0",
+    "sla": {
+        "bandwidth": 771509522262,
+        "latency": 805526,
+        "packet_loss": 17639684,
+        "jitter": 342120,
+        "repair": 523074,
+        "guarantee": 795969990334,
+        "availability": 914177221552
+    },
+    "met": [{
+        "bandwidth": 219814318817,
+        "latency": 207845,
+        "packet_loss": 17283752,
+        "jitter": 921406,
+        "repair": 295819,
+        "guarantee": 274455920359,
+        "availability": 948910011897
+    }]
+}, {
+    "id": "3b675524-c6c7-4d53-bd1c-0ec2bb24ffb4",
+    "sla": {
+        "bandwidth": 300340432809,
+        "latency": 774562,
+        "packet_loss": 94470174,
+        "jitter": 360463,
+        "repair": 1398433,
+        "guarantee": 152432097975,
+        "availability": 637804259254
+    },
+    "met": [{
+        "bandwidth": 452113064833,
+        "latency": 70030,
+        "packet_loss": 99116425,
+        "jitter": 531705,
+        "repair": 1795039,
+        "guarantee": 563576250944,
+        "availability": 418309600287
+    }]
+}, {
+    "id": "14b33c4c-f281-46ec-a80c-02066dd316a3",
+    "sla": {
+        "bandwidth": 695634343051,
+        "latency": 606486,
+        "packet_loss": 61563895,
+        "jitter": 589480,
+        "repair": 81467,
+        "guarantee": 321882666099,
+        "availability": 608757197228
+    },
+    "met": [{
+        "bandwidth": 397676611314,
+        "latency": 21683,
+        "packet_loss": 95378420,
+        "jitter": 163190,
+        "repair": 888990,
+        "guarantee": 91520609735,
+        "availability": 315600641359
+    }]
+}, {
+    "id": "5364896e-c3ce-41bf-84ec-cada9444bea9",
+    "sla": {
+        "bandwidth": 757624015268,
+        "latency": 332922,
+        "packet_loss": 2018237,
+        "jitter": 196845,
+        "repair": 1219159,
+        "guarantee": 657026302527,
+        "availability": 621685463580
+    },
+    "met": [{
+        "bandwidth": 71592040692,
+        "latency": 960226,
+        "packet_loss": 70213669,
+        "jitter": 622575,
+        "repair": 2035310,
+        "guarantee": 350698317412,
+        "availability": 861371339419
+    }]
+}, {
+    "id": "35893ca1-f7eb-46b6-9944-2614d35b2848",
+    "sla": {
+        "bandwidth": 689345670091,
+        "latency": 265781,
+        "packet_loss": 78710692,
+        "jitter": 261090,
+        "repair": 1317877,
+        "guarantee": 39925920751,
+        "availability": 412459329541
+    },
+    "met": [{
+        "bandwidth": 764739455646,
+        "latency": 967986,
+        "packet_loss": 41081661,
+        "jitter": 283715,
+        "repair": 183212,
+        "guarantee": 864522230121,
+        "availability": 272445850864
+    }]
+}, {
+    "id": "2c35e104-72c7-4fa7-bc06-15fc5c763c7e",
+    "sla": {
+        "bandwidth": 55058973543,
+        "latency": 102666,
+        "packet_loss": 98385875,
+        "jitter": 26824,
+        "repair": 1115984,
+        "guarantee": 425010950710,
+        "availability": 413203113823
+    },
+    "met": [{
+        "bandwidth": 477770431006,
+        "latency": 18617,
+        "packet_loss": 76061666,
+        "jitter": 809536,
+        "repair": 1315652,
+        "guarantee": 71835134640,
+        "availability": 978588160248
+    }]
+}, {
+    "id": "c28089e8-d722-45a5-8b21-4b72e0c4d764",
+    "sla": {
+        "bandwidth": 304600249019,
+        "latency": 969672,
+        "packet_loss": 59031478,
+        "jitter": 904242,
+        "repair": 1251331,
+        "guarantee": 732458929850,
+        "availability": 22680222828
+    },
+    "met": [{
+        "bandwidth": 572386409473,
+        "latency": 190674,
+        "packet_loss": 60845324,
+        "jitter": 603561,
+        "repair": 1473321,
+        "guarantee": 37628618377,
+        "availability": 208184825247
+    }]
+}, {
+    "id": "819fe57b-01c7-4204-82fc-6d49d11f0c2b",
+    "sla": {
+        "bandwidth": 657859164814,
+        "latency": 864060,
+        "packet_loss": 21637183,
+        "jitter": 293084,
+        "repair": 1696761,
+        "guarantee": 984958463534,
+        "availability": 144845744527
+    },
+    "met": [{
+        "bandwidth": 847542835780,
+        "latency": 593367,
+        "packet_loss": 6689837,
+        "jitter": 876674,
+        "repair": 1262239,
+        "guarantee": 940087735049,
+        "availability": 807556542912
+    }]
+}, {
+    "id": "af1312f1-7992-4681-954b-0f1805c06a95",
+    "sla": {
+        "bandwidth": 510369920845,
+        "latency": 896550,
+        "packet_loss": 95144029,
+        "jitter": 937524,
+        "repair": 272519,
+        "guarantee": 35354739749,
+        "availability": 442333684514
+    },
+    "met": [{
+        "bandwidth": 168264268454,
+        "latency": 676287,
+        "packet_loss": 6543837,
+        "jitter": 116232,
+        "repair": 1605389,
+        "guarantee": 994543869831,
+        "availability": 127561740313
+    }]
+}, {
+    "id": "46433b04-91a5-4717-92fa-20bf5d392f92",
+    "sla": {
+        "bandwidth": 323223882218,
+        "latency": 73789,
+        "packet_loss": 92856344,
+        "jitter": 39108,
+        "repair": 1813951,
+        "guarantee": 939079837520,
+        "availability": 390382856314
+    },
+    "met": [{
+        "bandwidth": 675264540934,
+        "latency": 703537,
+        "packet_loss": 37537630,
+        "jitter": 401836,
+        "repair": 261837,
+        "guarantee": 323426991989,
+        "availability": 338426442708
+    }]
+}]
