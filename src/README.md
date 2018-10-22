@@ -91,10 +91,16 @@ docker-compose -f test/fixtures/docker-compose-2orgs-4peers-tls-cli.yaml logs -f
 ```
 
 #### Monitor blockchain size on disk
+_Replace `businesschannel` with the channel name_
 ```sh
+watch -n1 docker exec -it peer0.org1.example.com du -h /var/hyperledger/production/ledgersData/chains/chains/businesschannel
+
+# OR
+
 docker exec -it peer0.org1.example.com /bin/bash
-cd /var/hyperledger/production/
-watch du -h *
+cd /var/hyperledger/production/ledgersData/chains/chains
+watch du -h businesschannel
+
 ```
 
 #### Run a specific test
