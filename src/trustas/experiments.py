@@ -15,12 +15,12 @@ import trustas
 # SETTINGS
 EXP_DIR         = "experiments"
 MAX_ASN         = 2**16-1
-EXP_NAME        = "A"
 NETWORK_SIZE    = 100
 CONNECTIONS     = 100
 MPA             = 1
 
-def exp_privacy_cost(network_size=100,
+def exp_privacy_cost(experiment_path,
+                     network_size=100,
                      connections=100,
                      mpa=1,
                      storage="json"):
@@ -28,13 +28,15 @@ def exp_privacy_cost(network_size=100,
 
     Agreements are simulated based on a set of parameters passed.
     If the storage is set to "json", the agreements will be stored
-    in a JSON file in EXP_DIR + EXP_NAME.
+    in a JSON file in EXP_DIR + experiment_path.
 
     Args:
-        network_size:   number (S) of ASes in the network
-        connections:    number of interconnections among ASes
-        mpa:            metric sets per agreement
-        storage:        "json" for .json output
+        experiment_name:    an identifier string (not necessarily unique)
+        experiment_path:    path for working dir (from EXP_DIR/)
+        network_size:       number (S) of ASes in the network
+        connections:        number of interconnections among ASes
+        mpa:                metric sets per agreement
+        storage:            "json" for .json output
     Raises:
         ValueError:     if S (network_size) is less than 3
         ValueError:     if the number of connections is too large for the net size (nCr formula)
@@ -50,12 +52,7 @@ def exp_privacy_cost(network_size=100,
     CONNECTIONS     = connections
     MPA             = mpa
 
-    working_dir = os.path.join(
-        EXP_DIR,
-        EXP_NAME,
-        "{}_{}_{}".format(NETWORK_SIZE, CONNECTIONS, MPA),
-        str(time.time())
-    )
+    working_dir = os.path.join(EXP_DIR, experiment_path)
 
     __validate_data()
     as_list     = __generate_ases()
@@ -204,14 +201,14 @@ def __agreements_to_file(agreements, filepath, extras=[]):
     # write to files
     with open(enc_filename, "w+") as fp:
         chars = fp.write(enc_text)
-        print("\tWritten {} out of {} characters to {}".format(
-            chars, len(enc_text), enc_filename))
+        # print("\tWritten {} out of {} characters to {}".format(
+        #     chars, len(enc_text), enc_filename))
 
     # write to files
     with open(pla_filename, "w+") as fp:
         chars = fp.write(pla_text)
-        print("\tWritten {} out of {} characters to {}".format(
-            chars, len(pla_text), pla_filename))
+        # print("\tWritten {} out of {} characters to {}".format(
+        #     chars, len(pla_text), pla_filename))
 
 
 def __jsonify_agreements(agreements, encrypted=True, extras=[]):
