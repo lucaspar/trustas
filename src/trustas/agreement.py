@@ -3,6 +3,7 @@
 
 import uuid
 from pyope import ope
+import trustas
 
 class Agreement:
     """Describes an agreement between ASes (peers).
@@ -20,9 +21,20 @@ class Agreement:
         Args:
             SLA:    An SLA instance describing the agreement.
             peers:  A Set of ASNs which are part of the agreement.
+        Raises:
+            ValueError: If "peers" does not contain two ASNs
         """
+
+        p = list(peers)
+        if len(p) != 2 or not \
+            (isinstance(p[0], int) and isinstance(p[1], int)):
+            raise ValueError("Argument peers must contain two integers")
+        if not isinstance(SLA, trustas.sla.SLA):
+            raise ValueError("Argument SLA must be instance of trustas.sla.SLA")
+
         self.__met = []
         self.__met_enc = []
+        self.__peers = peers
         self.__sla = SLA
         self.id = uuid.uuid4()
         self.enc_key, self.__sla_enc = SLA.encrypt()
@@ -30,6 +42,10 @@ class Agreement:
     @property
     def sla(self):
         return self.__sla
+
+    @property
+    def peers(self):
+        return list(self.__peers)
 
     def append_metrics(self, metrics):
         """Appends metrics to this Agreement object.
