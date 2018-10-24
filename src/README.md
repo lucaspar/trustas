@@ -15,7 +15,8 @@ virtualenv --version        # 15.1.0 | sudo -H pip3 install virtualenv
 
 virtualenv -p python3 venv
 source venv/bin/activate
-pip install -r requirements.txt
+pip3 install -r requirements.txt
+# try prepending "sudo -H " if you've got a permission error
 ```
 
 ### Setting up monitors (optional)
