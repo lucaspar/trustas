@@ -101,10 +101,12 @@ class E2eTest(BaseTestCase):
     def __cc_ops(self):
         """A sequence of chaincode operations simulating agreements"""
 
+        # parameters
+        exp_mode = "ciphertext"  # "ciphertext" | "plaintext"
         exp_net_size    = 100
         exp_connections = 1000
         exp_mpa         = 0     # TODO: create new chaincode function before increasing MPA
-        exp_path = os.path.join("A",
+        exp_path = os.path.join("A", exp_mode,
             "{}_{}_{}".format( exp_net_size, exp_connections, exp_mpa),
             str(time.time()))
         exp_settings = {
@@ -115,15 +117,19 @@ class E2eTest(BaseTestCase):
             "storage"           : "json"
         }
 
+        assert(exp_mode == "ciphertext" or exp_mode == "plaintext")
+
         # simulate agreements
         agreements = trustas.experiments.exp_privacy_cost(**exp_settings)
 
         # create agreement entries in the blockchain
+        print(" > Saving agreements to the ledger...")
         data_x = []
         data_y = []
         for idx, ag in enumerate(agreements):
             peers = ag.peers
-            sla = json.dumps(ag.get_plaintext_sla())
+            sla = json.dumps(ag.get_encrypted_sla() if exp_mode ==
+                             "ciphertext" else ag.get_plaintext_sla())
             args = [str(ag.id), str(peers[0]), str(peers[1]), sla]
             self.__cc_call('createAgreement', args)
 
@@ -132,6 +138,7 @@ class E2eTest(BaseTestCase):
                 data_x.append(idx+1)
                 data_y.append(measure_blockchain_size())
 
+        print(" > Saving statistics...")
         save_data(
             data_x,
             data_y,
@@ -139,7 +146,7 @@ class E2eTest(BaseTestCase):
             title="Blockchain growth",
             path=exp_path,
             xlabel="Number of agreements",
-            ylabel="Blockchain size (bytes)")
+            ylabel="Blockchain size (KB)")
 
         # # create metric entries in the blockchain
         # for ag in agreements:
