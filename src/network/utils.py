@@ -160,7 +160,7 @@ def cli_call(arg_list, expect_success=True, env=os.environ.copy()):
 
 
 def mkdir_p(mypath):
-    '''Creates a directory. equivalent to using mkdir -p on the command line'''
+    '''Creates a directory. Equivalent to using mkdir -p <mypath> on the command line.'''
 
     from errno import EEXIST
     from os import makedirs, path

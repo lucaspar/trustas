@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import getopt
+import logging
 import os
 import sys
 import unittest
@@ -15,6 +16,14 @@ RUN_TESTS = False           # Run unit and e2e tests
 KEEP_NETWORK = False        # Keeps network running when finished
 DEFAULT_SLEEP = 4           # Default sleep time (seconds)
 WIPE_ALL = False            # Wipes all Docker assets before starting
+
+# logging config
+CREATE_LOGS = True
+LOG_FILE    = "logs/main.log"
+logging.basicConfig(
+    level       = logging.DEBUG,
+    filename    = LOG_FILE if CREATE_LOGS else "")
+logger = logging.getLogger(__name__)
 
 MODULES = [{
     'name': "Network",

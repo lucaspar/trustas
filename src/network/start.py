@@ -26,10 +26,8 @@ from .e2e_utils import build_channel_request, build_join_channel_req
 # ----------
 # SETTINGS
 
-CREATE_LOGS     = True
 KEEP_NETWORK    = False
 WIPE_ALL        = False
-LOG_FILE        = "logs/main.log"
 EXP_DIR         = "experiments"
 
 DEFAULT_SLEEP   = 5
@@ -42,14 +40,9 @@ CC_PATH         = 'github.com/trustas_cc'
 CC_NAME         = 'trustas_cc'
 CC_VERSION      = '1.0'
 
-# ----------
-
-# logging config
-logging.basicConfig(
-    level=logging.DEBUG,
-    filename=LOG_FILE if CREATE_LOGS else ""
-)
 logger = logging.getLogger(__name__)
+
+# ----------
 
 # beeprint config
 pp_conf = Config()
