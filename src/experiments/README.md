@@ -50,6 +50,8 @@ What is the **impact of the blockchain network** on TrustAS?
  - Number of agreements
  - Query response time (s)
  - Data transferred (MB)
+    - Measure volume and bandwidth
+    - Egress and ingress by AS
 
 #### Topology
 
