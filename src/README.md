@@ -78,6 +78,11 @@ After that, visualize the network at [localhost:8080](http://localhost:8080) by 
 
 ### Other operations
 
+#### TrustAS usage
+```sh
+./main.py -h
+```
+
 #### Open an interactive shell
 ```sh
 docker-compose -f test/fixtures/docker-compose-2orgs-4peers-tls-cli.yaml run --rm cli
