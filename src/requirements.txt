@@ -3,6 +3,9 @@
 # order preserving encryption
 pyope
 
+# data visualization
+matplotlib==3.0.0
+
 # containers
 docker>=3.0.0
 docker-compose>=1.7.0

@@ -11,13 +11,19 @@ TrustAS enables **anyone** in the permissioned network to verify whether an agre
 
 ## Software versions
 
+>   Please, follow the provided URLs for installing dependencies.
+    Some of the software used may have multiple origins (e.g. from different package managers) that could yield inconsistencies in the execution. This is valid for Docker and pip for example.
+
+
 Software        | Version
 --------------- | -----------
 OS              | Ubuntu 18.04.1 LTS
-[Go](https://golang.org/doc/install)                                | 1.10.3
-[Hyperledger](https://hyperledger-fabric.readthedocs.io/en/release-1.2/getting_started.html)    | 1.2.0
-[Docker](https://docs.docker.com/install/linux/docker-ce/ubuntu/)   | 18.06.0-ce
+[Docker](https://docs.docker.com/install/linux/docker-ce/ubuntu/)   | 18.06.1-ce
 [Docker Compose](https://docs.docker.com/compose/install/)          | 1.21.2
-[Fabric-SDK-Py](https://github.com/hyperledger/fabric-sdk-py)       | 0.7.0
+[Python](https://www.python.org/downloads/)                         | 3.6.6
+[pip](https://pip.pypa.io/en/stable/installing/)                    | 18.1
+[virtualenv](https://virtualenv.pypa.io/en/stable/installation/)    | 16.0.0
+
+Further software versions are specified in the `src/requirements.txt` and in Docker images. It is not necessary to manually install those.
 
 ## [Execution](src/README.md)

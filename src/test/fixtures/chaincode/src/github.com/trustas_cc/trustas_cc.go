@@ -184,25 +184,25 @@ func makeTimestamp() int64 {
 // Creates an interconnection agreement between A and B
 // =============================================================================
 func (t *SimpleChaincode) createAgreement(stub shim.ChaincodeStubInterface, args []string) pb.Response {
+	var AID string     // Agreement ID
 	var Asn1, Asn2 int // ASes
 	var SLA string     // Agreement SLA
-	var AID string     // Agreement ID
 	var err error
 
 	// retrieve args
 	if len(args) != 4 {
 		return shim.Error("Incorrect number of arguments. Expecting 3")
 	}
-	Asn1, err = strconv.Atoi(args[0])
+	AID = args[0]
+	Asn1, err = strconv.Atoi(args[1])
 	if err != nil {
-		return shim.Error("1st argument must be a numeric string")
+		return shim.Error("2nd argument must be a numeric string (ASN)")
 	}
-	Asn2, err = strconv.Atoi(args[1])
+	Asn2, err = strconv.Atoi(args[2])
 	if err != nil {
-		return shim.Error("1st argument must be a numeric string")
+		return shim.Error("3rd argument must be a numeric string (ASN)")
 	}
-	SLA = args[2]
-	AID = args[3]
+	SLA = args[3]
 
 	fmt.Println("Creating agreement", AID)
 

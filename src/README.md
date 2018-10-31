@@ -15,7 +15,8 @@ virtualenv --version        # 15.1.0 | sudo -H pip3 install virtualenv
 
 virtualenv -p python3 venv
 source venv/bin/activate
-pip install -r requirements.txt
+pip3 install -r requirements.txt
+# try prepending "sudo -H " if you've got a permission error
 ```
 
 ### Setting up monitors (optional)
@@ -29,8 +30,8 @@ docker stats
 Terminal 2 - Chaincode output watcher
 ```sh
 # You can watch the logs in real time
-#   You will see an error when executing before starting a network
-watch docker logs -tf dev-peer0.org1.example.com-trustas_cc-1.0
+#   An error is expected when executing before starting the network
+watch docker logs -tf --tail 30 dev-peer0.org1.example.com-trustas_cc-1.0
 
 # Alternatively, you can save the chaincode output to file after an execution
 docker logs -tf dev-peer0.org1.example.com-trustas_cc-1.0 > logs/cc.$(date "%s").log
@@ -78,6 +79,11 @@ After that, visualize the network at [localhost:8080](http://localhost:8080) by 
 
 ### Other operations
 
+#### TrustAS usage
+```sh
+./main.py -h
+```
+
 #### Open an interactive shell
 ```sh
 docker-compose -f test/fixtures/docker-compose-2orgs-4peers-tls-cli.yaml run --rm cli
@@ -91,10 +97,15 @@ docker-compose -f test/fixtures/docker-compose-2orgs-4peers-tls-cli.yaml logs -f
 ```
 
 #### Monitor blockchain size on disk
+_Replace `businesschannel` with the channel name_
 ```sh
+watch -n1 docker exec -it peer0.org1.example.com du -h /var/hyperledger/production/ledgersData/chains/chains/businesschannel
+
+# OR
+
 docker exec -it peer0.org1.example.com /bin/bash
-cd /var/hyperledger/production/
-watch du -h *
+cd /var/hyperledger/production/ledgersData/chains/chains
+watch du -h businesschannel
 ```
 
 #### Run a specific test
@@ -132,3 +143,29 @@ DEBUG:hfc.util.utils:<_Rendezvous of RPC that terminated with:
 	debug_error_string = "{"created":"@1539665957.387897414","description":"Error received from peer","file":"src/core/lib/surface/call.cc","file_line":1099,"grpc_message":"chaincode error (status: 500, message: {"Error":"Agreement aid_p1234567890 does not exist"})","grpc_status":2}"
 >
 ```
+
+---
+
+> raise Empty; queue.Empty
+
+As of November 2018, the most recent release of the `fabric-sdk-py` -- the python HFC SDK `v0.7.0` -- had many hard-coded timeouts that may raise empty queue exceptions when expired. The timeouts are more likely to happen on VMs with lower specifications and networks with higher latencies.
+
+A **temporary** (far from ideal) solution is to modify the corresponding lines in the dependency source code.
+For example, considering the following traceback:
+
+```sh
+Traceback (most recent call last):
+  # [...]
+  File "/home/user/trustas/src/venv/lib/python3.6/site-packages/hfc/util/utils.py", line 371, in build_tx_req
+    res = q.get(timeout=10)
+  File "/usr/lib/python3.6/queue.py", line 172, in get
+    raise Empty
+queue.Empty
+```
+
+Increase the timeout in the line 371 of the file in the traceback: `/home/user/trustas/src/venv/lib/python3.6/site-packages/hfc/util/utils.py`
+```py
+    res = q.get(timeout=60)
+```
+
+A more permanent solution may be to _treat these exceptions_ and _retry_ the transaction, but that requires further code changes in the application level. Since this is an issue likely to be solved in a future patch of the HFC (the timeout increase is already in pull requests on the Gerrit repository), the temporary solution was favored.

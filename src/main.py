@@ -1,8 +1,16 @@
 #!/usr/bin/env python3
 import getopt
+import logging
 import os
 import sys
 import unittest
+
+# config logger before importing other dependencies
+CREATE_LOGS = True
+LOG_FILE = "logs/main.log"
+logging.basicConfig(
+    level=logging.DEBUG, filename=LOG_FILE if CREATE_LOGS else "")
+logger = logging.getLogger(__name__)
 
 from beeprint import pp
 from trustas import experiments

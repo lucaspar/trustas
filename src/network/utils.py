@@ -157,3 +157,18 @@ def cli_call(arg_list, expect_success=True, env=os.environ.copy()):
             raise subprocess.CalledProcessError(
                 p.returncode, arg_list, output)
     return output, error, p.returncode
+
+
+def mkdir_p(mypath):
+    '''Creates a directory. Equivalent to using mkdir -p <mypath> on the command line.'''
+
+    from errno import EEXIST
+    from os import makedirs, path
+
+    try:
+        makedirs(mypath)
+    except OSError as exc:
+        if exc.errno == EEXIST and path.isdir(mypath):
+            pass
+        else:
+            raise
