@@ -143,3 +143,29 @@ DEBUG:hfc.util.utils:<_Rendezvous of RPC that terminated with:
 	debug_error_string = "{"created":"@1539665957.387897414","description":"Error received from peer","file":"src/core/lib/surface/call.cc","file_line":1099,"grpc_message":"chaincode error (status: 500, message: {"Error":"Agreement aid_p1234567890 does not exist"})","grpc_status":2}"
 >
 ```
+
+---
+
+> raise Empty; queue.Empty
+
+As of November 2018, the most recent release of the `fabric-sdk-py` -- the python HFC SDK `v0.7.0` -- had many hard-coded timeouts that may raise empty queue exceptions when expired. The timeouts are more likely to happen on VMs with lower specifications and networks with higher latencies.
+
+A **temporary** (far from ideal) solution is to modify the corresponding lines in the dependency source code.
+For example, considering the following traceback:
+
+```sh
+Traceback (most recent call last):
+  # [...]
+  File "/home/user/trustas/src/venv/lib/python3.6/site-packages/hfc/util/utils.py", line 371, in build_tx_req
+    res = q.get(timeout=10)
+  File "/usr/lib/python3.6/queue.py", line 172, in get
+    raise Empty
+queue.Empty
+```
+
+Increase the timeout in the line 371 of the file in the traceback: `/home/user/trustas/src/venv/lib/python3.6/site-packages/hfc/util/utils.py`
+```py
+    res = q.get(timeout=60)
+```
+
+A more permanent solution may be to _treat these exceptions_ and _retry_ the transaction, but that requires further code changes in the application level. Since this is an issue likely to be solved in a future patch of the HFC (the timeout increase is already in pull requests on the Gerrit repository), the temporary solution was favored.
