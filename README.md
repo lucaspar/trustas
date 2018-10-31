@@ -18,11 +18,12 @@ TrustAS enables **anyone** in the permissioned network to verify whether an agre
 Software        | Version
 --------------- | -----------
 OS              | Ubuntu 18.04.1 LTS
-[Go](https://golang.org/doc/install)                                | 1.10.3
 [Docker](https://docs.docker.com/install/linux/docker-ce/ubuntu/)   | 18.06.1-ce
 [Docker Compose](https://docs.docker.com/compose/install/)          | 1.21.2
 [Python](https://www.python.org/downloads/)                         | 3.6.6
 [pip](https://pip.pypa.io/en/stable/installing/)                    | 18.1
 [virtualenv](https://virtualenv.pypa.io/en/stable/installation/)    | 16.0.0
+
+Further software versions are specified in the `src/requirements.txt` and in Docker images. It is not necessary to manually install those.
 
 ## [Execution](src/README.md)
