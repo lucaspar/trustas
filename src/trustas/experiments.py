@@ -60,7 +60,7 @@ def exp_privacy_cost(experiment_path,
     agreements  = __generate_agreements(as_pairs)
 
     if storage == "json":
-        print(" > Printing to files...")
+        print(" > Printing to files")
 
         # Experiment information
         metadata = [{
@@ -156,10 +156,6 @@ def __generate_agreements(pairs):
     for idx, pair in enumerate(pairs):
         agreement = __agreement_factory(
             pair[0], pair[1], metric_samples=MPA)
-
-        # get encrypted properties
-        enc_sla = agreement.get_encrypted_sla()
-        enc_met = agreement.get_encrypted_metrics()
         agreements.append(agreement)
 
         # show discrete progress to cli
