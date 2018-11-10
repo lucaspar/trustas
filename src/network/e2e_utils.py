@@ -113,7 +113,7 @@ def build_join_channel_req(org, channel, client):
     tx_context = TXContext(org_admin, ecies(), tx_prop_req)
     # print(org, 'Admin', tx_context.identity)
 
-    peer = client.get_peer('peer0.'+org)
+    peer = client.get_peer('as000.'+org)
 
     """
     # connect the peer

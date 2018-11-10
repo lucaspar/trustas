@@ -33,21 +33,21 @@ setGlobals () {
 
 	if [ $1 -eq 0 -o $1 -eq 1 ] ; then
 		CORE_PEER_LOCALMSPID="Org1MSP"
-		CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt
+		CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/as000.org1.example.com/tls/ca.crt
 		CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp
 		if [ $1 -eq 0 ]; then
-			CORE_PEER_ADDRESS=peer0.org1.example.com:7051
+			CORE_PEER_ADDRESS=as000.org1.example.com:7051
 		else
-			CORE_PEER_ADDRESS=peer1.org1.example.com:7051
+			CORE_PEER_ADDRESS=as001.org1.example.com:7051
 		fi
 	else
 		CORE_PEER_LOCALMSPID="Org2MSP"
-		CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt
+		CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.example.com/peers/as000.org2.example.com/tls/ca.crt
 		CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp
 		if [ $1 -eq 2 ]; then
-			CORE_PEER_ADDRESS=peer0.org2.example.com:7051
+			CORE_PEER_ADDRESS=as000.org2.example.com:7051
 		else
-			CORE_PEER_ADDRESS=peer1.org2.example.com:7051
+			CORE_PEER_ADDRESS=as001.org2.example.com:7051
 		fi
 	fi
 
@@ -201,8 +201,8 @@ chaincodeInvoke () {
 # echo "Updating anchor peers for org2..."
 # updateAnchorPeers 2
 
-# ## Install chaincode on Peer0/Org1 and Peer2/Org2
-# echo "Installing chaincode on org1/peer0..."
+# ## Install chaincode on as000/Org1 and Peer2/Org2
+# echo "Installing chaincode on org1/as000..."
 # installChaincode 0
 # echo "Install chaincode on org2/peer2..."
 # installChaincode 2
@@ -211,12 +211,12 @@ chaincodeInvoke () {
 # echo "Instantiating chaincode on org2/peer2..."
 # instantiateChaincode 2
 
-# #Query on chaincode on Peer0/Org1
-# echo "Querying chaincode on org1/peer0..."
+# #Query on chaincode on as000/Org1
+# echo "Querying chaincode on org1/as000..."
 # chaincodeQuery 0 100
 
-# #Invoke on chaincode on Peer0/Org1
-# echo "Sending invoke transaction on org1/peer0..."
+# #Invoke on chaincode on as000/Org1
+# echo "Sending invoke transaction on org1/as000..."
 # chaincodeInvoke 0
 
 # ## Install chaincode on Peer3/Org2

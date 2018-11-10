@@ -13,6 +13,7 @@ from hfc.fabric.user import create_user
 from .config import E2E_CONFIG
 
 NETWORK_NAME = "test-network"
+LOCAL_DEPLOY = True
 LOG_FILE = "logs/trustas." + str(time.time()) + ".log"
 
 class BaseTestCase(unittest.TestCase):
@@ -35,7 +36,12 @@ class BaseTestCase(unittest.TestCase):
             E2E_CONFIG[NETWORK_NAME]['channel-artifacts']['config_yaml']
         self.channel_profile = \
             E2E_CONFIG[NETWORK_NAME]['channel-artifacts']['channel_profile']
-        self.client = Client('test/fixtures/trustas_network.json')
+
+        if LOCAL_DEPLOY:
+            self.client = Client('test/fixtures/trustas_local_net.json')
+        else:
+            self.client = Client('test/fixtures/trustas_gcp_net.json')
+
         self.channel_name = "businesschannel"  # default application channel
         self.user = self.client.get_user('org1.example.com', 'Admin')
         self.assertIsNotNone(self.user, 'org1 admin should not be None')

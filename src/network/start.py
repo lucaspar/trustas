@@ -206,7 +206,7 @@ class E2eTest(BaseTestCase):
     def __configure(self):
         """Get network configuration and make it available from self."""
 
-        peer_config = TEST_NETWORK['org1.example.com']['peers']['peer0']
+        peer_config = TEST_NETWORK['org1.example.com']['peers']['as000']
 
         endpoint = peer_config['grpc_request_endpoint']
         tls_cacerts = peer_config['tls_cacerts']
@@ -385,7 +385,7 @@ def save_data(x, y, path, file, title='', label='', xlabel='', ylabel='', legend
             spamwriter.writerow(r)
 
 
-def measure_blockchain_size(peer="peer0.org1.example.com"):
+def measure_blockchain_size(peer="as000.org1.example.com"):
     """Measures blockchain size through a command line call to a container.
 
     Args:
