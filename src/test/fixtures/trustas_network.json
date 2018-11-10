@@ -47,26 +47,6 @@
                     "private_key": "test/fixtures/e2e_cli/crypto-config/peerOrganizations/org1.example.com/users/User1@org1.example.com/msp/keystore/613ca29ff265101aaebd9b79aff9924d5cd7baa9077141d24cf7c8fed4425bd4_sk"
                 }
             }
-        },
-        "org2.example.com": {
-            "mspid": "Org2MSP",
-            "peers": [
-                "peer0.org2.example.com",
-                "peer1.org2.example.com"
-            ],
-            "certificateAuthorities": [
-                "ca-org2"
-            ],
-            "users": {
-                "Admin": {
-                    "cert": "test/fixtures/e2e_cli/crypto-config/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp/signcerts/Admin@org2.example.com-cert.pem",
-                    "private_key": "test/fixtures/e2e_cli/crypto-config/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp/keystore/a23db9fe4fdfc7d8f87a42919597b44e52b429fb09634b523b366146b9bf1e3b_sk"
-                },
-                "User1": {
-                    "cert": "test/fixtures/e2e_cli/crypto-config/peerOrganizations/org2.example.com/users/User1@org2.example.com/msp/signcerts/User1@org2.example.com-cert.pem",
-                    "private_key": "test/fixtures/e2e_cli/crypto-config/peerOrganizations/org2.example.com/users/User1@org2.example.com/msp/keystore/90da90b106c077543acc5b5f414ee857a3d5b1096d7be11f6f2ec25787e5110b_sk"
-                }
-            }
         }
     },
     "orderers": {
@@ -102,27 +82,6 @@
             "tlsCACerts": {
                 "path": "test/fixtures/e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/msp/tlscacerts/tlsca.org1.example.com-cert.pem"
             }
-        },
-        "peer0.org2.example.com": {
-            "url": "localhost:9051",
-            "eventUrl": "localhost:9053",
-            "grpcOptions": {
-                "ssl-target-name-override": "peer0.org2.example.com",
-                "grpc.http2.keepalive_time": 15
-            },
-            "tlsCACerts": {
-                "path": "test/fixtures/e2e_cli/crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/msp/tlscacerts/tlsca.org2.example.com-cert.pem"
-            }
-        },
-        "peer1.org2.example.com": {
-            "url": "localhost:10051",
-            "eventUrl": "localhost:10053",
-            "grpcOptions": {
-                "ssl-target-name-override": "peer1.org2.example.com"
-            },
-            "tlsCACerts": {
-                "path": "test/fixtures/e2e_cli/crypto-config/peerOrganizations/org2.example.com/peers/peer1.org2.example.com/msp/tlscacerts/tlsca.org2.example.com-cert.pem"
-            }
         }
     },
     "certificateAuthorities": {
@@ -133,19 +92,6 @@
             },
             "tlsCACerts": {
                 "path": "test/fixtures/e2e_cli/crypto-config/peerOrganizations/org1.example.com/ca/org1.example.com-cert.pem"
-            },
-            "registrar": [{
-                "enrollId": "admin",
-                "enrollSecret": "adminpw"
-            }]
-        },
-        "ca-org2": {
-            "url": "https://localhost:8054",
-            "grpcOptions": {
-                "verify": true
-            },
-            "tlsCACerts": {
-                "path": "test/fixtures/e2e_cli/crypto-config/peerOrganizations/org2.example.com/ca/org2.example.com-cert.pem"
             },
             "registrar": [{
                 "enrollId": "admin",

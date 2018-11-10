@@ -245,19 +245,12 @@ class E2eTest(BaseTestCase):
                                         self.channel_name)
         res = self.client._create_channel(request)
 
-    def __join_channel(self, create_new_channel=True):
+    def __join_channel(self):
         """Joins the default channel"""
 
-        if create_new_channel:
-            self.channel = self.client.new_channel(self.channel_name)
-            join_req = build_join_channel_req(self.org1, self.channel, self.client)
-            self.channel.join_channel(join_req)
-        # else:
-        #     logger.warn("create_new_channel flag is not stable")
-        #     self.channel = self.client.channel_join(
-        #         self.client, self.channel_name, self.peers,
-        #         TEST_NETWORK["orderer"]["mspid"])
-        #     print(type(self.channel), self.channel) # bool, False
+        self.channel = self.client.new_channel(self.channel_name)
+        join_req = build_join_channel_req(self.org1, self.channel, self.client)
+        self.channel.join_channel(join_req)
 
 
     def __cc_install(self):
@@ -280,7 +273,7 @@ class E2eTest(BaseTestCase):
         Args:
             fcn:        Chaincode function name
             args:       Chaincode function arguments
-            prop_type:  Proposal request type (default CC_INVOKE)
+            prop_type:  Proposal request type (defaults to CC_INVOKE)
         Returns:
             Chaincode response
             None when prop_type is not valid
