@@ -35,7 +35,7 @@ type SimpleChaincode struct {
 // Agreement : describes an agreement between two peers.
 // =============================================================================
 type Agreement struct {
-	ID         string `json:"id"`        // agreement identifier
+	ID         string `json:"id"`        // unique agreement identifier
 	ObjectType string `json:"docType"`   // docType is used to distinguish the various types of objects in state database
 	SLA        string `json:"sla"`       // the service level agreement
 	Asn1       int    `json:"asnOne"`    // one peer's ASN
@@ -46,7 +46,8 @@ type Agreement struct {
 // Measurement : describes a set of metrics measured during an agreement.
 // =============================================================================
 type Measurement struct {
-	AID        string `json:"aid"`       // identifier of corresponding agreement
+	MID        string `json:"id"`        // unique identifier of this measurement
+	AID        string `json:"aid"`       // unique identifier of corresponding agreement
 	ObjectType string `json:"docType"`   // docType is used to distinguish the various types of objects in state database
 	Metrics    string `json:"metrics"`   // set of measured metrics
 	Timestamp  int64  `json:"timestamp"` // UTC timestamp of creation
@@ -112,6 +113,9 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
 	} else if function == "queryAgreement" {
 		// Create an agreement in the chaincode
 		return t.queryAgreement(stub, args)
+	} else if function == "publishMeasurement" {
+		// Publish an agreement measurement to the chaincode
+		return t.publishMeasurement(stub, args)
 	}
 
 	return shim.Error("Invalid invoke function name. Expecting \"invoke\", \"delete\", \"query\", \"createAgreement\", or \"queryAgreement\"")
@@ -191,7 +195,7 @@ func (t *SimpleChaincode) createAgreement(stub shim.ChaincodeStubInterface, args
 
 	// retrieve args
 	if len(args) != 4 {
-		return shim.Error("Incorrect number of arguments. Expecting 3")
+		return shim.Error("Incorrect number of arguments. Expecting 4")
 	}
 	AID = args[0]
 	Asn1, err = strconv.Atoi(args[1])
@@ -235,6 +239,63 @@ func (t *SimpleChaincode) createAgreement(stub shim.ChaincodeStubInterface, args
 
 	fmt.Println("Created agreement", AID)
 	return shim.Success(nil)
+}
+
+// Publishes a measurement of an existing agreement
+// =============================================================================
+func (t *SimpleChaincode) publishMeasurement(stub shim.ChaincodeStubInterface, args []string) pb.Response {
+
+	var AID string     // Agreement ID
+	var MID string     // Measurement ID
+	var metrics string // Agreement measurements
+	var err error
+
+	// retrieve args
+	if len(args) != 3 {
+		return shim.Error("Incorrect number of arguments. Expecting 3")
+	}
+	AID = args[0]
+	MID = args[1]
+	metrics = args[2]
+
+	fmt.Println("Publishing measurement of agreement", AID)
+
+	var measurement Measurement
+	measurement.ObjectType = "Peering"
+	measurement.Timestamp = makeTimestamp()
+	measurement.Metrics = metrics
+	measurement.AID = AID
+	measurement.MID = MID
+
+	// Agreement AID must exist before measurement creation
+	Agr, err := stub.GetState(AID)
+	if err != nil {
+		fmt.Println("Failed checking agreement")
+		return shim.Error("Failed checking agreement")
+	}
+	// Measurement MID must NOT exist before measurement creation
+	Msr, err := stub.GetState(MID)
+	if err != nil {
+		fmt.Println("Failed checking measurement")
+		return shim.Error("Failed checking measurement")
+	}
+
+	// Write measurement to the ledger
+	if Agr != nil && Msr == nil {
+		msrBytes, _ := json.Marshal(measurement)
+		err = stub.PutState(AID, msrBytes)
+		if err != nil {
+			fmt.Println("Could not save new agreement to ledger: " + err.Error())
+			return shim.Error(err.Error())
+		}
+		fmt.Println("Created measurement", MID, "- in agreement", AID)
+		return shim.Success(nil)
+	}
+
+	errMsg := "ERROR: Either agreement " + AID + " does not exist, OR measurement " + MID + " already exists."
+	fmt.Println(errMsg)
+	return shim.Error(errMsg)
+
 }
 
 // Retrieve an agreement from the ledger
