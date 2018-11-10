@@ -30,13 +30,12 @@ class BaseTestCase(unittest.TestCase):
         self.channel_tx = \
             E2E_CONFIG[NETWORK_NAME]['channel-artifacts']['channel.tx']
         self.compose_file_path = \
-            E2E_CONFIG[NETWORK_NAME]['docker']['compose_file_tls']
-
+            E2E_CONFIG[NETWORK_NAME]['docker']['compose_file_trustas_minimal']
         self.config_yaml = \
             E2E_CONFIG[NETWORK_NAME]['channel-artifacts']['config_yaml']
         self.channel_profile = \
             E2E_CONFIG[NETWORK_NAME]['channel-artifacts']['channel_profile']
-        self.client = Client('test/fixtures/network.json')
+        self.client = Client('test/fixtures/trustas_network.json')
         self.channel_name = "businesschannel"  # default application channel
         self.user = self.client.get_user('org1.example.com', 'Admin')
         self.assertIsNotNone(self.user, 'org1 admin should not be None')

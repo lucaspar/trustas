@@ -53,12 +53,12 @@ def build_channel_request(client, channel_tx, channel_name):
     org1_admin_signature = client.sign_channel_config(config)
     signatures.append(org1_admin_signature)
 
-    org2_admin = get_peer_org_user('org2.example.com', "Admin",
-                                   client.state_store)
-    org2_tx_context = TXContext(org2_admin, ecies(), prop_req, {})
-    client.tx_context = org2_tx_context
-    org2_admin_signature = client.sign_channel_config(config)
-    signatures.append(org2_admin_signature)
+    # org2_admin = get_peer_org_user('org2.example.com', "Admin",
+    #                                client.state_store)
+    # org2_tx_context = TXContext(org2_admin, ecies(), prop_req, {})
+    # client.tx_context = org2_tx_context
+    # org2_admin_signature = client.sign_channel_config(config)
+    # signatures.append(org2_admin_signature)
 
     request = {'config': config,
                'signatures': signatures,
