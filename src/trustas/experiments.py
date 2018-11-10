@@ -19,7 +19,8 @@ NETWORK_SIZE    = 100
 CONNECTIONS     = 100
 MPA             = 1
 
-def exp_privacy_cost(experiment_path,
+def exp_privacy_cost(privacy,
+                     experiment_path,
                      network_size=100,
                      connections=100,
                      mpa=1,
@@ -31,12 +32,12 @@ def exp_privacy_cost(experiment_path,
     in a JSON file in EXP_DIR + experiment_path.
 
     Args:
-        experiment_name:    an identifier string (not necessarily unique)
+        privacy:            boolean: if true, enables OPE on data output
         experiment_path:    path for working dir (from EXP_DIR/)
         network_size:       number (S) of ASes in the network
         connections:        number of interconnections among ASes
         mpa:                metric sets per agreement
-        storage:            "json" for .json output
+        storage:            storage mode: "json" for JSON output
     Raises:
         ValueError:     if S (network_size) is less than 3
         ValueError:     if the number of connections is too large for the net size (nCr formula)
@@ -60,7 +61,7 @@ def exp_privacy_cost(experiment_path,
     agreements  = __generate_agreements(as_pairs)
 
     if storage == "json":
-        print(" > Printing to files...")
+        print(" > Printing to files")
 
         # Experiment information
         metadata = [{
@@ -69,7 +70,9 @@ def exp_privacy_cost(experiment_path,
             "connections"   : CONNECTIONS,
             "mpa"           : MPA
         }]
-        __agreements_to_file(agreements, filepath=working_dir, extras=metadata)
+        __agreements_to_file(
+            agreements=agreements, filepath=working_dir,
+            extras=metadata, privacy=privacy)
 
     return agreements
 
@@ -156,10 +159,6 @@ def __generate_agreements(pairs):
     for idx, pair in enumerate(pairs):
         agreement = __agreement_factory(
             pair[0], pair[1], metric_samples=MPA)
-
-        # get encrypted properties
-        enc_sla = agreement.get_encrypted_sla()
-        enc_met = agreement.get_encrypted_metrics()
         agreements.append(agreement)
 
         # show discrete progress to cli
@@ -170,45 +169,39 @@ def __generate_agreements(pairs):
     return agreements
 
 
-def __agreements_to_file(agreements, filepath, extras=[]):
+def __agreements_to_file(agreements, filepath, extras=[], privacy=True):
     """Writes agreement list to two files: encrypted and plaintext.
 
     If path to filename does not exist, it will be created.
 
     Args:
         agreements: list of Agreement instances.
-        filepath: output directory.
+        filepath:   output directory.
+        extras:     metadata on the experiment.
+        privacy:    cryptography enabled.
     Raises:
         PermissionError: if unable to create file or directory.
     """
 
     # form object
-    enc_text = __jsonify_agreements(
-        agreements, encrypted=True, extras=extras)
-    pla_text = __jsonify_agreements(
-        agreements, encrypted=False, extras=extras)
+    text = __jsonify_agreements(
+        agreements, encrypted=privacy, extras=extras)
 
     # creates file path
-    enc_filename = os.path.join(filepath, "agreements_enc.json")
-    pla_filename = os.path.join(filepath, "agreements_pla.json")
-    if not os.path.exists(os.path.dirname(enc_filename)):
+    name = "agreements_enc.json" if privacy else "agreements_pla.json"
+    filename = os.path.join(filepath, name)
+    if not os.path.exists(os.path.dirname(filename)):
         try:
-            os.makedirs(os.path.dirname(enc_filename))
+            os.makedirs(os.path.dirname(filename))
         except OSError as exc:  # Guard against race condition
             if exc.errno != errno.EEXIST:
                 raise PermissionError
 
     # write to files
-    with open(enc_filename, "w+") as fp:
-        chars = fp.write(enc_text)
+    with open(filename, "w+") as fp:
+        chars = fp.write(text)
         # print("\tWritten {} out of {} characters to {}".format(
-        #     chars, len(enc_text), enc_filename))
-
-    # write to files
-    with open(pla_filename, "w+") as fp:
-        chars = fp.write(pla_text)
-        # print("\tWritten {} out of {} characters to {}".format(
-        #     chars, len(pla_text), pla_filename))
+        #     chars, len(text), filename))
 
 
 def __jsonify_agreements(agreements, encrypted=True, extras=[]):

@@ -90,63 +90,65 @@ class E2eTest(BaseTestCase):
 
         input("Press Enter to finish experiment")
 
+    def __craft_settings(self):
+        """Set interconnection settings"""
+
+        privacy = True      # storage privacy: True means encryption is enabled
+        net_size = 100      # network size: number of ASes in the IXP
+        connections = 100   # total number of pair interconnections / agreements in the network
+        mpa = 1             # number of metrics per agreement
+        mode = "ciphertext" if privacy else "plaintext"
+        path = os.path.join(
+            "A", mode, "{}_{}_{}".format(net_size, connections, mpa), str(time.time()))
+
+        return {
+            "privacy": privacy,
+            "experiment_path": path,
+            "network_size": net_size,
+            "connections": connections,
+            "mpa": mpa,
+            "storage": "json"
+        }
+
 
     def __cc_ops(self):
         """A sequence of chaincode operations simulating agreements"""
 
-        # parameters
-        exp_mode = "ciphertext"  # "ciphertext" | "plaintext"
-        exp_net_size    = 100
-        exp_connections = 1000
-        exp_mpa         = 0     # TODO: create new chaincode function before increasing MPA
-        exp_path = os.path.join("A", exp_mode,
-            "{}_{}_{}".format( exp_net_size, exp_connections, exp_mpa),
-            str(time.time()))
-        exp_settings = {
-            "experiment_path"   : exp_path,
-            "network_size"      : exp_net_size,
-            "connections"       : exp_connections,
-            "mpa"               : exp_mpa,
-            "storage"           : "json"
-        }
+        exp_settings = self.__craft_settings()   # create settings
+        agreements = trustas.experiments.exp_privacy_cost(**exp_settings)   # simulate agreements
 
-        assert(exp_mode == "ciphertext" or exp_mode == "plaintext")
+        # create agreement entries in the ledger
+        print(" > Saving agreements to the ledger")
+        data_x, data_y = self.__save_agreements(
+            agreements, privacy=exp_settings["privacy"])
 
-        # simulate agreements
-        agreements = trustas.experiments.exp_privacy_cost(**exp_settings)
-
-        # create agreement entries in the blockchain
-        print(" > Saving agreements to the ledger...")
-        data_x = []
-        data_y = []
-        for idx, ag in enumerate(agreements):
-            peers = ag.peers
-            sla = json.dumps(ag.get_encrypted_sla() if exp_mode ==
-                             "ciphertext" else ag.get_plaintext_sla())
-            args = [str(ag.id), str(peers[0]), str(peers[1]), sla]
-            self.__cc_call('createAgreement', args)
-
-            if (idx + 1) % 10 == 0:
-                time.sleep(HALF_SLEEP)
-                data_x.append(idx+1)
-                data_y.append(measure_blockchain_size())
-
-        print(" > Saving statistics...")
+        # save storage data to files
+        print(" > Saving statistics")
         save_data(
             data_x,
             data_y,
-            file="size",
-            title="Blockchain growth",
-            path=exp_path,
-            xlabel="Number of agreements",
+            file="size_creation",
+            title="Blockchain growth (agreement creation only)",
+            path=exp_settings["experiment_path"],
+            xlabel="Number of agreements published",
             ylabel="Blockchain size (KB)")
 
-        # # create metric entries in the blockchain
-        # for ag in agreements:
-        #     peers = ag.peers
-        #     met = json.dumps(ag.get_encrypted_metrics)
-        #     args = [str(ag.id), met]
-        #     self.__cc_call('publishMetrics', args)
+        # create measurement entries in the ledger
+        print(" > Saving measurements to the ledger")
+        data_x, data_y = self.__save_measurements(
+            agreements, privacy=exp_settings["privacy"])
+
+        # save storage data to files
+        print(" > Saving statistics")
+        save_data(
+            data_x,
+            data_y,
+            file="size_{}_measurements".format(exp_settings["mpa"]),
+            title="Blockchain growth ({} measurement(s) per agreement)".format(
+                exp_settings["mpa"]),
+            path=exp_settings["experiment_path"],
+            xlabel="Number of measurements published",
+            ylabel="Blockchain size (KB)")
 
         time.sleep(DEFAULT_SLEEP)
 
@@ -154,6 +156,51 @@ class E2eTest(BaseTestCase):
         args = [str(random.choice(agreements).id)]
         res = self.__cc_call('queryAgreement', args=args, prop_type=CC_QUERY)
         logger.info("Query Result: %s", json.dumps(res).encode('utf-8'))
+
+    def __save_measurements(self, agreements, privacy=True, monitor_size=True):
+        """Save measurements in agreements to the ledger"""
+
+        data_x = []
+        data_y = []
+        for idx, ag in enumerate(agreements):
+            metrics = ag.get_encrypted_metrics() if privacy else ag.get_plaintext_metrics()
+            for idxm, m in enumerate(metrics):
+                args = [
+                    str(ag.id),             # agreement ID
+                    str(ag.id) + str(idxm), # measurement ID
+                    json.dumps(m)           # single set of metrics
+                ]
+                self.__cc_call('publishMeasurement', args)
+
+            if monitor_size and (idx + 1) % 10 == 0:
+                time.sleep(HALF_SLEEP)
+                data_x.append(idx + 1)
+                data_y.append(measure_blockchain_size())
+
+        return data_x, data_y
+
+    def __save_agreements(self, agreements, privacy=True, monitor_size=True):
+        """Save agreements to the ledger"""
+
+        data_x = []
+        data_y = []
+        for idx, ag in enumerate(agreements):
+            peers = ag.peers
+            sla = json.dumps(ag.get_encrypted_sla() if privacy else ag.get_plaintext_sla())
+            args = [
+                str(ag.id),     # agreement ID
+                str(peers[0]),  # peer A
+                str(peers[1]),  # peer B
+                sla             # agreement SLA
+            ]
+            self.__cc_call('createAgreement', args)
+
+            if monitor_size and (idx + 1) % 10 == 0:
+                time.sleep(HALF_SLEEP)
+                data_x.append(idx+1)
+                data_y.append(measure_blockchain_size())
+
+        return data_x, data_y
 
 
     def __configure(self):
@@ -328,6 +375,7 @@ def save_data(x, y, path, file, title='', label='', xlabel='', ylabel='', legend
     csv_filepath = os.path.join(working_dir, file + ".csv")
 
     # plot and save
+    plt.clf()                   # clear old plots
     plt.plot(x, y, label=label)
     plt.xlabel(xlabel)
     plt.ylabel(ylabel)
@@ -350,7 +398,7 @@ def measure_blockchain_size(peer="peer0.org1.example.com"):
     Args:
         peer:   The container name (also full peer name) to consult.
     Returns:
-        Integer which is the current ledger size in bytes on disk.
+        Integer representing the current ledger size in KB (1024B) on disk.
     """
 
     output, error, _ = cli_call([
