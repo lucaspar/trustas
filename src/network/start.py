@@ -127,7 +127,7 @@ class E2eTest(BaseTestCase):
         save_data(
             data_x,
             data_y,
-            file="size",
+            file="size_creation",
             title="Blockchain growth (agreement creation only)",
             path=exp_settings["experiment_path"],
             xlabel="Number of agreements published",
@@ -143,7 +143,7 @@ class E2eTest(BaseTestCase):
         save_data(
             data_x,
             data_y,
-            file="size",
+            file="size_{}_measurements".format(exp_settings["mpa"]),
             title="Blockchain growth ({} measurement(s) per agreement)".format(
                 exp_settings["mpa"]),
             path=exp_settings["experiment_path"],
