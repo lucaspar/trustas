@@ -39,7 +39,7 @@ E2E_CONFIG = {
             'users': {
                 'Admin': {
                     'cert': 'Admin@example.com-cert.pem',
-                    'private_key': 'b92d5923828aa15d965e438de5a7edb92ec128889c2fe8026ee7b95490270048_sk'}
+                    'private_key': 'aca9d29a0056b2baab8692ed75e2487a38c84e6db86e651ec27cb7f97a8fdd9e_sk'}
             }
         },
         'org1.example.com': {
@@ -47,11 +47,11 @@ E2E_CONFIG = {
             'users': {
                 'Admin': {
                     'cert': 'Admin@org1.example.com-cert.pem',
-                    'private_key': '570182787133a5137f0982ba0e018462d3ed20491402585741bb516922fc9416_sk'
+                    'private_key': '864f60da9c0aafa778658030a69ab4a844e305768cb65b77db05aedb8cbcc16d_sk'
                 },
                 'User1': {
                     'cert': 'User1@org1.example.com-cert.pem',
-                    'private_key': '613ca29ff265101aaebd9b79aff9924d5cd7baa9077141d24cf7c8fed4425bd4_sk'
+                    'private_key': 'a025dafac4b23f65d4529a3a37609edb3b99d90b0ceb250e4a65aeebe81aa84f_sk'
                 }
             },
             'peers': {

@@ -24,7 +24,7 @@
             "users": {
                 "Admin": {
                     "cert": "test/fixtures/e2e_cli/crypto-config/ordererOrganizations/example.com/users/Admin@example.com/msp/signcerts/Admin@example.com-cert.pem",
-                    "private_key": "test/fixtures/e2e_cli/crypto-config/ordererOrganizations/example.com/users/Admin@example.com/msp/keystore/b92d5923828aa15d965e438de5a7edb92ec128889c2fe8026ee7b95490270048_sk"
+                    "private_key": "test/fixtures/e2e_cli/crypto-config/ordererOrganizations/example.com/users/Admin@example.com/msp/keystore/aca9d29a0056b2baab8692ed75e2487a38c84e6db86e651ec27cb7f97a8fdd9e_sk"
                 }
             }
         },
@@ -40,11 +40,11 @@
             "users": {
                 "Admin": {
                     "cert": "test/fixtures/e2e_cli/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/signcerts/Admin@org1.example.com-cert.pem",
-                    "private_key": "test/fixtures/e2e_cli/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/keystore/570182787133a5137f0982ba0e018462d3ed20491402585741bb516922fc9416_sk"
+                    "private_key": "test/fixtures/e2e_cli/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/keystore/864f60da9c0aafa778658030a69ab4a844e305768cb65b77db05aedb8cbcc16d_sk"
                 },
                 "User1": {
                     "cert": "test/fixtures/e2e_cli/crypto-config/peerOrganizations/org1.example.com/users/User1@org1.example.com/msp/signcerts/User1@org1.example.com-cert.pem",
-                    "private_key": "test/fixtures/e2e_cli/crypto-config/peerOrganizations/org1.example.com/users/User1@org1.example.com/msp/keystore/613ca29ff265101aaebd9b79aff9924d5cd7baa9077141d24cf7c8fed4425bd4_sk"
+                    "private_key": "test/fixtures/e2e_cli/crypto-config/peerOrganizations/org1.example.com/users/User1@org1.example.com/msp/keystore/a025dafac4b23f65d4529a3a37609edb3b99d90b0ceb250e4a65aeebe81aa84f_sk"
                 }
             }
         }

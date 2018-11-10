@@ -61,8 +61,9 @@ PeerOrgs:
     # ---------------------------------------------------------------------------
     Template:
       Count: 2
-      # Start: 5
-      # Hostname: {{.Prefix}}{{.Index}} # default
+      Start: 0
+      Prefix: as
+      Hostname: as00{{.Index}}
     # ---------------------------------------------------------------------------
     # "Users"
     # ---------------------------------------------------------------------------
@@ -77,5 +78,8 @@ PeerOrgs:
     Domain: org2.example.com
     Template:
       Count: 2
+      Start: 0
+      Prefix: as
+      Hostname: as00{{.Index}}
     Users:
       Count: 1
