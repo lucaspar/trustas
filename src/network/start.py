@@ -94,7 +94,7 @@ class E2eTest(BaseTestCase):
         """Set interconnection settings"""
 
         privacy = True      # storage privacy: True means encryption is enabled
-        net_size = 10       # network size: number of ASes in the IXP
+        net_size = 100      # network size: number of ASes in the IXP
         connections = 100   # total number of pair interconnections / agreements in the network
         mpa = 1             # number of metrics per agreement
         mode = "ciphertext" if privacy else "plaintext"
@@ -163,12 +163,12 @@ class E2eTest(BaseTestCase):
         data_x = []
         data_y = []
         for idx, ag in enumerate(agreements):
-            metrics = json.dumps(ag.get_encrypted_metrics() if privacy else ag.get_plaintext_metrics())
+            metrics = ag.get_encrypted_metrics() if privacy else ag.get_plaintext_metrics()
             for idxm, m in enumerate(metrics):
                 args = [
                     str(ag.id),             # agreement ID
                     str(ag.id) + str(idxm), # measurement ID
-                    m                       # single set of metrics
+                    json.dumps(m)           # single set of metrics
                 ]
                 self.__cc_call('publishMeasurement', args)
 
@@ -375,6 +375,7 @@ def save_data(x, y, path, file, title='', label='', xlabel='', ylabel='', legend
     csv_filepath = os.path.join(working_dir, file + ".csv")
 
     # plot and save
+    plt.clf()                   # clear old plots
     plt.plot(x, y, label=label)
     plt.xlabel(xlabel)
     plt.ylabel(ylabel)
