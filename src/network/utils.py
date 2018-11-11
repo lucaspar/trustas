@@ -94,8 +94,8 @@ class BaseTestCase(unittest.TestCase):
                             "https://metadata.google.internal/computeMetadata/v1/instance/hostname"])
             NAME = cli_call(["curl", "--ssl", "-sH", "Metadata-Flavor: Google",
                             "https://metadata.google.internal/computeMetadata/v1/instance/name"])
-            os.environ("GCP_HOST") = HOST
-            os.environ("GCP_NAME") = NAME
+            os.environ["GCP_HOST"] = HOST
+            os.environ["GCP_NAME"] = NAME
 
             service = name + ".org1.example.com" if name.startswith("peer") else ".example.com"
             print(" > Starting service {}".format(service))
