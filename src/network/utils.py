@@ -97,7 +97,7 @@ class BaseTestCase(unittest.TestCase):
             os.environ["GCP_HOST"] = HOST.decode()
             os.environ["GCP_NAME"] = NAME.decode()
 
-            service = name + ".org1.example.com" if name.startswith("peer") else ".example.com"
+            service = NAME + ".org1.example.com" if NAME.startswith("peer") else ".example.com"
             print(" > Starting service {}".format(service))
             cli_call(["docker-compose", "-f", self.compose_file_path, "up", "--no-start"])
             cli_call(["docker-compose", "-f", self.compose_file_path, "start", service])
