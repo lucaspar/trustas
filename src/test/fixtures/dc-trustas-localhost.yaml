@@ -16,7 +16,7 @@ services:
             file: orderer-base.yaml
             service: orderer-base
         container_name: orderer.example.com
-        hostname: orderer.us-east1-b.c.trust-as.internal
+        hostname: orderer.example.com
         ports:
             - '7050:7050'
         volumes:
@@ -30,7 +30,7 @@ services:
             file: peer-base.yaml
             service: peer-base
         container_name: peer0.org1.example.com
-        hostname: peer0.us-east1-b.c.trust-as.internal
+        hostname: peer0.org1.example.com
         environment:
             - CORE_PEER_ID=peer0.org1.example.com
             - CORE_PEER_ADDRESS=peer0.org1.example.com:7051
@@ -51,7 +51,7 @@ services:
             file: peer-base.yaml
             service: peer-base
         container_name: peer1.org1.example.com
-        hostname: peer1.us-east1-b.c.trust-as.internal
+        hostname: peer1.org1.example.com
         environment:
             - CORE_PEER_ID=peer1.org1.example.com
             - CORE_PEER_ADDRESS=peer1.org1.example.com:7051
@@ -63,9 +63,9 @@ services:
             - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/msp:/etc/hyperledger/fabric/msp
             - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/tls:/etc/hyperledger/fabric/tls
         ports:
-            - 7051:7051
-            - 7052:7052
-            - 7053:7053
+            - 8051:7051
+            - 8052:7052
+            - 8053:7053
         command: peer node start
 
     peer2.org1.example.com:
@@ -85,9 +85,9 @@ services:
             - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer2.org1.example.com/msp:/etc/hyperledger/fabric/msp
             - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer2.org1.example.com/tls:/etc/hyperledger/fabric/tls
         ports:
-            - 7051:7051
-            - 7052:7052
-            - 7053:7053
+            - 9051:7051
+            - 9052:7052
+            - 9053:7053
         command: peer node start
 
     # peer0.org2.example.com:

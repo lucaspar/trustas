@@ -57,6 +57,7 @@ def global_config():
     global DEFAULT_SLEEP
     global KEEP_NETWORK
     global WIPE_ALL
+    global LOCAL_DEPLOY
 
     if "DEFAULT_SLEEP" in os.environ:
         DEFAULT_SLEEP = int(os.environ["DEFAULT_SLEEP"])
@@ -64,7 +65,10 @@ def global_config():
         KEEP_NETWORK = os.environ["KEEP_NETWORK"] == "True"
     if "WIPE_ALL" in os.environ:
         WIPE_ALL = os.environ["WIPE_ALL"] == "True"
+    if "LOCAL_DEPLOY" in os.environ:
+        LOCAL_DEPLOY = os.environ["LOCAL_DEPLOY"] == "True"
 
+    logger.info('  - Local deploy:               \t{}'.format(LOCAL_DEPLOY))
     logger.info('  - Default sleep time:         \t{} seconds'.format(DEFAULT_SLEEP))
     logger.info('  - Keep network running:       \t{}'.format(KEEP_NETWORK))
     logger.info('  - Wipe assets before running: \t{}'.format(WIPE_ALL))
@@ -84,9 +88,23 @@ class E2eTest(BaseTestCase):
     def test_in_sequence(self):
         """Test sequential execution"""
 
-        self.__configure()      # set ledger configs
-        self.__init_ledger()    # create the channel and init chaincode
-        self.__cc_ops()         # run chaincode operations (e.g. queries)
+        if LOCAL_DEPLOY:
+            print("Deploying locally")
+            self.__configure()      # set ledger configs
+            self.__init_ledger()    # create the channel and init chaincode
+            self.__cc_ops()         # run chaincode operations (e.g. queries)
+
+        else:
+
+            if os.environ["GCP_NAME"] == "orderer":
+                print("I am the orderer")
+                self.__configure()      # set ledger configs
+                self.__init_ledger()    # create the channel and init chaincode
+                self.__cc_ops()         # run chaincode operations (e.g. queries)
+
+            elif os.environ["GCP_NAME"].startswith("peer"):
+                print("I am a peer")
+                self.__configure()      # set ledger configs
 
         input("Press Enter to finish experiment")
 
@@ -208,7 +226,8 @@ class E2eTest(BaseTestCase):
 
         peer_config = TEST_NETWORK['org1.example.com']['peers']['peer0']
 
-        endpoint = peer_config['grpc_request_endpoint']
+        env = "local_" if LOCAL_DEPLOY else "gcp_"
+        endpoint = peer_config[ env + 'grpc_request_endpoint' ]
         tls_cacerts = peer_config['tls_cacerts']
         opts = (('grpc.ssl_target_name_override',
                  peer_config['server_hostname']), )
@@ -220,7 +239,6 @@ class E2eTest(BaseTestCase):
         self.crypto = ecies()
         self.ixp_admin = get_peer_org_user(self.org1, 'Admin',
                                             self.client.state_store)
-
 
     def __init_ledger(self):
         """Creates channel and chaincode"""

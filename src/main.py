@@ -18,6 +18,7 @@ from network import start
 from network import tests as net_tests
 
 # SETTINGS
+LOCAL_DEPLOY = True         # Deploy in localhost
 RUN_EXPERIMENTS = False     # Run TrustAS experiments
 RUN_TESTS = False           # Run unit and e2e tests
 KEEP_NETWORK = False        # Keeps network running when finished
@@ -58,6 +59,7 @@ def help_and_exit(EXIT_CODE=0):
         "\n\t-w  --wipe              Wipes all Docker assets before starting (runs './cleanup.sh')." + \
         "\n\t-k  --keep              Keeps network running after execution (no 'docker-compose down')." + \
         "\n\t-s TIME --sleep TIME    Set default sleep time used to TIME." + \
+        "\n\t-l  --local             Deploy in localhost." + \
         "\n\n"
     print(msg)
     sys.exit(EXIT_CODE)
@@ -68,11 +70,12 @@ def config(argv):
     global KEEP_NETWORK
     global DEFAULT_SLEEP
     global WIPE_ALL
+    global LOCAL_DEPLOY
 
     try:
         opts, args = getopt.getopt(
-            argv, "hwks:",
-            ["help", "wipe", "keep", "sleep="])
+            argv, "hwks:l",
+            ["help", "wipe", "keep", "sleep=", "local"])
     except getopt.GetoptError:
         help_and_exit(1)
 
@@ -85,14 +88,17 @@ def config(argv):
             KEEP_NETWORK = True
         elif opt in ("-s", "--sleep"):
             DEFAULT_SLEEP = arg
+        elif opt in ("-l", "--local"):
+            LOCAL_DEPLOY = True
 
+    os.environ["LOCAL_DEPLOY"] = str(LOCAL_DEPLOY)
     os.environ["DEFAULT_SLEEP"] = str(DEFAULT_SLEEP)
     os.environ["KEEP_NETWORK"] = str(KEEP_NETWORK)
     os.environ["WIPE_ALL"] = str(WIPE_ALL)
 
     print('')
-    print(' -> Default sleep time:           \t{} s'.format(
-        os.environ["DEFAULT_SLEEP"]))
+    print(' -> Deploy in localhost:          \t{}'.format(os.environ["LOCAL_DEPLOY"]))
+    print(' -> Default sleep time:           \t{} s'.format(os.environ["DEFAULT_SLEEP"]))
     print(' -> Keeping network running:      \t{}'.format(os.environ["KEEP_NETWORK"]))
     print(' -> Wiping assets before running: \t{}'.format(os.environ["WIPE_ALL"]))
     print('')

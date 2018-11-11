@@ -1,6 +1,6 @@
 {
     "name": "sample-network",
-    "description": "Minimal network for TrustAS",
+    "description": "TrustAS network for GCP deploy",
     "version": "0.1",
     "client": {
         "organization": "Org1",

@@ -10,10 +10,11 @@ from hfc.fabric.transaction.tx_proposal_request import TXProposalRequest
 from hfc.util.crypto.crypto import ecies
 from hfc.util import utils
 
-from .utils import get_orderer_org_user, get_peer_org_user
-
 from .config import E2E_CONFIG
+from .utils import get_orderer_org_user, get_peer_org_user
 test_network = E2E_CONFIG['test-network']
+
+import os
 
 def build_channel_request(client, channel_tx, channel_name):
     """
@@ -32,12 +33,17 @@ def build_channel_request(client, channel_tx, channel_name):
 
     orderer_config = E2E_CONFIG['test-network']['orderer']
 
+    if "LOCAL_DEPLOY" in os.environ:
+        LOCAL_DEPLOY = os.environ["LOCAL_DEPLOY"] == "True"
+    env = "local_" if LOCAL_DEPLOY else "gcp_"
+
     orderer = Orderer(
-        endpoint=orderer_config['grpc_endpoint'],
+        endpoint=orderer_config[env + 'grpc_endpoint'],
         tls_ca_cert_file=orderer_config['tls_cacerts'],
         opts=(('grpc.ssl_target_name_override',
                'orderer.example.com'),),
     )
+
     orderer_admin = get_orderer_org_user(state_store=client.state_store)
     orderer_tx_context = TXContext(orderer_admin, ecies(), prop_req, {})
     client.tx_context = orderer_tx_context
