@@ -67,7 +67,7 @@ CleanResources () {
 
 while [ $id -lt $NUMBER_OF_ASES ]; do
 
-    asn=as$(printf %03d $id)
+    asn=peer$id
     # CleanResources $asn
     CreateAS $asn $id &
     id=$((id + 1))
