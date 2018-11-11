@@ -26,6 +26,7 @@ from .e2e_utils import build_channel_request, build_join_channel_req
 # ----------
 # SETTINGS
 
+LOCAL_DEPLOY    = False
 KEEP_NETWORK    = False
 WIPE_ALL        = False
 EXP_DIR         = "experiments"

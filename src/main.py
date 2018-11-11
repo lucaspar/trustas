@@ -18,7 +18,7 @@ from network import start
 from network import tests as net_tests
 
 # SETTINGS
-LOCAL_DEPLOY = True         # Deploy in localhost
+LOCAL_DEPLOY = False        # Deploy in localhost
 RUN_EXPERIMENTS = False     # Run TrustAS experiments
 RUN_TESTS = False           # Run unit and e2e tests
 KEEP_NETWORK = False        # Keeps network running when finished
