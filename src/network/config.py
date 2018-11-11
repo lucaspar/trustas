@@ -31,7 +31,7 @@ E2E_CONFIG = {
             'channel_profile': 'SingleOrgChannel'
         },
         'orderer': {
-            'grpc_endpoint': 'localhost:7050',
+            'grpc_endpoint': 'orderer.us-east1-b.c.trust-as.internal:7050',
             'server_hostname': 'orderer.example.com',
             'tls_cacerts': 'test/fixtures/e2e_cli/crypto-config/ordererOrganizations/'
                            'example.com/tlsca/tlsca.example.com-cert.pem',
@@ -56,8 +56,8 @@ E2E_CONFIG = {
             },
             'peers': {
                 'peer0': {
-                    'grpc_request_endpoint': 'localhost:7051',
-                    'grpc_event_endpoint': 'localhost:7053',
+                    'grpc_request_endpoint': 'peer0.us-east1-b.c.trust-as.internal:7051',
+                    'grpc_event_endpoint': 'peer0.us-east1-b.c.trust-as.internal:7053',
                     'server_hostname': 'peer0.org1.example.com',
                     'tls_cacerts': 'test/fixtures/e2e_cli/crypto-config/peerOrganizations/'
                                    'org1.example.com/peers/peer0.org1.example.com/msp/tlscacerts/'

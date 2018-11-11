@@ -52,7 +52,7 @@
     },
     "orderers": {
         "orderer.example.com": {
-            "url": "localhost:7050",
+            "url": "orderer.us-east1-b.c.trust-as.internal:7050",
             "grpcOptions": {
                 "ssl-target-name-override": "orderer.example.com",
                 "grpc-max-send-message-length": 15
@@ -64,8 +64,8 @@
     },
     "peers": {
         "peer0.org1.example.com": {
-            "url": "localhost:7051",
-            "eventUrl": "localhost:7053",
+            "url": "peer0.us-east1-b.c.trust-as.internal:7051",
+            "eventUrl": "peer0.us-east1-b.c.trust-as.internal:7053",
             "grpcOptions": {
                 "ssl-target-name-override": "peer0.org1.example.com",
                 "grpc.http2.keepalive_time": 15
@@ -75,8 +75,8 @@
             }
         },
         "peer1.org1.example.com": {
-            "url": "localhost:8051",
-            "eventUrl": "localhost:8053",
+            "url": "peer1.us-east1-b.c.trust-as.internal:7051",
+            "eventUrl": "peer1.us-east1-b.c.trust-as.internal:7053",
             "grpcOptions": {
                 "ssl-target-name-override": "peer1.org1.example.com"
             },
@@ -85,8 +85,8 @@
             }
         },
         "peer2.org1.example.com": {
-            "url": "localhost:9051",
-            "eventUrl": "localhost:9053",
+            "url": "peer2.us-east1-b.c.trust-as.internal:7051",
+            "eventUrl": "peer2.us-east1-b.c.trust-as.internal:7053",
             "grpcOptions": {
                 "ssl-target-name-override": "peer2.org1.example.com"
             },
