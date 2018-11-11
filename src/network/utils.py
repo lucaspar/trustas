@@ -90,10 +90,10 @@ class BaseTestCase(unittest.TestCase):
         # GCP environment
         if GCP_DEPLOY:
 
-            HOST = cli_call(["curl", "--ssl", "-sH", "Metadata-Flavor: Google",
-                            "https://metadata.google.internal/computeMetadata/v1/instance/hostname"])
-            NAME = cli_call(["curl", "--ssl", "-sH", "Metadata-Flavor: Google",
-                            "https://metadata.google.internal/computeMetadata/v1/instance/name"])
+            HOST = cli_call(["curl", "--ssl", "-sH", "\"Metadata-Flavor: Google\"",
+                            "http://metadata.google.internal/computeMetadata/v1/instance/hostname"])
+            NAME = cli_call(["curl", "--ssl", "-sH", "\"Metadata-Flavor: Google\"",
+                            "http://metadata.google.internal/computeMetadata/v1/instance/name"])
             os.environ["GCP_HOST"] = HOST
             os.environ["GCP_NAME"] = NAME
 
