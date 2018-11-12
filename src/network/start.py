@@ -104,7 +104,7 @@ class E2eTest(BaseTestCase):
                 self.__cc_ops()         # run chaincode operations (e.g. queries)
 
             elif os.environ["GCP_NAME"].startswith("peer"):
-                print("I am a peer")
+                print("I am {}".format(os.environ["GCP_NAME"]))
                 self.__configure()      # set ledger configs
 
         input("Press Enter to finish experiment")
