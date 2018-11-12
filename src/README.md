@@ -148,9 +148,9 @@ DEBUG:hfc.util.utils:<_Rendezvous of RPC that terminated with:
 
 > raise Empty; queue.Empty
 
-As of November 2018, the most recent release of the `fabric-sdk-py` -- the python HFC SDK `v0.7.0` -- had many hard-coded timeouts that may raise empty queue exceptions when expired. The timeouts are more likely to happen on VMs with lower specifications and networks with higher latencies.
+As of November 2018, the most recent release of the `fabric-sdk-py` -- the python HFC SDK `v0.7.0` -- had many hard-coded timeouts that may raise empty queue exceptions when expired. The timeouts are more likely to happen at the first execution because that is when the Docker images are first downloaded, thus increasing the preparation time for a first run.
 
-A **temporary** (far from ideal) solution is to modify the corresponding lines in the dependency source code.
+A **temporary** solution is to modify the corresponding lines in the dependency source code.
 For example, considering the following traceback:
 
 ```sh
@@ -165,7 +165,7 @@ queue.Empty
 
 Increase the timeout in the line 371 of the file in the traceback: `/home/user/trustas/src/venv/lib/python3.6/site-packages/hfc/util/utils.py`
 ```py
-    res = q.get(timeout=60)
+    res = q.get(timeout=3600)
 ```
 
-A more permanent solution may be to _treat these exceptions_ and _retry_ the transaction, but that requires further code changes in the application level. Since this is an issue likely to be solved in a future patch of the HFC (the timeout increase is already in pull requests on the Gerrit repository), the temporary solution was favored.
+You can probably modify it back after the first successful execution.

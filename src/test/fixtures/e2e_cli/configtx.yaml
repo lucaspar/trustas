@@ -20,6 +20,9 @@ Profiles:
             Organizations:
                 - *OrdererOrg
         Consortiums:
+            TrustASConsortium:
+                Organizations:
+                    - *Org1
             SampleConsortium:
                 Organizations:
                     - *Org1
@@ -31,6 +34,13 @@ Profiles:
             Organizations:
                 - *Org1
                 - *Org2
+
+    SingleOrgChannel:
+        Consortium: TrustASConsortium
+        Application:
+            <<: *ApplicationDefaults
+            Organizations:
+                - *Org1
 
 ################################################################################
 #
