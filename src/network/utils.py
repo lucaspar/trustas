@@ -90,17 +90,19 @@ class BaseTestCase(unittest.TestCase):
         # GCP environment
         if GCP_DEPLOY:
 
-            HOST, _, _ = cli_call(["curl", "--ssl", "-H", "\"Metadata-Flavor: Google\"",
+            HOST, _, _ = cli_call(["curl", "--ssl", "-sH", "\"Metadata-Flavor: Google\"",
                             "http://metadata.google.internal/computeMetadata/v1/instance/hostname"])
-            NAME, _, _ = cli_call(["curl", "--ssl", "-H", '"Metadata-Flavor: Google"',
+            NAME, _, _ = cli_call(["curl", "--ssl", "-sH", '"Metadata-Flavor: Google"',
                             "http://metadata.google.internal/computeMetadata/v1/instance/name"])
+            print(NAME)
             HOST = HOST.decode()
             NAME = NAME.decode()
 
+            print(NAME)
             os.environ["GCP_HOST"] = HOST
             os.environ["GCP_NAME"] = NAME
 
-            service = NAME + ".org1.example.com" if NAME.startswith("peer") else ".example.com"
+            service = NAME + ".org1.example.com" if NAME.startswith("peer") else NAME + ".example.com"
             print(" > Starting service {}".format(service))
             cli_call(["docker-compose", "-f", self.compose_file_path, "up", "--no-start"])
             cli_call(["docker-compose", "-f", self.compose_file_path, "start", service])
