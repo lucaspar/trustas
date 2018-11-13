@@ -253,7 +253,7 @@ class E2eTest(BaseTestCase):
         # install and instantiate the chaincode
         self.__cc_install()
         time.sleep(DEFAULT_SLEEP)
-        args = ['a', '100', 'b', '40']
+        args = []
         self.__cc_call(fcn='init', args=args, prop_type=CC_INSTANTIATE)
 
 
