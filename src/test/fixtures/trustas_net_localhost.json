@@ -1,5 +1,5 @@
 {
-    "name": "sample-network",
+    "name": "trustas-network",
     "description": "TrustAS network for local deploy",
     "version": "0.1",
     "client": {

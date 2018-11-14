@@ -11,7 +11,6 @@ from .config import E2E_CONFIG
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
-test_network = E2E_CONFIG['test-network']
 
 CC_PATH = 'github.com/example_cc'
 CC_NAME = 'example_cc'

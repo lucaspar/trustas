@@ -17,7 +17,7 @@
 
 """Contains the paths and attributes necessary for the integration tests."""
 E2E_CONFIG = {
-    'test-network': {
+    'trustas-network': {
         'docker': {
             'compose_file_no_tls': 'test/fixtures/docker-compose-1peer-notls.yaml',
             'compose_file_tls': 'test/fixtures/docker-compose-2orgs-4peers-tls.yaml',
@@ -66,7 +66,27 @@ E2E_CONFIG = {
                     'tls_cacerts': 'test/fixtures/e2e_cli/crypto-config/peerOrganizations/'
                                    'org1.example.com/peers/peer0.org1.example.com/msp/tlscacerts/'
                                    'tlsca.org1.example.com-cert.pem'
-                }
+                },
+                # 'peer1': {
+                #     'gcp_grpc_request_endpoint': 'peer0.us-east1-b.c.trust-as.internal:7051',
+                #     'gcp_grpc_event_endpoint': 'peer0.us-east1-b.c.trust-as.internal:7053',
+                #     'local_grpc_request_endpoint': 'localhost:7051',
+                #     'local_grpc_event_endpoint': 'localhost:7053',
+                #     'server_hostname': 'peer0.org1.example.com',
+                #     'tls_cacerts': 'test/fixtures/e2e_cli/crypto-config/peerOrganizations/'
+                #                    'org1.example.com/peers/peer0.org1.example.com/msp/tlscacerts/'
+                #                    'tlsca.org1.example.com-cert.pem'
+                # },
+                # 'peer2': {
+                #     'gcp_grpc_request_endpoint': 'peer2.us-east1-b.c.trust-as.internal:7051',
+                #     'gcp_grpc_event_endpoint': 'peer2.us-east1-b.c.trust-as.internal:7053',
+                #     'local_grpc_request_endpoint': 'localhost:9051',
+                #     'local_grpc_event_endpoint': 'localhost:9053',
+                #     'server_hostname': 'peer2.org1.example.com',
+                #     'tls_cacerts': 'test/fixtures/e2e_cli/crypto-config/peerOrganizations/'
+                #                    'org1.example.com/peers/peer2.org1.example.com/msp/tlscacerts/'
+                #                    'tlsca.org1.example.com-cert.pem'
+                # }
             }
         }
         #,

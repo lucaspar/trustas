@@ -36,7 +36,7 @@ HALF_SLEEP      = DEFAULT_SLEEP * 0.5
 LONGER_SLEEP    = DEFAULT_SLEEP * 1.5
 DOUBLE_SLEEP    = DEFAULT_SLEEP * 2
 
-TEST_NETWORK    = E2E_CONFIG['test-network']
+TRUSTAS_NETWORK = E2E_CONFIG['trustas-network']
 CC_PATH         = 'github.com/trustas_cc'
 CC_NAME         = 'trustas_cc'
 CC_VERSION      = '1.0'
@@ -90,7 +90,7 @@ class E2eTest(BaseTestCase):
         """Test sequential execution"""
 
         if LOCAL_DEPLOY:
-            print("Deploying locally")
+            print(" > Deploying locally")
             self.__configure()      # set ledger configs
             self.__init_ledger()    # create the channel and init chaincode
             self.__cc_ops()         # run chaincode operations (e.g. queries)
@@ -98,13 +98,13 @@ class E2eTest(BaseTestCase):
         else:
 
             if os.environ["GCP_NAME"] == "orderer":
-                print("I am the orderer")
+                print(" > I am the orderer")
                 self.__configure()      # set ledger configs
                 self.__init_ledger()    # create the channel and init chaincode
                 self.__cc_ops()         # run chaincode operations (e.g. queries)
 
             elif os.environ["GCP_NAME"].startswith("peer"):
-                print("I am {}".format(os.environ["GCP_NAME"]))
+                print(" > I am {}".format(os.environ["GCP_NAME"]))
                 self.__configure()      # set ledger configs
 
         input("Press Enter to finish experiment")
@@ -225,17 +225,21 @@ class E2eTest(BaseTestCase):
     def __configure(self):
         """Get network configuration and make it available from self."""
 
-        peer_config = TEST_NETWORK['org1.example.com']['peers']['peer0']
+        self.peers = []
 
         env = "local_" if LOCAL_DEPLOY else "gcp_"
-        endpoint = peer_config[ env + 'grpc_request_endpoint' ]
-        tls_cacerts = peer_config['tls_cacerts']
-        opts = (('grpc.ssl_target_name_override',
-                 peer_config['server_hostname']), )
-        peer = create_peer(
-            endpoint=endpoint, tls_cacerts=tls_cacerts, opts=opts)
 
-        self.peers = [peer]
+        peers = TRUSTAS_NETWORK['org1.example.com']['peers']
+        for pidx, peer_config in peers.items():
+            if not pidx.startswith("peer"):
+                continue
+            endpoint    = peer_config[ env + 'grpc_request_endpoint' ]
+            tls_cacerts = peer_config['tls_cacerts']
+            opts        = (('grpc.ssl_target_name_override',
+                            peer_config['server_hostname']), )
+            peer = create_peer(endpoint=endpoint, tls_cacerts=tls_cacerts, opts=opts)
+            self.peers.append(peer)
+
         self.org1 = 'org1.example.com'
         self.crypto = ecies()
         self.ixp_admin = get_peer_org_user(self.org1, 'Admin',

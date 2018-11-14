@@ -14,10 +14,12 @@ from .config import E2E_CONFIG
 
 HOST = "localhost"
 NAME = "localhost"
-LOCAL_DEPLOY = False
-GCP_DEPLOY = not LOCAL_DEPLOY
-NETWORK_NAME = "test-network"
+ALIVE = False                   # Whether the network is up
+LOCAL_DEPLOY = False            # Localhost deploy
+GCP_DEPLOY = not LOCAL_DEPLOY   # GCP deploy
+NETWORK_NAME = "trustas-network"
 LOG_FILE = "logs/trustas." + str(time.time()) + ".log"
+NET_STATS_DIR = "experiments/network_stats"
 
 class BaseTestCase(unittest.TestCase):
     """
@@ -50,6 +52,9 @@ class BaseTestCase(unittest.TestCase):
         self.user = self.client.get_user('org1.example.com', 'Admin')
         self.assertIsNotNone(self.user, 'org1 admin should not be None')
 
+        global ALIVE
+        ALIVE = True
+
         # Boot up the testing network
         self.start_test_env(wipe_all)
         return HOST, NAME
@@ -57,24 +62,41 @@ class BaseTestCase(unittest.TestCase):
     def tearDown(self, keep_network=False):
         if not keep_network:
             self.shutdown_test_env()
+        global ALIVE
+        ALIVE = False
 
     # Logs Hyperledger network output
     def __log_network(self):
+        # capture logs
         output, _, _ = cli_call([
             "docker-compose", "-f", self.compose_file_path,
             "logs", "-f"
         ])
         output = output.decode()
+
+        # remove color encoding
         ansi_escape = re.compile(r'\x1B\[[0-?]*[ -/]*[@-~]')
         output = ansi_escape.sub('', output)
-        if not os.path.exists(os.path.dirname(LOG_FILE)):
-            try:
-                os.makedirs(os.path.dirname(LOG_FILE))
-            except OSError as exc:  # Guard against race condition
-                if exc.errno != errno.EEXIST:
-                    raise
+
+        # create output dir if it does not exist
+        mkdir_p('/'.join(LOG_FILE.split('/')[:-1]))
+
+        # write log
         with open(LOG_FILE, "w+") as fp:
             fp.write(output)
+
+    # Logs Docker network traffic
+    def __network_traffic(self):
+        global ALIVE
+        command = [ "docker", "stats", "--no-stream", "--all", "--format", "{{.Name}},{{.NetIO}}" ]
+        mkdir_p(NET_STATS_DIR)
+        filename = os.path.join(NET_STATS_DIR, str(time.time()) + ".csv")
+        while ALIVE:
+            netstats, _, _ = cli_call(command)
+            netstats = netstats.decode()
+            with open(filename, "a") as f:
+                f.write(netstats)
+            time.sleep(1)
 
     def start_test_env(self, wipe_all):
 
@@ -117,6 +139,11 @@ class BaseTestCase(unittest.TestCase):
         network_logs.start()
         print(" > Logging Network output to \"{}\"".format(LOG_FILE))
 
+        network_traffic = threading.Thread(target=self.__network_traffic)
+        network_traffic.start()
+        print(" > Logging Network Traffic".format(LOG_FILE))
+
+
     def shutdown_test_env(self):
         print(" > Shutting down network")
 
@@ -137,13 +164,13 @@ def get_peer_org_user(org, user, state_store):
 
     key_path = os.path.join(
         peer_user_base_path, 'keystore/',
-        E2E_CONFIG['test-network'][org]['users'][user]['private_key'])
+        E2E_CONFIG[NETWORK_NAME][org]['users'][user]['private_key'])
 
     cert_path = os.path.join(
         peer_user_base_path, 'signcerts/',
-        E2E_CONFIG['test-network'][org]['users'][user]['cert'])
+        E2E_CONFIG[NETWORK_NAME][org]['users'][user]['cert'])
 
-    msp_id = E2E_CONFIG['test-network'][org]['mspid']
+    msp_id = E2E_CONFIG[NETWORK_NAME][org]['mspid']
 
     return create_user(user, org, state_store, msp_id, key_path, cert_path)
 
@@ -160,12 +187,12 @@ def get_orderer_org_user(org='example.com', user='Admin', state_store=None):
 
     key_path = os.path.join(
         msp_path, 'keystore/',
-        E2E_CONFIG['test-network']['orderer']['users'][user]['private_key'])
+        E2E_CONFIG[NETWORK_NAME]['orderer']['users'][user]['private_key'])
 
     cert_path = os.path.join(
         msp_path, 'signcerts',
-        E2E_CONFIG['test-network']['orderer']['users'][user]['cert'])
-    msp_id = E2E_CONFIG['test-network']['orderer']['mspid']
+        E2E_CONFIG[NETWORK_NAME]['orderer']['users'][user]['cert'])
+    msp_id = E2E_CONFIG[NETWORK_NAME]['orderer']['mspid']
 
     return create_user(user, org, state_store, msp_id, key_path, cert_path)
 
