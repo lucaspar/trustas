@@ -96,6 +96,30 @@ class BaseTestCase(unittest.TestCase):
             netstats = netstats.decode()
             with open(filename, "a") as f:
                 f.write(netstats)
+            measurement = str(time.time())
+            lines = []
+            for line in netstats.split('\n'):
+                columns = line.split(',')
+                if not line or len(columns) < 2:
+                    lines.append('\n')
+                    continue
+                # individual, agregado / input, output / peers, orderer
+
+                # from 3rd column, remove whitespaces and separate ingress and egress traffic
+                val = columns[1].replace(" ", "").split('/')
+
+                # convert B, KB, MB, ... into numbers only
+                ingress = human_to_bytes(val[0])
+                egress = human_to_bytes(val[1])
+
+                # join everything to the line
+                line = ','.join([measurement] + columns + [str(ingress), str(egress)])
+                lines.append(line)
+
+            netstats = '\n'.join(lines)
+            with open(filename, "a") as f:
+                f.write(netstats)
+            # TODO: ver como timestamp varia com 100 peers
             time.sleep(1)
 
     def start_test_env(self, wipe_all):
@@ -236,3 +260,28 @@ def mkdir_p(mypath):
             pass
         else:
             raise
+
+def human_to_bytes(str):
+    """Converts first human readable number into bytes
+
+    Returns
+        Integer of number of bytes
+    """
+    factors = {
+        "kB": 1e3,
+        "MB": 1e6,
+        "GB": 1e9,
+        "TB": 1e12,
+        "PB": 1e15,
+        "YB": 1e16
+    }
+    numbers = re.findall(r'[-+]?[0-9]*\.?[0-9]+', str)
+    if not numbers:
+        return 0
+    number = float(numbers[0])
+
+    for key, factor in factors.items():
+        if key in str:
+            return int(number * factor)
+
+    return number

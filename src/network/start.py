@@ -114,7 +114,7 @@ class E2eTest(BaseTestCase):
 
         privacy = True      # storage privacy: True means encryption is enabled
         net_size = 100      # network size: number of ASes in the IXP
-        connections = 10    # total number of pair interconnections / agreements in the network
+        connections = 100   # total number of pair interconnections / agreements in the network
         mpa = 1             # number of metrics per agreement
         mode = "ciphertext" if privacy else "plaintext"
         path = os.path.join(
