@@ -17,12 +17,13 @@
 
 """Contains the paths and attributes necessary for the integration tests."""
 E2E_CONFIG = {
-    'test-network': {
+    'trustas-network': {
         'docker': {
             'compose_file_no_tls': 'test/fixtures/docker-compose-1peer-notls.yaml',
             'compose_file_tls': 'test/fixtures/docker-compose-2orgs-4peers-tls.yaml',
             'compose_file_tls_cli': 'test/fixtures/docker-compose-2orgs-4peers-tls-cli.yaml',
-            'compose_file_trustas_minimal': 'test/fixtures/dc-trustas-minimal.yaml'
+            'compose_file_trustas_gcp': 'test/fixtures/dc-trustas-gcp.yaml',
+            'compose_file_trustas_localhost': 'test/fixtures/dc-trustas-localhost.yaml'
         },
         'channel-artifacts': {
             'channel_id': 'businesschannel',
@@ -31,7 +32,8 @@ E2E_CONFIG = {
             'channel_profile': 'SingleOrgChannel'
         },
         'orderer': {
-            'grpc_endpoint': 'localhost:7050',
+            'gcp_grpc_endpoint': 'orderer.us-east1-b.c.trust-as.internal:7050',
+            'local_grpc_endpoint': 'localhost:7050',
             'server_hostname': 'orderer.example.com',
             'tls_cacerts': 'test/fixtures/e2e_cli/crypto-config/ordererOrganizations/'
                            'example.com/tlsca/tlsca.example.com-cert.pem',
@@ -56,13 +58,35 @@ E2E_CONFIG = {
             },
             'peers': {
                 'peer0': {
-                    'grpc_request_endpoint': 'localhost:7051',
-                    'grpc_event_endpoint': 'localhost:7053',
+                    'gcp_grpc_request_endpoint': 'peer0.us-east1-b.c.trust-as.internal:7051',
+                    'gcp_grpc_event_endpoint': 'peer0.us-east1-b.c.trust-as.internal:7053',
+                    'local_grpc_request_endpoint': 'localhost:7051',
+                    'local_grpc_event_endpoint': 'localhost:7053',
                     'server_hostname': 'peer0.org1.example.com',
                     'tls_cacerts': 'test/fixtures/e2e_cli/crypto-config/peerOrganizations/'
                                    'org1.example.com/peers/peer0.org1.example.com/msp/tlscacerts/'
                                    'tlsca.org1.example.com-cert.pem'
-                }
+                },
+                # 'peer1': {
+                #     'gcp_grpc_request_endpoint': 'peer0.us-east1-b.c.trust-as.internal:7051',
+                #     'gcp_grpc_event_endpoint': 'peer0.us-east1-b.c.trust-as.internal:7053',
+                #     'local_grpc_request_endpoint': 'localhost:7051',
+                #     'local_grpc_event_endpoint': 'localhost:7053',
+                #     'server_hostname': 'peer0.org1.example.com',
+                #     'tls_cacerts': 'test/fixtures/e2e_cli/crypto-config/peerOrganizations/'
+                #                    'org1.example.com/peers/peer0.org1.example.com/msp/tlscacerts/'
+                #                    'tlsca.org1.example.com-cert.pem'
+                # },
+                # 'peer2': {
+                #     'gcp_grpc_request_endpoint': 'peer2.us-east1-b.c.trust-as.internal:7051',
+                #     'gcp_grpc_event_endpoint': 'peer2.us-east1-b.c.trust-as.internal:7053',
+                #     'local_grpc_request_endpoint': 'localhost:9051',
+                #     'local_grpc_event_endpoint': 'localhost:9053',
+                #     'server_hostname': 'peer2.org1.example.com',
+                #     'tls_cacerts': 'test/fixtures/e2e_cli/crypto-config/peerOrganizations/'
+                #                    'org1.example.com/peers/peer2.org1.example.com/msp/tlscacerts/'
+                #                    'tlsca.org1.example.com-cert.pem'
+                # }
             }
         }
         #,

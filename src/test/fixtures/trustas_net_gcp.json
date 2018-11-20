@@ -1,0 +1,113 @@
+{
+    "name": "trustas-network",
+    "description": "TrustAS network for GCP deploy",
+    "version": "0.1",
+    "client": {
+        "organization": "Org1",
+        "credentialStore": {
+            "path": "/tmp/hfc-kvs",
+            "cryptoStore": {
+                "path": "/tmp/hfc-cvs"
+            },
+            "wallet": "wallet-name"
+        }
+    },
+    "organizations": {
+        "orderer.example.com": {
+            "mspid": "OrdererMSP",
+            "orderers": [
+                "orderer.example.com"
+            ],
+            "certificateAuthorities": [
+                "ca-orderer"
+            ],
+            "users": {
+                "Admin": {
+                    "cert": "test/fixtures/e2e_cli/crypto-config/ordererOrganizations/example.com/users/Admin@example.com/msp/signcerts/Admin@example.com-cert.pem",
+                    "private_key": "test/fixtures/e2e_cli/crypto-config/ordererOrganizations/example.com/users/Admin@example.com/msp/keystore/b92d5923828aa15d965e438de5a7edb92ec128889c2fe8026ee7b95490270048_sk"
+                }
+            }
+        },
+        "org1.example.com": {
+            "mspid": "Org1MSP",
+            "peers": [
+                "peer0.org1.example.com",
+                "peer1.org1.example.com",
+                "peer2.org1.example.com"
+            ],
+            "certificateAuthorities": [
+                "ca-org1"
+            ],
+            "users": {
+                "Admin": {
+                    "cert": "test/fixtures/e2e_cli/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/signcerts/Admin@org1.example.com-cert.pem",
+                    "private_key": "test/fixtures/e2e_cli/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/keystore/570182787133a5137f0982ba0e018462d3ed20491402585741bb516922fc9416_sk"
+                },
+                "User1": {
+                    "cert": "test/fixtures/e2e_cli/crypto-config/peerOrganizations/org1.example.com/users/User1@org1.example.com/msp/signcerts/User1@org1.example.com-cert.pem",
+                    "private_key": "test/fixtures/e2e_cli/crypto-config/peerOrganizations/org1.example.com/users/User1@org1.example.com/msp/keystore/613ca29ff265101aaebd9b79aff9924d5cd7baa9077141d24cf7c8fed4425bd4_sk"
+                }
+            }
+        }
+    },
+    "orderers": {
+        "orderer.example.com": {
+            "url": "orderer.us-east1-b.c.trust-as.internal:7050",
+            "grpcOptions": {
+                "ssl-target-name-override": "orderer.example.com",
+                "grpc-max-send-message-length": 15
+            },
+            "tlsCACerts": {
+                "path": "test/fixtures/e2e_cli/crypto-config/ordererOrganizations/example.com/tlsca/tlsca.example.com-cert.pem"
+            }
+        }
+    },
+    "peers": {
+        "peer0.org1.example.com": {
+            "url": "peer0.us-east1-b.c.trust-as.internal:7051",
+            "eventUrl": "peer0.us-east1-b.c.trust-as.internal:7053",
+            "grpcOptions": {
+                "ssl-target-name-override": "peer0.org1.example.com",
+                "grpc.http2.keepalive_time": 15
+            },
+            "tlsCACerts": {
+                "path": "test/fixtures/e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/msp/tlscacerts/tlsca.org1.example.com-cert.pem"
+            }
+        },
+        "peer1.org1.example.com": {
+            "url": "peer1.us-east1-b.c.trust-as.internal:7051",
+            "eventUrl": "peer1.us-east1-b.c.trust-as.internal:7053",
+            "grpcOptions": {
+                "ssl-target-name-override": "peer1.org1.example.com"
+            },
+            "tlsCACerts": {
+                "path": "test/fixtures/e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/msp/tlscacerts/tlsca.org1.example.com-cert.pem"
+            }
+        },
+        "peer2.org1.example.com": {
+            "url": "peer2.us-east1-b.c.trust-as.internal:7051",
+            "eventUrl": "peer2.us-east1-b.c.trust-as.internal:7053",
+            "grpcOptions": {
+                "ssl-target-name-override": "peer2.org1.example.com"
+            },
+            "tlsCACerts": {
+                "path": "test/fixtures/e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer2.org1.example.com/msp/tlscacerts/tlsca.org1.example.com-cert.pem"
+            }
+        }
+    },
+    "certificateAuthorities": {
+        "ca-org1": {
+            "url": "https://localhost:7054",
+            "grpcOptions": {
+                "verify": true
+            },
+            "tlsCACerts": {
+                "path": "test/fixtures/e2e_cli/crypto-config/peerOrganizations/org1.example.com/ca/org1.example.com-cert.pem"
+            },
+            "registrar": [{
+                "enrollId": "admin",
+                "enrollSecret": "adminpw"
+            }]
+        }
+    }
+}

@@ -1,0 +1,2 @@
+-no-start
+	cli_call(["docker-compose", "-f", self.compose_file_path, "start", ""])

@@ -26,6 +26,7 @@ from .e2e_utils import build_channel_request, build_join_channel_req
 # ----------
 # SETTINGS
 
+LOCAL_DEPLOY    = False
 KEEP_NETWORK    = False
 WIPE_ALL        = False
 EXP_DIR         = "experiments"
@@ -35,7 +36,7 @@ HALF_SLEEP      = DEFAULT_SLEEP * 0.5
 LONGER_SLEEP    = DEFAULT_SLEEP * 1.5
 DOUBLE_SLEEP    = DEFAULT_SLEEP * 2
 
-TEST_NETWORK    = E2E_CONFIG['test-network']
+TRUSTAS_NETWORK = E2E_CONFIG['trustas-network']
 CC_PATH         = 'github.com/trustas_cc'
 CC_NAME         = 'trustas_cc'
 CC_VERSION      = '1.0'
@@ -57,6 +58,7 @@ def global_config():
     global DEFAULT_SLEEP
     global KEEP_NETWORK
     global WIPE_ALL
+    global LOCAL_DEPLOY
 
     if "DEFAULT_SLEEP" in os.environ:
         DEFAULT_SLEEP = int(os.environ["DEFAULT_SLEEP"])
@@ -64,7 +66,10 @@ def global_config():
         KEEP_NETWORK = os.environ["KEEP_NETWORK"] == "True"
     if "WIPE_ALL" in os.environ:
         WIPE_ALL = os.environ["WIPE_ALL"] == "True"
+    if "LOCAL_DEPLOY" in os.environ:
+        LOCAL_DEPLOY = os.environ["LOCAL_DEPLOY"] == "True"
 
+    logger.info('  - Local deploy:               \t{}'.format(LOCAL_DEPLOY))
     logger.info('  - Default sleep time:         \t{} seconds'.format(DEFAULT_SLEEP))
     logger.info('  - Keep network running:       \t{}'.format(KEEP_NETWORK))
     logger.info('  - Wipe assets before running: \t{}'.format(WIPE_ALL))
@@ -84,9 +89,23 @@ class E2eTest(BaseTestCase):
     def test_in_sequence(self):
         """Test sequential execution"""
 
-        self.__configure()      # set ledger configs
-        self.__init_ledger()    # create the channel and init chaincode
-        self.__cc_ops()         # run chaincode operations (e.g. queries)
+        if LOCAL_DEPLOY:
+            print(" > Deploying locally")
+            self.__configure()      # set ledger configs
+            self.__init_ledger()    # create the channel and init chaincode
+            self.__cc_ops()         # run chaincode operations (e.g. queries)
+
+        else:
+
+            if os.environ["GCP_NAME"] == "orderer":
+                print(" > I am the orderer")
+                self.__configure()      # set ledger configs
+                self.__init_ledger()    # create the channel and init chaincode
+                self.__cc_ops()         # run chaincode operations (e.g. queries)
+
+            elif os.environ["GCP_NAME"].startswith("peer"):
+                print(" > I am {}".format(os.environ["GCP_NAME"]))
+                self.__configure()      # set ledger configs
 
         input("Press Enter to finish experiment")
 
@@ -206,21 +225,25 @@ class E2eTest(BaseTestCase):
     def __configure(self):
         """Get network configuration and make it available from self."""
 
-        peer_config = TEST_NETWORK['org1.example.com']['peers']['peer0']
+        self.peers = []
 
-        endpoint = peer_config['grpc_request_endpoint']
-        tls_cacerts = peer_config['tls_cacerts']
-        opts = (('grpc.ssl_target_name_override',
-                 peer_config['server_hostname']), )
-        peer = create_peer(
-            endpoint=endpoint, tls_cacerts=tls_cacerts, opts=opts)
+        env = "local_" if LOCAL_DEPLOY else "gcp_"
 
-        self.peers = [peer]
+        peers = TRUSTAS_NETWORK['org1.example.com']['peers']
+        for pidx, peer_config in peers.items():
+            if not pidx.startswith("peer"):
+                continue
+            endpoint    = peer_config[ env + 'grpc_request_endpoint' ]
+            tls_cacerts = peer_config['tls_cacerts']
+            opts        = (('grpc.ssl_target_name_override',
+                            peer_config['server_hostname']), )
+            peer = create_peer(endpoint=endpoint, tls_cacerts=tls_cacerts, opts=opts)
+            self.peers.append(peer)
+
         self.org1 = 'org1.example.com'
         self.crypto = ecies()
         self.ixp_admin = get_peer_org_user(self.org1, 'Admin',
                                             self.client.state_store)
-
 
     def __init_ledger(self):
         """Creates channel and chaincode"""
@@ -234,7 +257,7 @@ class E2eTest(BaseTestCase):
         # install and instantiate the chaincode
         self.__cc_install()
         time.sleep(DEFAULT_SLEEP)
-        args = ['a', '100', 'b', '40']
+        args = []
         self.__cc_call(fcn='init', args=args, prop_type=CC_INSTANTIATE)
 
 

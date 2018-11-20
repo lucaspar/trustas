@@ -10,14 +10,11 @@
 #   - Have an orderer snapshot named $SNAPSHOT_ORD
 #   - Have an AS snapshot named $SNAPSHOT_ASN
 
-# Minimal config:
-# Orderer and CA + as000 + as001
+set -e
 
-# set -e
-
-SNAPSHOT_ORD=orderer    # snapshot name for orderer instance
+# SNAPSHOT_ORD=orderer    # snapshot name for orderer instance
+# INSTANCE_ORD=orderer    # orderer instance name
 SNAPSHOT_ASN=asn        # snapshot name for AS instances
-INSTANCE_ORD=orderer    # orderer instance name
 NUMBER_OF_ASES=2        # quantity of AS instances in the network
 
 id=0
@@ -49,7 +46,7 @@ CreateAS () {
         --private-network-ip $arg_asn \
         --disk name=$arg_asn-disk,boot=yes,auto-delete=yes
 
-    # SET ENVIRONMENT VARIABLES
+    # SET METADATA
     gcloud compute instances add-metadata $arg_asn \
         --metadata asn=$arg_asn
 
@@ -73,3 +70,11 @@ while [ $id -lt $NUMBER_OF_ASES ]; do
     id=$((id + 1))
 
 done
+
+# # Get hostname
+# curl "http://metadata.google.internal/computeMetadata/v1/instance/hostname" \
+#     -H "Metadata-Flavor: Google"
+
+# # Get name
+# curl "http://metadata.google.internal/computeMetadata/v1/instance/name" \
+#     -H "Metadata-Flavor: Google"
