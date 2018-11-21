@@ -1,0 +1,2249 @@
+# SPDX-License-Identifier: Apache-2.0
+# Docker Compose - TrustAS configuration
+
+version: '2' # v3 does not support 'extends' yet
+
+services:
+    orderer.example.com: # There can be multiple orderers
+        extends:
+            file: orderer-base.yaml
+            service: orderer-base
+        container_name: orderer.example.com
+        hostname: orderer.example.com
+        ports:
+            - '7050:7050'
+        volumes:
+            - ./e2e_cli/channel-artifacts/orderer.genesis.block:/var/hyperledger/orderer/orderer.genesis.block
+            - ./e2e_cli/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/msp:/var/hyperledger/orderer/msp
+            - ./e2e_cli/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/tls/:/var/hyperledger/orderer/tls
+        command: orderer start
+
+    cli:
+        container_name: cli
+        image: hyperledger/fabric-tools
+        stdin_open: true
+        tty: true
+        environment:
+            - GOPATH=/opt/gopath
+            - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+            - CORE_LOGGING_LEVEL=DEBUG
+            - CORE_PEER_ID=cli
+            - CORE_PEER_ADDRESS=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+            - CORE_PEER_TLS_ENABLED=true
+            - CORE_PEER_TLS_CERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/server.crt
+            - CORE_PEER_TLS_KEY_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/server.key
+            - CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt
+            - CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp
+        working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+        command: /bin/bash
+        volumes:
+            - /var/run/:/host/var/run/
+            - ./e2e_cli/examples/chaincode/go/:/opt/gopath/src/github.com/hyperledger/fabric/examples/chaincode/go
+            - ./e2e_cli/crypto-config:/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
+            - ./scripts:/opt/gopath/src/github.com/hyperledger/fabric/peer/scripts/
+            - ./e2e_cli/channel-artifacts:/opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts
+        depends_on:
+            - orderer.example.com
+            - peer0.org1.example.com
+
+    peer0.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer0.org1.example.com
+        hostname: peer0.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer0.org1.example.com
+            - CORE_PEER_ADDRESS=peer0.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer0.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 7051:7051
+            - 7052:7052
+            - 7053:7053
+        command: peer node start
+        
+    peer1.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer1.org1.example.com
+        hostname: peer1.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer1.org1.example.com
+            - CORE_PEER_ADDRESS=peer1.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer1.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 7151:7051
+            - 7152:7052
+            - 7153:7053
+        command: peer node start
+        
+    peer2.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer2.org1.example.com
+        hostname: peer2.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer2.org1.example.com
+            - CORE_PEER_ADDRESS=peer2.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer2.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer2.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer2.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer2.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 7251:7051
+            - 7252:7052
+            - 7253:7053
+        command: peer node start
+        
+    peer3.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer3.org1.example.com
+        hostname: peer3.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer3.org1.example.com
+            - CORE_PEER_ADDRESS=peer3.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer3.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer3.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer3.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer3.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 7351:7051
+            - 7352:7052
+            - 7353:7053
+        command: peer node start
+        
+    peer4.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer4.org1.example.com
+        hostname: peer4.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer4.org1.example.com
+            - CORE_PEER_ADDRESS=peer4.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer4.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer4.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer4.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer4.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 7451:7051
+            - 7452:7052
+            - 7453:7053
+        command: peer node start
+        
+    peer5.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer5.org1.example.com
+        hostname: peer5.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer5.org1.example.com
+            - CORE_PEER_ADDRESS=peer5.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer5.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer5.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer5.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer5.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 7551:7051
+            - 7552:7052
+            - 7553:7053
+        command: peer node start
+        
+    peer6.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer6.org1.example.com
+        hostname: peer6.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer6.org1.example.com
+            - CORE_PEER_ADDRESS=peer6.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer6.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer6.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer6.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer6.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 7651:7051
+            - 7652:7052
+            - 7653:7053
+        command: peer node start
+        
+    peer7.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer7.org1.example.com
+        hostname: peer7.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer7.org1.example.com
+            - CORE_PEER_ADDRESS=peer7.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer7.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer7.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer7.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer7.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 7751:7051
+            - 7752:7052
+            - 7753:7053
+        command: peer node start
+        
+    peer8.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer8.org1.example.com
+        hostname: peer8.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer8.org1.example.com
+            - CORE_PEER_ADDRESS=peer8.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer8.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer8.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer8.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer8.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 7851:7051
+            - 7852:7052
+            - 7853:7053
+        command: peer node start
+        
+    peer9.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer9.org1.example.com
+        hostname: peer9.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer9.org1.example.com
+            - CORE_PEER_ADDRESS=peer9.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer9.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer9.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer9.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer9.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 7951:7051
+            - 7952:7052
+            - 7953:7053
+        command: peer node start
+        
+    peer10.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer10.org1.example.com
+        hostname: peer10.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer10.org1.example.com
+            - CORE_PEER_ADDRESS=peer10.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer10.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer10.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer10.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer10.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 8051:7051
+            - 8052:7052
+            - 8053:7053
+        command: peer node start
+        
+    peer11.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer11.org1.example.com
+        hostname: peer11.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer11.org1.example.com
+            - CORE_PEER_ADDRESS=peer11.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer11.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer11.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer11.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer11.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 8151:7051
+            - 8152:7052
+            - 8153:7053
+        command: peer node start
+        
+    peer12.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer12.org1.example.com
+        hostname: peer12.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer12.org1.example.com
+            - CORE_PEER_ADDRESS=peer12.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer12.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer12.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer12.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer12.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 8251:7051
+            - 8252:7052
+            - 8253:7053
+        command: peer node start
+        
+    peer13.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer13.org1.example.com
+        hostname: peer13.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer13.org1.example.com
+            - CORE_PEER_ADDRESS=peer13.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer13.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer13.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer13.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer13.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 8351:7051
+            - 8352:7052
+            - 8353:7053
+        command: peer node start
+        
+    peer14.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer14.org1.example.com
+        hostname: peer14.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer14.org1.example.com
+            - CORE_PEER_ADDRESS=peer14.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer14.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer14.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer14.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer14.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 8451:7051
+            - 8452:7052
+            - 8453:7053
+        command: peer node start
+        
+    peer15.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer15.org1.example.com
+        hostname: peer15.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer15.org1.example.com
+            - CORE_PEER_ADDRESS=peer15.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer15.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer15.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer15.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer15.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 8551:7051
+            - 8552:7052
+            - 8553:7053
+        command: peer node start
+        
+    peer16.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer16.org1.example.com
+        hostname: peer16.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer16.org1.example.com
+            - CORE_PEER_ADDRESS=peer16.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer16.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer16.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer16.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer16.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 8651:7051
+            - 8652:7052
+            - 8653:7053
+        command: peer node start
+        
+    peer17.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer17.org1.example.com
+        hostname: peer17.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer17.org1.example.com
+            - CORE_PEER_ADDRESS=peer17.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer17.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer17.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer17.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer17.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 8751:7051
+            - 8752:7052
+            - 8753:7053
+        command: peer node start
+        
+    peer18.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer18.org1.example.com
+        hostname: peer18.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer18.org1.example.com
+            - CORE_PEER_ADDRESS=peer18.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer18.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer18.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer18.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer18.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 8851:7051
+            - 8852:7052
+            - 8853:7053
+        command: peer node start
+        
+    peer19.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer19.org1.example.com
+        hostname: peer19.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer19.org1.example.com
+            - CORE_PEER_ADDRESS=peer19.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer19.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer19.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer19.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer19.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 8951:7051
+            - 8952:7052
+            - 8953:7053
+        command: peer node start
+        
+    peer20.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer20.org1.example.com
+        hostname: peer20.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer20.org1.example.com
+            - CORE_PEER_ADDRESS=peer20.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer20.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer20.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer20.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer20.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 9051:7051
+            - 9052:7052
+            - 9053:7053
+        command: peer node start
+        
+    peer21.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer21.org1.example.com
+        hostname: peer21.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer21.org1.example.com
+            - CORE_PEER_ADDRESS=peer21.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer21.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer21.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer21.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer21.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 9151:7051
+            - 9152:7052
+            - 9153:7053
+        command: peer node start
+        
+    peer22.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer22.org1.example.com
+        hostname: peer22.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer22.org1.example.com
+            - CORE_PEER_ADDRESS=peer22.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer22.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer22.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer22.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer22.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 9251:7051
+            - 9252:7052
+            - 9253:7053
+        command: peer node start
+        
+    peer23.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer23.org1.example.com
+        hostname: peer23.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer23.org1.example.com
+            - CORE_PEER_ADDRESS=peer23.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer23.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer23.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer23.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer23.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 9351:7051
+            - 9352:7052
+            - 9353:7053
+        command: peer node start
+        
+    peer24.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer24.org1.example.com
+        hostname: peer24.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer24.org1.example.com
+            - CORE_PEER_ADDRESS=peer24.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer24.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer24.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer24.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer24.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 9451:7051
+            - 9452:7052
+            - 9453:7053
+        command: peer node start
+        
+    peer25.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer25.org1.example.com
+        hostname: peer25.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer25.org1.example.com
+            - CORE_PEER_ADDRESS=peer25.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer25.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer25.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer25.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer25.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 9551:7051
+            - 9552:7052
+            - 9553:7053
+        command: peer node start
+        
+    peer26.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer26.org1.example.com
+        hostname: peer26.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer26.org1.example.com
+            - CORE_PEER_ADDRESS=peer26.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer26.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer26.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer26.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer26.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 9651:7051
+            - 9652:7052
+            - 9653:7053
+        command: peer node start
+        
+    peer27.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer27.org1.example.com
+        hostname: peer27.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer27.org1.example.com
+            - CORE_PEER_ADDRESS=peer27.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer27.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer27.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer27.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer27.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 9751:7051
+            - 9752:7052
+            - 9753:7053
+        command: peer node start
+        
+    peer28.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer28.org1.example.com
+        hostname: peer28.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer28.org1.example.com
+            - CORE_PEER_ADDRESS=peer28.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer28.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer28.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer28.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer28.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 9851:7051
+            - 9852:7052
+            - 9853:7053
+        command: peer node start
+        
+    peer29.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer29.org1.example.com
+        hostname: peer29.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer29.org1.example.com
+            - CORE_PEER_ADDRESS=peer29.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer29.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer29.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer29.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer29.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 9951:7051
+            - 9952:7052
+            - 9953:7053
+        command: peer node start
+        
+    peer30.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer30.org1.example.com
+        hostname: peer30.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer30.org1.example.com
+            - CORE_PEER_ADDRESS=peer30.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer30.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer30.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer30.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer30.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 10051:7051
+            - 10052:7052
+            - 10053:7053
+        command: peer node start
+        
+    peer31.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer31.org1.example.com
+        hostname: peer31.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer31.org1.example.com
+            - CORE_PEER_ADDRESS=peer31.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer31.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer31.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer31.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer31.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 10151:7051
+            - 10152:7052
+            - 10153:7053
+        command: peer node start
+        
+    peer32.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer32.org1.example.com
+        hostname: peer32.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer32.org1.example.com
+            - CORE_PEER_ADDRESS=peer32.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer32.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer32.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer32.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer32.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 10251:7051
+            - 10252:7052
+            - 10253:7053
+        command: peer node start
+        
+    peer33.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer33.org1.example.com
+        hostname: peer33.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer33.org1.example.com
+            - CORE_PEER_ADDRESS=peer33.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer33.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer33.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer33.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer33.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 10351:7051
+            - 10352:7052
+            - 10353:7053
+        command: peer node start
+        
+    peer34.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer34.org1.example.com
+        hostname: peer34.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer34.org1.example.com
+            - CORE_PEER_ADDRESS=peer34.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer34.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer34.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer34.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer34.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 10451:7051
+            - 10452:7052
+            - 10453:7053
+        command: peer node start
+        
+    peer35.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer35.org1.example.com
+        hostname: peer35.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer35.org1.example.com
+            - CORE_PEER_ADDRESS=peer35.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer35.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer35.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer35.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer35.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 10551:7051
+            - 10552:7052
+            - 10553:7053
+        command: peer node start
+        
+    peer36.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer36.org1.example.com
+        hostname: peer36.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer36.org1.example.com
+            - CORE_PEER_ADDRESS=peer36.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer36.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer36.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer36.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer36.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 10651:7051
+            - 10652:7052
+            - 10653:7053
+        command: peer node start
+        
+    peer37.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer37.org1.example.com
+        hostname: peer37.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer37.org1.example.com
+            - CORE_PEER_ADDRESS=peer37.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer37.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer37.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer37.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer37.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 10751:7051
+            - 10752:7052
+            - 10753:7053
+        command: peer node start
+        
+    peer38.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer38.org1.example.com
+        hostname: peer38.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer38.org1.example.com
+            - CORE_PEER_ADDRESS=peer38.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer38.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer38.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer38.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer38.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 10851:7051
+            - 10852:7052
+            - 10853:7053
+        command: peer node start
+        
+    peer39.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer39.org1.example.com
+        hostname: peer39.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer39.org1.example.com
+            - CORE_PEER_ADDRESS=peer39.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer39.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer39.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer39.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer39.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 10951:7051
+            - 10952:7052
+            - 10953:7053
+        command: peer node start
+        
+    peer40.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer40.org1.example.com
+        hostname: peer40.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer40.org1.example.com
+            - CORE_PEER_ADDRESS=peer40.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer40.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer40.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer40.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer40.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 11051:7051
+            - 11052:7052
+            - 11053:7053
+        command: peer node start
+        
+    peer41.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer41.org1.example.com
+        hostname: peer41.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer41.org1.example.com
+            - CORE_PEER_ADDRESS=peer41.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer41.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer41.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer41.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer41.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 11151:7051
+            - 11152:7052
+            - 11153:7053
+        command: peer node start
+        
+    peer42.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer42.org1.example.com
+        hostname: peer42.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer42.org1.example.com
+            - CORE_PEER_ADDRESS=peer42.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer42.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer42.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer42.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer42.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 11251:7051
+            - 11252:7052
+            - 11253:7053
+        command: peer node start
+        
+    peer43.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer43.org1.example.com
+        hostname: peer43.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer43.org1.example.com
+            - CORE_PEER_ADDRESS=peer43.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer43.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer43.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer43.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer43.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 11351:7051
+            - 11352:7052
+            - 11353:7053
+        command: peer node start
+        
+    peer44.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer44.org1.example.com
+        hostname: peer44.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer44.org1.example.com
+            - CORE_PEER_ADDRESS=peer44.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer44.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer44.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer44.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer44.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 11451:7051
+            - 11452:7052
+            - 11453:7053
+        command: peer node start
+        
+    peer45.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer45.org1.example.com
+        hostname: peer45.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer45.org1.example.com
+            - CORE_PEER_ADDRESS=peer45.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer45.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer45.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer45.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer45.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 11551:7051
+            - 11552:7052
+            - 11553:7053
+        command: peer node start
+        
+    peer46.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer46.org1.example.com
+        hostname: peer46.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer46.org1.example.com
+            - CORE_PEER_ADDRESS=peer46.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer46.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer46.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer46.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer46.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 11651:7051
+            - 11652:7052
+            - 11653:7053
+        command: peer node start
+        
+    peer47.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer47.org1.example.com
+        hostname: peer47.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer47.org1.example.com
+            - CORE_PEER_ADDRESS=peer47.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer47.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer47.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer47.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer47.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 11751:7051
+            - 11752:7052
+            - 11753:7053
+        command: peer node start
+        
+    peer48.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer48.org1.example.com
+        hostname: peer48.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer48.org1.example.com
+            - CORE_PEER_ADDRESS=peer48.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer48.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer48.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer48.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer48.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 11851:7051
+            - 11852:7052
+            - 11853:7053
+        command: peer node start
+        
+    peer49.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer49.org1.example.com
+        hostname: peer49.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer49.org1.example.com
+            - CORE_PEER_ADDRESS=peer49.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer49.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer49.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer49.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer49.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 11951:7051
+            - 11952:7052
+            - 11953:7053
+        command: peer node start
+        
+    peer50.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer50.org1.example.com
+        hostname: peer50.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer50.org1.example.com
+            - CORE_PEER_ADDRESS=peer50.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer50.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer50.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer50.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer50.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 12051:7051
+            - 12052:7052
+            - 12053:7053
+        command: peer node start
+        
+    peer51.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer51.org1.example.com
+        hostname: peer51.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer51.org1.example.com
+            - CORE_PEER_ADDRESS=peer51.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer51.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer51.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer51.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer51.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 12151:7051
+            - 12152:7052
+            - 12153:7053
+        command: peer node start
+        
+    peer52.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer52.org1.example.com
+        hostname: peer52.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer52.org1.example.com
+            - CORE_PEER_ADDRESS=peer52.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer52.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer52.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer52.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer52.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 12251:7051
+            - 12252:7052
+            - 12253:7053
+        command: peer node start
+        
+    peer53.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer53.org1.example.com
+        hostname: peer53.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer53.org1.example.com
+            - CORE_PEER_ADDRESS=peer53.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer53.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer53.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer53.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer53.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 12351:7051
+            - 12352:7052
+            - 12353:7053
+        command: peer node start
+        
+    peer54.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer54.org1.example.com
+        hostname: peer54.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer54.org1.example.com
+            - CORE_PEER_ADDRESS=peer54.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer54.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer54.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer54.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer54.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 12451:7051
+            - 12452:7052
+            - 12453:7053
+        command: peer node start
+        
+    peer55.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer55.org1.example.com
+        hostname: peer55.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer55.org1.example.com
+            - CORE_PEER_ADDRESS=peer55.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer55.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer55.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer55.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer55.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 12551:7051
+            - 12552:7052
+            - 12553:7053
+        command: peer node start
+        
+    peer56.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer56.org1.example.com
+        hostname: peer56.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer56.org1.example.com
+            - CORE_PEER_ADDRESS=peer56.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer56.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer56.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer56.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer56.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 12651:7051
+            - 12652:7052
+            - 12653:7053
+        command: peer node start
+        
+    peer57.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer57.org1.example.com
+        hostname: peer57.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer57.org1.example.com
+            - CORE_PEER_ADDRESS=peer57.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer57.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer57.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer57.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer57.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 12751:7051
+            - 12752:7052
+            - 12753:7053
+        command: peer node start
+        
+    peer58.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer58.org1.example.com
+        hostname: peer58.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer58.org1.example.com
+            - CORE_PEER_ADDRESS=peer58.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer58.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer58.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer58.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer58.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 12851:7051
+            - 12852:7052
+            - 12853:7053
+        command: peer node start
+        
+    peer59.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer59.org1.example.com
+        hostname: peer59.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer59.org1.example.com
+            - CORE_PEER_ADDRESS=peer59.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer59.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer59.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer59.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer59.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 12951:7051
+            - 12952:7052
+            - 12953:7053
+        command: peer node start
+        
+    peer60.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer60.org1.example.com
+        hostname: peer60.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer60.org1.example.com
+            - CORE_PEER_ADDRESS=peer60.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer60.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer60.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer60.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer60.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 13051:7051
+            - 13052:7052
+            - 13053:7053
+        command: peer node start
+        
+    peer61.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer61.org1.example.com
+        hostname: peer61.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer61.org1.example.com
+            - CORE_PEER_ADDRESS=peer61.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer61.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer61.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer61.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer61.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 13151:7051
+            - 13152:7052
+            - 13153:7053
+        command: peer node start
+        
+    peer62.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer62.org1.example.com
+        hostname: peer62.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer62.org1.example.com
+            - CORE_PEER_ADDRESS=peer62.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer62.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer62.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer62.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer62.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 13251:7051
+            - 13252:7052
+            - 13253:7053
+        command: peer node start
+        
+    peer63.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer63.org1.example.com
+        hostname: peer63.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer63.org1.example.com
+            - CORE_PEER_ADDRESS=peer63.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer63.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer63.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer63.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer63.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 13351:7051
+            - 13352:7052
+            - 13353:7053
+        command: peer node start
+        
+    peer64.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer64.org1.example.com
+        hostname: peer64.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer64.org1.example.com
+            - CORE_PEER_ADDRESS=peer64.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer64.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer64.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer64.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer64.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 13451:7051
+            - 13452:7052
+            - 13453:7053
+        command: peer node start
+        
+    peer65.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer65.org1.example.com
+        hostname: peer65.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer65.org1.example.com
+            - CORE_PEER_ADDRESS=peer65.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer65.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer65.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer65.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer65.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 13551:7051
+            - 13552:7052
+            - 13553:7053
+        command: peer node start
+        
+    peer66.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer66.org1.example.com
+        hostname: peer66.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer66.org1.example.com
+            - CORE_PEER_ADDRESS=peer66.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer66.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer66.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer66.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer66.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 13651:7051
+            - 13652:7052
+            - 13653:7053
+        command: peer node start
+        
+    peer67.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer67.org1.example.com
+        hostname: peer67.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer67.org1.example.com
+            - CORE_PEER_ADDRESS=peer67.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer67.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer67.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer67.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer67.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 13751:7051
+            - 13752:7052
+            - 13753:7053
+        command: peer node start
+        
+    peer68.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer68.org1.example.com
+        hostname: peer68.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer68.org1.example.com
+            - CORE_PEER_ADDRESS=peer68.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer68.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer68.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer68.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer68.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 13851:7051
+            - 13852:7052
+            - 13853:7053
+        command: peer node start
+        
+    peer69.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer69.org1.example.com
+        hostname: peer69.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer69.org1.example.com
+            - CORE_PEER_ADDRESS=peer69.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer69.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer69.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer69.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer69.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 13951:7051
+            - 13952:7052
+            - 13953:7053
+        command: peer node start
+        
+    peer70.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer70.org1.example.com
+        hostname: peer70.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer70.org1.example.com
+            - CORE_PEER_ADDRESS=peer70.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer70.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer70.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer70.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer70.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 14051:7051
+            - 14052:7052
+            - 14053:7053
+        command: peer node start
+        
+    peer71.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer71.org1.example.com
+        hostname: peer71.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer71.org1.example.com
+            - CORE_PEER_ADDRESS=peer71.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer71.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer71.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer71.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer71.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 14151:7051
+            - 14152:7052
+            - 14153:7053
+        command: peer node start
+        
+    peer72.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer72.org1.example.com
+        hostname: peer72.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer72.org1.example.com
+            - CORE_PEER_ADDRESS=peer72.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer72.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer72.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer72.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer72.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 14251:7051
+            - 14252:7052
+            - 14253:7053
+        command: peer node start
+        
+    peer73.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer73.org1.example.com
+        hostname: peer73.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer73.org1.example.com
+            - CORE_PEER_ADDRESS=peer73.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer73.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer73.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer73.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer73.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 14351:7051
+            - 14352:7052
+            - 14353:7053
+        command: peer node start
+        
+    peer74.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer74.org1.example.com
+        hostname: peer74.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer74.org1.example.com
+            - CORE_PEER_ADDRESS=peer74.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer74.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer74.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer74.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer74.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 14451:7051
+            - 14452:7052
+            - 14453:7053
+        command: peer node start
+        
+    peer75.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer75.org1.example.com
+        hostname: peer75.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer75.org1.example.com
+            - CORE_PEER_ADDRESS=peer75.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer75.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer75.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer75.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer75.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 14551:7051
+            - 14552:7052
+            - 14553:7053
+        command: peer node start
+        
+    peer76.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer76.org1.example.com
+        hostname: peer76.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer76.org1.example.com
+            - CORE_PEER_ADDRESS=peer76.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer76.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer76.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer76.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer76.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 14651:7051
+            - 14652:7052
+            - 14653:7053
+        command: peer node start
+        
+    peer77.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer77.org1.example.com
+        hostname: peer77.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer77.org1.example.com
+            - CORE_PEER_ADDRESS=peer77.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer77.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer77.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer77.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer77.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 14751:7051
+            - 14752:7052
+            - 14753:7053
+        command: peer node start
+        
+    peer78.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer78.org1.example.com
+        hostname: peer78.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer78.org1.example.com
+            - CORE_PEER_ADDRESS=peer78.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer78.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer78.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer78.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer78.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 14851:7051
+            - 14852:7052
+            - 14853:7053
+        command: peer node start
+        
+    peer79.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer79.org1.example.com
+        hostname: peer79.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer79.org1.example.com
+            - CORE_PEER_ADDRESS=peer79.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer79.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer79.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer79.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer79.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 14951:7051
+            - 14952:7052
+            - 14953:7053
+        command: peer node start
+        
+    peer80.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer80.org1.example.com
+        hostname: peer80.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer80.org1.example.com
+            - CORE_PEER_ADDRESS=peer80.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer80.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer80.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer80.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer80.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 15051:7051
+            - 15052:7052
+            - 15053:7053
+        command: peer node start
+        
+    peer81.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer81.org1.example.com
+        hostname: peer81.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer81.org1.example.com
+            - CORE_PEER_ADDRESS=peer81.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer81.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer81.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer81.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer81.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 15151:7051
+            - 15152:7052
+            - 15153:7053
+        command: peer node start
+        
+    peer82.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer82.org1.example.com
+        hostname: peer82.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer82.org1.example.com
+            - CORE_PEER_ADDRESS=peer82.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer82.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer82.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer82.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer82.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 15251:7051
+            - 15252:7052
+            - 15253:7053
+        command: peer node start
+        
+    peer83.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer83.org1.example.com
+        hostname: peer83.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer83.org1.example.com
+            - CORE_PEER_ADDRESS=peer83.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer83.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer83.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer83.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer83.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 15351:7051
+            - 15352:7052
+            - 15353:7053
+        command: peer node start
+        
+    peer84.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer84.org1.example.com
+        hostname: peer84.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer84.org1.example.com
+            - CORE_PEER_ADDRESS=peer84.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer84.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer84.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer84.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer84.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 15451:7051
+            - 15452:7052
+            - 15453:7053
+        command: peer node start
+        
+    peer85.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer85.org1.example.com
+        hostname: peer85.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer85.org1.example.com
+            - CORE_PEER_ADDRESS=peer85.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer85.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer85.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer85.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer85.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 15551:7051
+            - 15552:7052
+            - 15553:7053
+        command: peer node start
+        
+    peer86.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer86.org1.example.com
+        hostname: peer86.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer86.org1.example.com
+            - CORE_PEER_ADDRESS=peer86.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer86.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer86.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer86.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer86.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 15651:7051
+            - 15652:7052
+            - 15653:7053
+        command: peer node start
+        
+    peer87.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer87.org1.example.com
+        hostname: peer87.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer87.org1.example.com
+            - CORE_PEER_ADDRESS=peer87.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer87.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer87.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer87.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer87.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 15751:7051
+            - 15752:7052
+            - 15753:7053
+        command: peer node start
+        
+    peer88.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer88.org1.example.com
+        hostname: peer88.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer88.org1.example.com
+            - CORE_PEER_ADDRESS=peer88.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer88.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer88.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer88.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer88.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 15851:7051
+            - 15852:7052
+            - 15853:7053
+        command: peer node start
+        
+    peer89.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer89.org1.example.com
+        hostname: peer89.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer89.org1.example.com
+            - CORE_PEER_ADDRESS=peer89.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer89.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer89.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer89.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer89.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 15951:7051
+            - 15952:7052
+            - 15953:7053
+        command: peer node start
+        
+    peer90.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer90.org1.example.com
+        hostname: peer90.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer90.org1.example.com
+            - CORE_PEER_ADDRESS=peer90.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer90.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer90.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer90.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer90.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 16051:7051
+            - 16052:7052
+            - 16053:7053
+        command: peer node start
+        
+    peer91.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer91.org1.example.com
+        hostname: peer91.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer91.org1.example.com
+            - CORE_PEER_ADDRESS=peer91.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer91.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer91.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer91.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer91.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 16151:7051
+            - 16152:7052
+            - 16153:7053
+        command: peer node start
+        
+    peer92.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer92.org1.example.com
+        hostname: peer92.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer92.org1.example.com
+            - CORE_PEER_ADDRESS=peer92.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer92.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer92.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer92.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer92.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 16251:7051
+            - 16252:7052
+            - 16253:7053
+        command: peer node start
+        
+    peer93.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer93.org1.example.com
+        hostname: peer93.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer93.org1.example.com
+            - CORE_PEER_ADDRESS=peer93.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer93.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer93.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer93.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer93.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 16351:7051
+            - 16352:7052
+            - 16353:7053
+        command: peer node start
+        
+    peer94.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer94.org1.example.com
+        hostname: peer94.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer94.org1.example.com
+            - CORE_PEER_ADDRESS=peer94.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer94.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer94.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer94.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer94.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 16451:7051
+            - 16452:7052
+            - 16453:7053
+        command: peer node start
+        
+    peer95.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer95.org1.example.com
+        hostname: peer95.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer95.org1.example.com
+            - CORE_PEER_ADDRESS=peer95.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer95.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer95.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer95.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer95.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 16551:7051
+            - 16552:7052
+            - 16553:7053
+        command: peer node start
+        
+    peer96.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer96.org1.example.com
+        hostname: peer96.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer96.org1.example.com
+            - CORE_PEER_ADDRESS=peer96.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer96.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer96.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer96.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer96.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 16651:7051
+            - 16652:7052
+            - 16653:7053
+        command: peer node start
+        
+    peer97.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer97.org1.example.com
+        hostname: peer97.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer97.org1.example.com
+            - CORE_PEER_ADDRESS=peer97.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer97.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer97.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer97.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer97.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 16751:7051
+            - 16752:7052
+            - 16753:7053
+        command: peer node start
+        
+    peer98.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer98.org1.example.com
+        hostname: peer98.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer98.org1.example.com
+            - CORE_PEER_ADDRESS=peer98.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer98.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer98.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer98.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer98.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 16851:7051
+            - 16852:7052
+            - 16853:7053
+        command: peer node start
+        
+    peer99.org1.example.com:
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        container_name: peer99.org1.example.com
+        hostname: peer99.org1.example.com
+        environment:
+            - CORE_PEER_ID=peer99.org1.example.com
+            - CORE_PEER_ADDRESS=peer99.org1.example.com:7051
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer99.org1.example.com:7052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer99.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_LOCALMSPID=Org1MSP
+        volumes:
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer99.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer99.org1.example.com/tls:/etc/hyperledger/fabric/tls
+        ports:
+            - 16951:7051
+            - 16952:7052
+            - 16953:7053
+        command: peer node start
+        
