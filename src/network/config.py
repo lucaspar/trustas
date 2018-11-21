@@ -23,7 +23,7 @@ E2E_CONFIG = {
             'compose_file_tls': 'test/fixtures/docker-compose-2orgs-4peers-tls.yaml',
             'compose_file_tls_cli': 'test/fixtures/docker-compose-2orgs-4peers-tls-cli.yaml',
             'compose_file_trustas_gcp': 'test/fixtures/dc-trustas-gcp.yaml',
-            'compose_file_trustas_localhost': 'test/fixtures/dc-trustas-localhost.yaml'
+            'compose_file_trustas_localhost': 'test/fixtures/dc-local-25peers.yaml'
         },
         'channel-artifacts': {
             'channel_id': 'businesschannel',
@@ -66,52 +66,8 @@ E2E_CONFIG = {
                     'tls_cacerts': 'test/fixtures/e2e_cli/crypto-config/peerOrganizations/'
                                    'org1.example.com/peers/peer0.org1.example.com/msp/tlscacerts/'
                                    'tlsca.org1.example.com-cert.pem'
-                },
-                # 'peer1': {
-                #     'gcp_grpc_request_endpoint': 'peer0.us-east1-b.c.trust-as.internal:7051',
-                #     'gcp_grpc_event_endpoint': 'peer0.us-east1-b.c.trust-as.internal:7053',
-                #     'local_grpc_request_endpoint': 'localhost:7051',
-                #     'local_grpc_event_endpoint': 'localhost:7053',
-                #     'server_hostname': 'peer0.org1.example.com',
-                #     'tls_cacerts': 'test/fixtures/e2e_cli/crypto-config/peerOrganizations/'
-                #                    'org1.example.com/peers/peer0.org1.example.com/msp/tlscacerts/'
-                #                    'tlsca.org1.example.com-cert.pem'
-                # },
-                # 'peer2': {
-                #     'gcp_grpc_request_endpoint': 'peer2.us-east1-b.c.trust-as.internal:7051',
-                #     'gcp_grpc_event_endpoint': 'peer2.us-east1-b.c.trust-as.internal:7053',
-                #     'local_grpc_request_endpoint': 'localhost:9051',
-                #     'local_grpc_event_endpoint': 'localhost:9053',
-                #     'server_hostname': 'peer2.org1.example.com',
-                #     'tls_cacerts': 'test/fixtures/e2e_cli/crypto-config/peerOrganizations/'
-                #                    'org1.example.com/peers/peer2.org1.example.com/msp/tlscacerts/'
-                #                    'tlsca.org1.example.com-cert.pem'
-                # }
+                }
             }
         }
-        #,
-        # 'org2.example.com': {
-        #     'mspid': 'Org2MSP',
-        #     'users': {
-        #         'Admin': {
-        #             'cert': 'Admin@org2.example.com-cert.pem',
-        #             'private_key': 'a23db9fe4fdfc7d8f87a42919597b44e52b429fb09634b523b366146b9bf1e3b_sk'
-        #         },
-        #         'User1': {
-        #             'cert': 'User1@org2.example.com-cert.pem',
-        #             'private_key': '90da90b106c077543acc5b5f414ee857a3d5b1096d7be11f6f2ec25787e5110b_sk'
-        #         }
-        #     },
-        #     'peers': {
-        #         'peer0': {
-        #             'grpc_request_endpoint': 'localhost:9051',
-        #             'grpc_event_endpoint': 'localhost:9053',
-        #             'server_hostname': 'peer0.org2.example.com',
-        #             'tls_cacerts': 'test/fixtures/e2e_cli/crypto-config/peerOrganizations/'
-        #                            'org2.example.com/peers/peer0.org2.example.com/msp/tlscacerts/'
-        #                            'tlsca.org2.example.com-cert.pem'
-        #         }
-        #     }
-        # }
     }
 }

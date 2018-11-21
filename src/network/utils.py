@@ -47,7 +47,7 @@ class BaseTestCase(unittest.TestCase):
         self.channel_profile = \
             E2E_CONFIG[NETWORK_NAME]['channel-artifacts']['channel_profile']
         self.client =   Client('test/fixtures/trustas_net_gcp.json') if GCP_DEPLOY else \
-                        Client('test/fixtures/trustas_net_localhost.json')
+                        Client('test/fixtures/local-25peers.json')
         self.channel_name = "businesschannel"  # default application channel
         self.user = self.client.get_user('org1.example.com', 'Admin')
         self.assertIsNotNone(self.user, 'org1 admin should not be None')
@@ -107,6 +107,9 @@ class BaseTestCase(unittest.TestCase):
 
                 # from 3rd column, remove whitespaces and separate ingress and egress traffic
                 val = columns[1].replace(" ", "").split('/')
+                if len(val) < 2:
+                    lines.append('\n')
+                    continue
 
                 # convert B, KB, MB, ... into numbers only
                 ingress = human_to_bytes(val[0])
