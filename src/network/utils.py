@@ -47,7 +47,8 @@ class BaseTestCase(unittest.TestCase):
         self.channel_profile = \
             E2E_CONFIG[NETWORK_NAME]['channel-artifacts']['channel_profile']
         self.client =   Client('test/fixtures/trustas_net_gcp.json') if GCP_DEPLOY else \
-                        Client('test/fixtures/local-25peers.json')
+                        Client('test/fixtures/network.json')
+                        # Client('test/fixtures/local-10peers.json')
         self.channel_name = "businesschannel"  # default application channel
         self.user = self.client.get_user('org1.example.com', 'Admin')
         self.assertIsNotNone(self.user, 'org1 admin should not be None')
@@ -94,8 +95,6 @@ class BaseTestCase(unittest.TestCase):
         while ALIVE:
             netstats, _, _ = cli_call(command)
             netstats = netstats.decode()
-            with open(filename, "a") as f:
-                f.write(netstats)
             measurement = str(time.time())
             lines = []
             for line in netstats.split('\n'):

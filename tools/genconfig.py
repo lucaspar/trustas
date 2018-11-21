@@ -52,7 +52,7 @@ services:
             - peer0.org1.example.com
 """
 
-def build_docker_service(peer_name, port):
+def build_docker_service(peer_name, port, gossip_peer):
 
     return "\n    " + peer_name + """:
         extends:
@@ -64,9 +64,9 @@ def build_docker_service(peer_name, port):
             - CORE_PEER_ID=""" + peer_name + """
             - CORE_PEER_ADDRESS=""" + peer_name + """:7051
             - CORE_PEER_CHAINCODELISTENADDRESS=""" + peer_name + """:7052
-            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=""" + peer_name + """:7051
-            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
             - CORE_PEER_LOCALMSPID=Org1MSP
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=""" + peer_name + """:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=""" + gossip_peer + """:7051
         volumes:
             - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/""" + peer_name + """/msp:/etc/hyperledger/fabric/msp
             - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/""" + peer_name + """/tls:/etc/hyperledger/fabric/tls
@@ -121,8 +121,10 @@ def main():
         for pidx in range(0, NUM_PEERS):
 
             peer_name       = "peer" + str(pidx) + ".org1.example.com"
+            # gossip_peer     = "peer" + str((pidx + 1) % NUM_PEERS) + ".org1.example.com"
+            gossip_peer     = "peer7.org1.example.com"
             peer_hostname   = "localhost"
-            peer_service    = build_docker_service(peer_name, port)
+            peer_service    = build_docker_service(peer_name, port, gossip_peer)
             peer_desc       = build_peer_desc(peer_name, peer_hostname, port)
 
             # append and increment

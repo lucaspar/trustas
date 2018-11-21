@@ -318,7 +318,7 @@ class E2eTest(BaseTestCase):
 
         # query calls
         elif prop_type == CC_QUERY:
-            response = self.channel.send_tx_proposal(tx_ctx, self.peers)
+            response = self.channel.send_tx_proposal(tx_ctx, [self.peers[0]])
             q = Queue(1)
             response.subscribe(
                 on_next=lambda x: q.put(x), on_error=lambda x: q.put(x))
@@ -341,7 +341,7 @@ class E2eTest(BaseTestCase):
         # instantiate calls
         elif prop_type == CC_INSTANTIATE:
             # instantiate chaincode and wait for propagation
-            res = self.channel.send_instantiate_proposal(tx_ctx, self.peers)
+            res = self.channel.send_instantiate_proposal(tx_ctx, [self.peers[0]])
             time.sleep(LONGER_SLEEP)
 
         # invalid call
