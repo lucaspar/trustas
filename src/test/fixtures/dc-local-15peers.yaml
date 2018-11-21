@@ -57,9 +57,9 @@ services:
             - CORE_PEER_ID=peer0.org1.example.com
             - CORE_PEER_ADDRESS=peer0.org1.example.com:7051
             - CORE_PEER_CHAINCODELISTENADDRESS=peer0.org1.example.com:7052
-            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.org1.example.com:7051
-            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
             - CORE_PEER_LOCALMSPID=Org1MSP
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer7.org1.example.com:7051
         volumes:
             - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/msp:/etc/hyperledger/fabric/msp
             - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls:/etc/hyperledger/fabric/tls
@@ -79,9 +79,9 @@ services:
             - CORE_PEER_ID=peer1.org1.example.com
             - CORE_PEER_ADDRESS=peer1.org1.example.com:7051
             - CORE_PEER_CHAINCODELISTENADDRESS=peer1.org1.example.com:7052
-            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.org1.example.com:7051
-            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
             - CORE_PEER_LOCALMSPID=Org1MSP
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer7.org1.example.com:7051
         volumes:
             - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/msp:/etc/hyperledger/fabric/msp
             - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/tls:/etc/hyperledger/fabric/tls
@@ -101,9 +101,9 @@ services:
             - CORE_PEER_ID=peer2.org1.example.com
             - CORE_PEER_ADDRESS=peer2.org1.example.com:7051
             - CORE_PEER_CHAINCODELISTENADDRESS=peer2.org1.example.com:7052
-            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer2.org1.example.com:7051
-            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
             - CORE_PEER_LOCALMSPID=Org1MSP
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer2.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer7.org1.example.com:7051
         volumes:
             - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer2.org1.example.com/msp:/etc/hyperledger/fabric/msp
             - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer2.org1.example.com/tls:/etc/hyperledger/fabric/tls
@@ -123,9 +123,9 @@ services:
             - CORE_PEER_ID=peer3.org1.example.com
             - CORE_PEER_ADDRESS=peer3.org1.example.com:7051
             - CORE_PEER_CHAINCODELISTENADDRESS=peer3.org1.example.com:7052
-            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer3.org1.example.com:7051
-            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
             - CORE_PEER_LOCALMSPID=Org1MSP
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer3.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer7.org1.example.com:7051
         volumes:
             - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer3.org1.example.com/msp:/etc/hyperledger/fabric/msp
             - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer3.org1.example.com/tls:/etc/hyperledger/fabric/tls
@@ -145,9 +145,9 @@ services:
             - CORE_PEER_ID=peer4.org1.example.com
             - CORE_PEER_ADDRESS=peer4.org1.example.com:7051
             - CORE_PEER_CHAINCODELISTENADDRESS=peer4.org1.example.com:7052
-            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer4.org1.example.com:7051
-            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
             - CORE_PEER_LOCALMSPID=Org1MSP
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer4.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer7.org1.example.com:7051
         volumes:
             - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer4.org1.example.com/msp:/etc/hyperledger/fabric/msp
             - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer4.org1.example.com/tls:/etc/hyperledger/fabric/tls
@@ -167,9 +167,9 @@ services:
             - CORE_PEER_ID=peer5.org1.example.com
             - CORE_PEER_ADDRESS=peer5.org1.example.com:7051
             - CORE_PEER_CHAINCODELISTENADDRESS=peer5.org1.example.com:7052
-            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer5.org1.example.com:7051
-            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
             - CORE_PEER_LOCALMSPID=Org1MSP
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer5.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer7.org1.example.com:7051
         volumes:
             - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer5.org1.example.com/msp:/etc/hyperledger/fabric/msp
             - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer5.org1.example.com/tls:/etc/hyperledger/fabric/tls
@@ -189,9 +189,9 @@ services:
             - CORE_PEER_ID=peer6.org1.example.com
             - CORE_PEER_ADDRESS=peer6.org1.example.com:7051
             - CORE_PEER_CHAINCODELISTENADDRESS=peer6.org1.example.com:7052
-            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer6.org1.example.com:7051
-            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
             - CORE_PEER_LOCALMSPID=Org1MSP
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer6.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer7.org1.example.com:7051
         volumes:
             - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer6.org1.example.com/msp:/etc/hyperledger/fabric/msp
             - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer6.org1.example.com/tls:/etc/hyperledger/fabric/tls
@@ -211,9 +211,9 @@ services:
             - CORE_PEER_ID=peer7.org1.example.com
             - CORE_PEER_ADDRESS=peer7.org1.example.com:7051
             - CORE_PEER_CHAINCODELISTENADDRESS=peer7.org1.example.com:7052
-            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer7.org1.example.com:7051
-            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
             - CORE_PEER_LOCALMSPID=Org1MSP
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer7.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer7.org1.example.com:7051
         volumes:
             - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer7.org1.example.com/msp:/etc/hyperledger/fabric/msp
             - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer7.org1.example.com/tls:/etc/hyperledger/fabric/tls
@@ -233,9 +233,9 @@ services:
             - CORE_PEER_ID=peer8.org1.example.com
             - CORE_PEER_ADDRESS=peer8.org1.example.com:7051
             - CORE_PEER_CHAINCODELISTENADDRESS=peer8.org1.example.com:7052
-            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer8.org1.example.com:7051
-            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
             - CORE_PEER_LOCALMSPID=Org1MSP
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer8.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer7.org1.example.com:7051
         volumes:
             - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer8.org1.example.com/msp:/etc/hyperledger/fabric/msp
             - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer8.org1.example.com/tls:/etc/hyperledger/fabric/tls
@@ -255,9 +255,9 @@ services:
             - CORE_PEER_ID=peer9.org1.example.com
             - CORE_PEER_ADDRESS=peer9.org1.example.com:7051
             - CORE_PEER_CHAINCODELISTENADDRESS=peer9.org1.example.com:7052
-            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer9.org1.example.com:7051
-            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
             - CORE_PEER_LOCALMSPID=Org1MSP
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer9.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer7.org1.example.com:7051
         volumes:
             - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer9.org1.example.com/msp:/etc/hyperledger/fabric/msp
             - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer9.org1.example.com/tls:/etc/hyperledger/fabric/tls
@@ -277,9 +277,9 @@ services:
             - CORE_PEER_ID=peer10.org1.example.com
             - CORE_PEER_ADDRESS=peer10.org1.example.com:7051
             - CORE_PEER_CHAINCODELISTENADDRESS=peer10.org1.example.com:7052
-            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer10.org1.example.com:7051
-            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
             - CORE_PEER_LOCALMSPID=Org1MSP
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer10.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer7.org1.example.com:7051
         volumes:
             - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer10.org1.example.com/msp:/etc/hyperledger/fabric/msp
             - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer10.org1.example.com/tls:/etc/hyperledger/fabric/tls
@@ -299,9 +299,9 @@ services:
             - CORE_PEER_ID=peer11.org1.example.com
             - CORE_PEER_ADDRESS=peer11.org1.example.com:7051
             - CORE_PEER_CHAINCODELISTENADDRESS=peer11.org1.example.com:7052
-            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer11.org1.example.com:7051
-            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
             - CORE_PEER_LOCALMSPID=Org1MSP
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer11.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer7.org1.example.com:7051
         volumes:
             - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer11.org1.example.com/msp:/etc/hyperledger/fabric/msp
             - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer11.org1.example.com/tls:/etc/hyperledger/fabric/tls
@@ -321,9 +321,9 @@ services:
             - CORE_PEER_ID=peer12.org1.example.com
             - CORE_PEER_ADDRESS=peer12.org1.example.com:7051
             - CORE_PEER_CHAINCODELISTENADDRESS=peer12.org1.example.com:7052
-            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer12.org1.example.com:7051
-            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
             - CORE_PEER_LOCALMSPID=Org1MSP
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer12.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer7.org1.example.com:7051
         volumes:
             - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer12.org1.example.com/msp:/etc/hyperledger/fabric/msp
             - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer12.org1.example.com/tls:/etc/hyperledger/fabric/tls
@@ -343,9 +343,9 @@ services:
             - CORE_PEER_ID=peer13.org1.example.com
             - CORE_PEER_ADDRESS=peer13.org1.example.com:7051
             - CORE_PEER_CHAINCODELISTENADDRESS=peer13.org1.example.com:7052
-            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer13.org1.example.com:7051
-            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
             - CORE_PEER_LOCALMSPID=Org1MSP
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer13.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer7.org1.example.com:7051
         volumes:
             - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer13.org1.example.com/msp:/etc/hyperledger/fabric/msp
             - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer13.org1.example.com/tls:/etc/hyperledger/fabric/tls
@@ -365,9 +365,9 @@ services:
             - CORE_PEER_ID=peer14.org1.example.com
             - CORE_PEER_ADDRESS=peer14.org1.example.com:7051
             - CORE_PEER_CHAINCODELISTENADDRESS=peer14.org1.example.com:7052
-            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer14.org1.example.com:7051
-            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
             - CORE_PEER_LOCALMSPID=Org1MSP
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer14.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer7.org1.example.com:7051
         volumes:
             - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer14.org1.example.com/msp:/etc/hyperledger/fabric/msp
             - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer14.org1.example.com/tls:/etc/hyperledger/fabric/tls
