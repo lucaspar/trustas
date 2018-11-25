@@ -45,38 +45,6 @@ docker logs -tf dev-peer0.org1.example.com-trustas_cc-1.0 > logs/cc.$(date "%s")
 
 ------------------------------------------------------------------
 
-
-## Hyperledger Explorer for visualization (_deprecated_)
-
-#### Hyperledger Explorer dependencies
-
-```sh
-# install postgres and create user for explorer
-sudo apt install postgresql postgresql-contrib
-sudo -u postgres createuser hypex
-sudo -u postgres createdb fabricexplorer
-sudo -u postgres psql
-postgres=# alter user hypex with encrypted password 'password'
-postgres-# grant all privileges on database fabricexplorer to hypex
-postgres-# \q
-
-```
-#### Get and execute Hyperledger Explorer
-```sh
-git clone https://github.com/hyperledger/blockchain-explorer.git
-cd blockchain-explorer/app/persistence/fabric/postgreSQL/db
-sudo -u postgres psql -v dbname=fabricexplorer -v user=hypex -v passwd=8bfcd2f4a91e -f ./explorerpg.sql
-sudo -u postgres psql -v dbname=fabricexplorer -v user=hypex -v passwd=8bfcd2f4a91e -f ./updatepg.sql
-```
-
-Follow the Hyperledger Explorer readme to:
-- Configure the network
-- Build and execute it
-
-After that, visualize the network at [localhost:8080](http://localhost:8080) by default.
-
-------------------------------------------------------------------
-
 ### Other operations
 
 #### TrustAS usage
@@ -111,6 +79,21 @@ watch du -h businesschannel
 #### Run a specific test
 ```sh
 python test/integration/e2e_test.py
+```
+
+#### Generate channel artifacts
+```sh
+set -e
+configtxgen --version   # v1.3.0
+mkdir -p channel-artifacts
+
+configtxgen -channelID businesschannel -profile TrustASChannel -outputBlock channel-artifacts/orderer.genesis.block -outputCreateChannelTx channel-artifacts/channel.tx
+COUNTER=1
+while [  $COUNTER -le 200 ]; do
+    # echo $COUNTER
+    configtxgen -outputAnchorPeersUpdate "channel-artifacts/Org"$COUNTER"MSPanchors.tx" -profile TrustASChannel -asOrg "Org"$COUNTER"MSP"
+    let COUNTER=COUNTER+1
+done
 ```
 
 ------------------------------------------------------------------
