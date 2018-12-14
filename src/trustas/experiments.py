@@ -15,41 +15,46 @@ import trustas
 # SETTINGS
 EXP_DIR         = "experiments"
 MAX_ASN         = 2**16-1
-NETWORK_SIZE    = 100
+PEERS_SIM       = 100
+PEERS_REAL      = 100
 CONNECTIONS     = 100
 MPA             = 1
 
-def exp_privacy_cost(privacy,
+def exp_privacy_cost(encryption,
                      experiment_path,
-                     network_size=100,
+                     peers_real,
+                     peers_sim=100,
                      connections=100,
                      mpa=1,
                      storage="json"):
-    """Simulates agreements with and without privacy (encryption).
+    """Simulates agreements with or without encryption.
 
     Agreements are simulated based on a set of parameters passed.
     If the storage is set to "json", the agreements will be stored
     in a JSON file in EXP_DIR + experiment_path.
 
     Args:
-        privacy:            boolean: if true, enables OPE on data output
+        encryption:         boolean: if true, enables OPE on data output
         experiment_path:    path for working dir (from EXP_DIR/)
-        network_size:       number (S) of ASes in the network
+        peers_real:         number of real ASes in the network (docker containers)
+        peers_sim:          number of simulated ASes in the network (for the agreement factory)
         connections:        number of interconnections among ASes
         mpa:                metric sets per agreement
         storage:            storage mode: "json" for JSON output
     Raises:
-        ValueError:     if S (network_size) is less than 3
+        ValueError:     if S (peers_sim) is less than 3
         ValueError:     if the number of connections is too large for the net size (nCr formula)
     Returns:
         List of agreements created
 
     """
-    global NETWORK_SIZE
+    global PEERS_SIM
+    global PEERS_REAL
     global CONNECTIONS
     global MPA
 
-    NETWORK_SIZE    = network_size
+    PEERS_SIM       = peers_sim
+    PEERS_REAL      = peers_real
     CONNECTIONS     = connections
     MPA             = mpa
 
@@ -66,13 +71,15 @@ def exp_privacy_cost(privacy,
         # Experiment information
         metadata = [{
             "timestamp"     : datetime.datetime.now().isoformat(),
-            "network_size"  : NETWORK_SIZE,
+            "peers_real"    : PEERS_REAL,
             "connections"   : CONNECTIONS,
             "mpa"           : MPA
         }]
         __agreements_to_file(
-            agreements=agreements, filepath=working_dir,
-            extras=metadata, privacy=privacy)
+            agreements=agreements,
+            filepath=working_dir,
+            extras=metadata,
+            encryption=encryption)
 
     return agreements
 
@@ -83,8 +90,24 @@ def exp_package_demos():
     asn_a   = random.randint(0, 2**15 - 1)
     asn_b   = random.randint(2**15, 2**16 - 1)
     peers   = {asn_a, asn_b}
-    sla     = trustas.sla.SLA(latency=5)
-    metrics = trustas.sla.SLA(latency=10)
+
+    sla = trustas.sla.SLA(
+        bandwidth=100,
+        packet_loss=1e-1,
+        latency=5,
+        jitter=40,
+        repair=4,
+        guarantee=1 - 1e-1,
+        availability=1 - 1e-2)
+
+    metrics = trustas.sla.SLA(
+        bandwidth=116,
+        packet_loss=0.27e-1,
+        latency=7,
+        jitter=60,
+        repair=1,
+        guarantee=1 - 0.83e-1,
+        availability=1 - 0.21e-2)
 
     # create an agreement
     agreement = trustas.agreement.Agreement(SLA=sla, peers=peers)
@@ -102,18 +125,18 @@ def exp_package_demos():
 
 
 def __validate_data():
-    fnn = math.factorial(NETWORK_SIZE)
-    fnd = math.factorial(NETWORK_SIZE - 2)
-    if NETWORK_SIZE > MAX_ASN:
-        raise ValueError("Network is too large ({})".format(NETWORK_SIZE))
+    fnn = math.factorial(PEERS_SIM)
+    fnd = math.factorial(PEERS_SIM - 2)
+    if PEERS_SIM > MAX_ASN:
+        raise ValueError("Network is too large ({})".format(PEERS_SIM))
     if fnn / (2 * fnd) < CONNECTIONS:
         raise ValueError(
-            "Too many connections ({}) for the network size ({}).".format(
-                CONNECTIONS, NETWORK_SIZE))
+            "Too many connections ({}) for the simulated network of size ({}).".format(
+                CONNECTIONS, PEERS_SIM))
 
 
 def __generate_ases():
-    return random.sample(range(1, MAX_ASN), NETWORK_SIZE)
+    return random.sample(range(1, MAX_ASN), PEERS_SIM)
 
 
 def __generate_as_pairs(ASes):
@@ -169,7 +192,7 @@ def __generate_agreements(pairs):
     return agreements
 
 
-def __agreements_to_file(agreements, filepath, extras=[], privacy=True):
+def __agreements_to_file(agreements, filepath, extras=[], encryption=True):
     """Writes agreement list to two files: encrypted and plaintext.
 
     If path to filename does not exist, it will be created.
@@ -178,17 +201,17 @@ def __agreements_to_file(agreements, filepath, extras=[], privacy=True):
         agreements: list of Agreement instances.
         filepath:   output directory.
         extras:     metadata on the experiment.
-        privacy:    cryptography enabled.
+        encryption: cryptography enabled.
     Raises:
         PermissionError: if unable to create file or directory.
     """
 
     # form object
     text = __jsonify_agreements(
-        agreements, encrypted=privacy, extras=extras)
+        agreements, encryption=encryption, extras=extras)
 
     # creates file path
-    name = "agreements_enc.json" if privacy else "agreements_pla.json"
+    name = "agreements_enc.json" if encryption else "agreements_pla.json"
     filename = os.path.join(filepath, name)
     if not os.path.exists(os.path.dirname(filename)):
         try:
@@ -199,14 +222,12 @@ def __agreements_to_file(agreements, filepath, extras=[], privacy=True):
 
     # write to files
     with open(filename, "w+") as fp:
-        chars = fp.write(text)
-        # print("\tWritten {} out of {} characters to {}".format(
-        #     chars, len(text), filename))
+        fp.write(text)
 
 
-def __jsonify_agreements(agreements, encrypted=True, extras=[]):
+def __jsonify_agreements(agreements, encryption=True, extras=[]):
     ags = extras.copy()
-    if encrypted:
+    if encryption:
         for agr in agreements:
             ag = {
                 "id": str(agr.id),
@@ -228,5 +249,14 @@ def __jsonify_agreements(agreements, encrypted=True, extras=[]):
 
 def run():
     """Run all experiments available."""
-    # exp_privacy_cost(storage="json")
-    # exp_package_demos()
+
+    exp_privacy_cost(
+        encryption      = True,
+        experiment_path = "experiments/storage",
+        peers_real      = 10,
+        peers_sim       = 100,
+        connections     = 100,
+        mpa             = 1,
+        storage         = "json")
+
+    exp_package_demos()
