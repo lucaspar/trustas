@@ -87,7 +87,7 @@ set -e
 configtxgen --version   # v1.3.0
 mkdir -p channel-artifacts
 
-configtxgen -channelID businesschannel -profile TrustASChannel -outputBlock channel-artifacts/orderer.genesis.block -outputCreateChannelTx channel-artifacts/channel.tx
+configtxgen -channelID testchainid -profile TrustASChannel -outputBlock channel-artifacts/orderer.genesis.block -outputCreateChannelTx channel-artifacts/channel.tx
 COUNTER=1
 while [  $COUNTER -le 200 ]; do
     # echo $COUNTER
