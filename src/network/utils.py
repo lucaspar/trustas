@@ -14,10 +14,12 @@ from .config import E2E_CONFIG
 
 HOST = "localhost"
 NAME = "localhost"
-LOCAL_DEPLOY = False
-GCP_DEPLOY = not LOCAL_DEPLOY
-NETWORK_NAME = "test-network"
+ALIVE = False                   # Whether the network is up
+LOCAL_DEPLOY = False            # Localhost deploy
+GCP_DEPLOY = not LOCAL_DEPLOY   # GCP deploy
+NETWORK_NAME = "trustas-network"
 LOG_FILE = "logs/trustas." + str(time.time()) + ".log"
+NET_STATS_DIR = "experiments/network_stats"
 
 class BaseTestCase(unittest.TestCase):
     """
@@ -45,10 +47,14 @@ class BaseTestCase(unittest.TestCase):
         self.channel_profile = \
             E2E_CONFIG[NETWORK_NAME]['channel-artifacts']['channel_profile']
         self.client =   Client('test/fixtures/trustas_net_gcp.json') if GCP_DEPLOY else \
-                        Client('test/fixtures/trustas_net_localhost.json')
+                        Client('test/fixtures/network.json')
+                        # Client('test/fixtures/local-10peers.json')
         self.channel_name = "businesschannel"  # default application channel
         self.user = self.client.get_user('org1.example.com', 'Admin')
         self.assertIsNotNone(self.user, 'org1 admin should not be None')
+
+        global ALIVE
+        ALIVE = True
 
         # Boot up the testing network
         self.start_test_env(wipe_all)
@@ -57,24 +63,66 @@ class BaseTestCase(unittest.TestCase):
     def tearDown(self, keep_network=False):
         if not keep_network:
             self.shutdown_test_env()
+        global ALIVE
+        ALIVE = False
 
     # Logs Hyperledger network output
     def __log_network(self):
+        # capture logs
         output, _, _ = cli_call([
             "docker-compose", "-f", self.compose_file_path,
             "logs", "-f"
         ])
         output = output.decode()
+
+        # remove color encoding
         ansi_escape = re.compile(r'\x1B\[[0-?]*[ -/]*[@-~]')
         output = ansi_escape.sub('', output)
-        if not os.path.exists(os.path.dirname(LOG_FILE)):
-            try:
-                os.makedirs(os.path.dirname(LOG_FILE))
-            except OSError as exc:  # Guard against race condition
-                if exc.errno != errno.EEXIST:
-                    raise
+
+        # create output dir if it does not exist
+        mkdir_p('/'.join(LOG_FILE.split('/')[:-1]))
+
+        # write log
         with open(LOG_FILE, "w+") as fp:
             fp.write(output)
+
+    # Logs Docker network traffic
+    def __network_traffic(self):
+        global ALIVE
+        command = [ "docker", "stats", "--no-stream", "--all", "--format", "{{.Name}},{{.NetIO}}" ]
+        mkdir_p(NET_STATS_DIR)
+        filename = os.path.join(NET_STATS_DIR, str(time.time()) + ".csv")
+        while ALIVE:
+            netstats, _, _ = cli_call(command)
+            netstats = netstats.decode()
+            measurement = str(time.time())
+            lines = []
+            for line in netstats.split('\n'):
+                columns = line.split(',')
+                if not line or len(columns) < 2:
+                    lines.append('\n')
+                    continue
+                # individual, agregado / input, output / peers, orderer
+
+                # from 3rd column, remove whitespaces and separate ingress and egress traffic
+                val = columns[1].replace(" ", "").split('/')
+                if len(val) < 2:
+                    lines.append('\n')
+                    continue
+
+                # convert B, KB, MB, ... into numbers only
+                ingress = human_to_bytes(val[0])
+                egress = human_to_bytes(val[1])
+
+                # join everything to the line
+                line = ','.join([measurement] + columns + [str(ingress), str(egress)])
+                lines.append(line)
+
+            netstats = '\n'.join(lines)
+            with open(filename, "a") as f:
+                f.write(netstats)
+            # TODO: ver como timestamp varia com 100 peers
+            time.sleep(1)
 
     def start_test_env(self, wipe_all):
 
@@ -117,6 +165,11 @@ class BaseTestCase(unittest.TestCase):
         network_logs.start()
         print(" > Logging Network output to \"{}\"".format(LOG_FILE))
 
+        network_traffic = threading.Thread(target=self.__network_traffic)
+        network_traffic.start()
+        print(" > Logging Network Traffic".format(LOG_FILE))
+
+
     def shutdown_test_env(self):
         print(" > Shutting down network")
 
@@ -137,13 +190,13 @@ def get_peer_org_user(org, user, state_store):
 
     key_path = os.path.join(
         peer_user_base_path, 'keystore/',
-        E2E_CONFIG['test-network'][org]['users'][user]['private_key'])
+        E2E_CONFIG[NETWORK_NAME][org]['users'][user]['private_key'])
 
     cert_path = os.path.join(
         peer_user_base_path, 'signcerts/',
-        E2E_CONFIG['test-network'][org]['users'][user]['cert'])
+        E2E_CONFIG[NETWORK_NAME][org]['users'][user]['cert'])
 
-    msp_id = E2E_CONFIG['test-network'][org]['mspid']
+    msp_id = E2E_CONFIG[NETWORK_NAME][org]['mspid']
 
     return create_user(user, org, state_store, msp_id, key_path, cert_path)
 
@@ -160,12 +213,12 @@ def get_orderer_org_user(org='example.com', user='Admin', state_store=None):
 
     key_path = os.path.join(
         msp_path, 'keystore/',
-        E2E_CONFIG['test-network']['orderer']['users'][user]['private_key'])
+        E2E_CONFIG[NETWORK_NAME]['orderer']['users'][user]['private_key'])
 
     cert_path = os.path.join(
         msp_path, 'signcerts',
-        E2E_CONFIG['test-network']['orderer']['users'][user]['cert'])
-    msp_id = E2E_CONFIG['test-network']['orderer']['mspid']
+        E2E_CONFIG[NETWORK_NAME]['orderer']['users'][user]['cert'])
+    msp_id = E2E_CONFIG[NETWORK_NAME]['orderer']['mspid']
 
     return create_user(user, org, state_store, msp_id, key_path, cert_path)
 
@@ -209,3 +262,28 @@ def mkdir_p(mypath):
             pass
         else:
             raise
+
+def human_to_bytes(str):
+    """Converts first human readable number into bytes
+
+    Returns
+        Integer of number of bytes
+    """
+    factors = {
+        "kB": 1e3,
+        "MB": 1e6,
+        "GB": 1e9,
+        "TB": 1e12,
+        "PB": 1e15,
+        "YB": 1e16
+    }
+    numbers = re.findall(r'[-+]?[0-9]*\.?[0-9]+', str)
+    if not numbers:
+        return 0
+    number = float(numbers[0])
+
+    for key, factor in factors.items():
+        if key in str:
+            return int(number * factor)
+
+    return number

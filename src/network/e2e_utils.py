@@ -12,7 +12,7 @@ from hfc.util import utils
 
 from .config import E2E_CONFIG
 from .utils import get_orderer_org_user, get_peer_org_user
-test_network = E2E_CONFIG['test-network']
+TRUSTAS_NETWORK = E2E_CONFIG['trustas-network']
 
 import os
 
@@ -31,7 +31,7 @@ def build_channel_request(client, channel_tx, channel_name):
         envelope = f.read()
         config = utils.extract_channel_config(envelope)
 
-    orderer_config = E2E_CONFIG['test-network']['orderer']
+    orderer_config = TRUSTAS_NETWORK['orderer']
 
     if "LOCAL_DEPLOY" in os.environ:
         LOCAL_DEPLOY = os.environ["LOCAL_DEPLOY"] == "True"
