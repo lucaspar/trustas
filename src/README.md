@@ -40,7 +40,7 @@ docker logs -tf dev-peer0.org1.example.com-trustas_cc-1.0 > logs/cc.$(date "%s")
 ### Starting the network
 
 ```sh
-./main.py
+tox -e py36 -- test/integration/e2e_test.py -peers=3-agreements=100
 ```
 
 ------------------------------------------------------------------
@@ -49,7 +49,14 @@ docker logs -tf dev-peer0.org1.example.com-trustas_cc-1.0 > logs/cc.$(date "%s")
 
 #### TrustAS usage
 ```sh
-./main.py -h
+# arguments are separated by an hyphen:
+tox -e py36 -- test/integration/e2e_test.py -peers=1-unsafe-agreements=100
+
+OPTIONS:
+    -peers          number of peers (ASes) in the network
+    -agreements     number of simulated agreements
+    -mpa            number of measurements per simulated agreement
+    -unsafe         simulates agreements without encryption
 ```
 
 #### Open an interactive shell
@@ -87,7 +94,7 @@ set -e
 configtxgen --version   # v1.3.0
 mkdir -p channel-artifacts
 
-configtxgen -channelID businesschannel -profile TrustASChannel -outputBlock channel-artifacts/orderer.genesis.block -outputCreateChannelTx channel-artifacts/channel.tx
+configtxgen -channelID testchainid -profile TrustASChannel -outputBlock channel-artifacts/orderer.genesis.block -outputCreateChannelTx channel-artifacts/channel.tx
 COUNTER=1
 while [  $COUNTER -le 200 ]; do
     # echo $COUNTER
